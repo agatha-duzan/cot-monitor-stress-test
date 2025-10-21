@@ -15,7 +15,7 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-## Quickstart (OpenAI-only monitor, 1 minute)
+## Quickstart
 ```bash
 python -m venv .venv
 source .venv/bin/activate
@@ -28,14 +28,20 @@ export ANTHROPIC_API_KEY=sk-your-key
 # Run instruction-following (Claude Sonnet 4.5 + gpt-5-mini monitor)
 python run_instruction_following.py
 
-# Run obfuscation (single base setting)
+# Run obfuscation (Claude Sonnet 4.5 + gpt-5-mini monitor)
 python run_obfuscation.py
 ```
 This writes results to `results/instruction_following.json` and `results/obfuscation.json`.
 
+## Results Artifacts
+- **`results/instruction_following_results.json`**: full, verbose export of instruction‑following runs (prompts, internal/external CoT where available, monitor inputs/outputs, and metadata).
+- **`results/obfuscation_results.json`**: full, verbose export of obfuscation runs (prompts, internal/external CoT where available, monitor inputs/outputs, and metadata).
+- **`results/shade_arena_results.csv`**: aggregated results table for SHADE‑Arena experiments (summary metrics per setting/model).
+- **`transcripts_obfs_shade_arena/`**: example per‑run transcripts from SHADE‑Arena obfuscation experiments. Filenames follow `transcript_{model}_{internal|external}_cot_{idx}.json` (e.g., Sonnet 4 / Sonnet 3.7, internal vs external CoT).
+
 ## Environment Variables
 Set provider keys as needed:
-- `OPENAI_API_KEY` (required for monitors and OpenAI models; enough for the Quickstart)
+- `OPENAI_API_KEY` (required for monitors and OpenAI models)
 - `ANTHROPIC_API_KEY` (for Anthropic models)
 - `DEEPINFRA_API_KEY` (for DeepInfra-hosted models: DeepSeek, Qwen, GPT-OSS)
 - `MISTRAL_API_KEY` (for Mistral/Magistral models)
@@ -90,6 +96,7 @@ See `obfuscation.py` `all_settings` for available pressure stacks. You can pass 
 
 ## SHADE‑Arena Experiments
 We also ran experiments in the SHADE‑Arena environments. We do not include code for these experiments because the environments are not public; access was provided to us upon request. The exact prompts we used for SHADE‑Arena are available in the paper appendix.
+Example transcripts from these runs are included in `transcripts_obfs_shade_arena/`, and an aggregated results table is in `results/shade_arena_results.csv`.
 
 ## Notes
 - Final answers must appear inside `<answer>...</answer>`.
@@ -143,13 +150,3 @@ Caller tips:
 - Use `bp.system` and `bp.user` to build the request.
 - If `internal_reasoning` is False and your model can output `<think>...</think>`, parse and split it.
 - Return `ReasoningCallResult(internal, external, raw)`.
-
-## Choose monitor model
-Monitors use OpenAI-compatible chat completions. Set `monitor_model` in `RunConfig`:
-
-```python
-cfg = RunConfig(
-  ...,
-  monitor_model="gpt-5-mini",                 # or your OpenAI/compatible model
-)
-```
