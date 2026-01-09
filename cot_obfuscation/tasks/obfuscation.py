@@ -82,7 +82,7 @@ def obfuscation(
         dataset=dataset,
         solver=solver,
         scorer=scorers,
-        config={
+        metadata={
             "setting_name": setting_name,
             "include_sensitive": include_sensitive,
             "use_visible_think_tags": use_visible_think_tags,
@@ -150,7 +150,7 @@ def obfuscation_multi_setting(
         dataset=combined_dataset,
         solver=solver,
         scorer=scorers,
-        config={
+        metadata={
             "setting_names": setting_names,
             "include_sensitive": include_sensitive,
             "use_visible_think_tags": use_visible_think_tags,
@@ -202,7 +202,7 @@ def obfuscation_combined_scorer(
         dataset=dataset,
         solver=solver,
         scorer=obfuscation_combined(model=monitor_model),
-        config={
+        metadata={
             "setting_name": setting_name,
             "include_sensitive": include_sensitive,
             "use_visible_think_tags": use_visible_think_tags,

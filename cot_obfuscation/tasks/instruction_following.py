@@ -95,7 +95,7 @@ def instruction_following(
         dataset=dataset,
         solver=solver,
         scorer=scorers,
-        config={
+        metadata={
             "steering_id": steering_id,
             "steering_text": steering.text,
             "steering_family": steering.family,
@@ -172,7 +172,7 @@ def instruction_following_all_steering(
         dataset=combined_dataset,
         solver=solver,
         scorer=scorers,
-        config={
+        metadata={
             "families": families or list(catalog.keys()),
             "use_visible_think_tags": use_visible_think_tags,
             "steering_in_system": steering_in_system,
