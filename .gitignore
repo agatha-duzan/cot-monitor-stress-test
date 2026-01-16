@@ -195,3 +195,9 @@ cython_debug/
 
 # Claude Code
 CLAUDE.md
+
+# Experiment logs (inspect_ai eval files)
+logs/
+math_exp/logs/
+math_exp/anthropic_logs/
+math_exp/openrouter_logs/
