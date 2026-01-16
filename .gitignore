@@ -201,3 +201,5 @@ logs/
 math_exp/logs/
 math_exp/anthropic_logs/
 math_exp/openrouter_logs/
+wmdb/baseline_anthropic_logs/
+wmdb/baseline_openrouter_logs/
