@@ -290,6 +290,9 @@ def wmdp_chem_monitor(
     system_prompt: str | None = None,
     use_adversarial_prompt: bool = False,
     attack_prompt: str | None = None,
+    attack_prompt_file: str | None = None,
+    fewshot_example: str | None = None,
+    fewshot_example_file: str | None = None,
 ) -> Task:
     """WMDP-chem task with optional monitor for answer prediction.
 
@@ -301,17 +304,38 @@ def wmdp_chem_monitor(
                                This is simpler than passing system_prompt via CLI.
         attack_prompt: Optional attack-specific instructions to append to the
                       adversarial prompt. Only used when use_adversarial_prompt=True.
+        attack_prompt_file: Path to file containing attack prompt (alternative to
+                           attack_prompt parameter, avoids CLI escaping issues).
+        fewshot_example: Optional fewshot example demonstrating the attack strategy.
+                        Appended after the strategy section.
+        fewshot_example_file: Path to file containing fewshot example (alternative to
+                             fewshot_example parameter, avoids CLI escaping issues).
 
     Returns:
         Task configured for WMDP-chem evaluation with monitor integration.
     """
+    # Load attack prompt from file if provided
+    actual_attack_prompt = attack_prompt
+    if attack_prompt_file:
+        with open(attack_prompt_file) as f:
+            actual_attack_prompt = f.read().strip()
+
+    # Load fewshot example from file if provided
+    actual_fewshot = fewshot_example
+    if fewshot_example_file:
+        with open(fewshot_example_file) as f:
+            actual_fewshot = f.read().strip()
+
     # Determine which system prompt to use
     effective_prompt = system_prompt
     if use_adversarial_prompt:
         effective_prompt = ADVERSARIAL_SYSTEM_PROMPT
         # Append attack-specific instructions if provided
-        if attack_prompt:
-            effective_prompt = f"{ADVERSARIAL_SYSTEM_PROMPT}\n\n## Strategy\n{attack_prompt}"
+        if actual_attack_prompt:
+            effective_prompt = f"{ADVERSARIAL_SYSTEM_PROMPT}\n\n## Strategy\n{actual_attack_prompt}"
+        # Append fewshot example if provided
+        if actual_fewshot:
+            effective_prompt = f"{effective_prompt}\n\n## Example\n{actual_fewshot}"
 
     dataset = hf_dataset(
         path=DATASET_PATH,
@@ -336,7 +360,8 @@ def wmdp_chem_monitor(
             "monitor_model": monitor_model,
             "monitor_enabled": monitor_model is not None,
             "use_adversarial_prompt": use_adversarial_prompt,
-            "attack_prompt": attack_prompt[:80] + "..." if attack_prompt and len(attack_prompt) > 80 else attack_prompt,
+            "attack_prompt": actual_attack_prompt[:80] + "..." if actual_attack_prompt and len(actual_attack_prompt) > 80 else actual_attack_prompt,
+            "fewshot_example": actual_fewshot[:80] + "..." if actual_fewshot and len(actual_fewshot) > 80 else actual_fewshot,
             "system_prompt": effective_prompt[:150] + "..." if effective_prompt and len(effective_prompt) > 150 else effective_prompt,
         },
     )

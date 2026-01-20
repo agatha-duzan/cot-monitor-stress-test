@@ -162,13 +162,12 @@ def run_single_eval(
 
     # Add attack prompt if provided (for Phase 4)
     if attack_prompt:
-        # Escape the attack prompt for command line (write to temp file to avoid escaping issues)
+        # Write attack prompt to file to avoid CLI escaping issues
         attack_file = log_dir / "attack_prompt.txt"
         with open(attack_file, "w") as f:
             f.write(attack_prompt)
-        # Use file reference approach - read and pass as string
-        escaped_prompt = attack_prompt.replace('"', '\\"').replace('\n', '\\n')
-        cmd.extend(["-T", f'attack_prompt="{escaped_prompt}"'])
+        # Pass file path to the task
+        cmd.extend(["-T", f"attack_prompt_file={attack_file}"])
 
     mode_str = "with monitor" if with_monitor else "baseline"
     has_prompt = " + adversarial prompt" if use_adversarial_prompt else ""
