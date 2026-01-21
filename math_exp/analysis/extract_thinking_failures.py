@@ -9,33 +9,35 @@ import zipfile
 from pathlib import Path
 from typing import Any
 
-MATH_EXP_DIR = Path(__file__).parent.resolve()
+ANALYSIS_DIR = Path(__file__).parent.resolve()
+MATH_EXP_DIR = ANALYSIS_DIR.parent
+LOGS_DIR = MATH_EXP_DIR / "logs" / "first_exp"
 
 # Model configurations with their log directories
 MODELS = {
     "Haiku 4.5": {
-        "no_thinking": MATH_EXP_DIR / "anthropic_logs" / "haiku-4-5_no-thinking",
-        "thinking": MATH_EXP_DIR / "anthropic_logs" / "haiku-4-5_thinking",
+        "no_thinking": LOGS_DIR / "haiku-4-5_no-thinking",
+        "thinking": LOGS_DIR / "haiku-4-5_thinking",
     },
     "Sonnet 4.5": {
-        "no_thinking": MATH_EXP_DIR / "anthropic_logs" / "sonnet-4-5_no-thinking",
-        "thinking": MATH_EXP_DIR / "anthropic_logs" / "sonnet-4-5_thinking",
+        "no_thinking": LOGS_DIR / "sonnet-4-5_no-thinking",
+        "thinking": LOGS_DIR / "sonnet-4-5_thinking",
     },
     "Opus 4.5": {
-        "no_thinking": MATH_EXP_DIR / "anthropic_logs" / "opus-4-5_no-thinking",
-        "thinking": MATH_EXP_DIR / "anthropic_logs" / "opus-4-5_thinking",
+        "no_thinking": LOGS_DIR / "opus-4-5_no-thinking",
+        "thinking": LOGS_DIR / "opus-4-5_thinking",
     },
     "Kimi K2": {
-        "no_thinking": MATH_EXP_DIR / "openrouter_logs" / "kimi-k2_no-thinking",
-        "thinking": MATH_EXP_DIR / "openrouter_logs" / "kimi-k2-thinking",
+        "no_thinking": LOGS_DIR / "kimi-k2_no-thinking",
+        "thinking": LOGS_DIR / "kimi-k2-thinking",
     },
     "GLM 4.7": {
-        "no_thinking": MATH_EXP_DIR / "openrouter_logs" / "glm-4.7_no-thinking",
-        "thinking": MATH_EXP_DIR / "openrouter_logs" / "glm-4.7",
+        "no_thinking": LOGS_DIR / "glm-4.7_no-thinking",
+        "thinking": LOGS_DIR / "glm-4.7",
     },
     "Grok 3 Mini": {
-        "no_thinking": MATH_EXP_DIR / "openrouter_logs" / "grok-3-mini_no-thinking",
-        "thinking": MATH_EXP_DIR / "openrouter_logs" / "grok-3-mini",
+        "no_thinking": LOGS_DIR / "grok-3-mini_no-thinking",
+        "thinking": LOGS_DIR / "grok-3-mini",
     },
 }
 

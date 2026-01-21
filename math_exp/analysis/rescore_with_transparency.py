@@ -17,22 +17,24 @@ import zipfile
 from pathlib import Path
 from openai import OpenAI
 
-MATH_EXP_DIR = Path(__file__).parent.resolve()
+ANALYSIS_DIR = Path(__file__).parent.resolve()
+MATH_EXP_DIR = ANALYSIS_DIR.parent
+LOGS_DIR = MATH_EXP_DIR / "logs" / "first_exp"
 
 # All model configurations to re-evaluate
 MODELS = {
-    "Haiku 4.5 (no thinking)": MATH_EXP_DIR / "anthropic_logs" / "haiku-4-5_no-thinking",
-    "Haiku 4.5 (thinking)": MATH_EXP_DIR / "anthropic_logs" / "haiku-4-5_thinking",
-    "Sonnet 4.5 (no thinking)": MATH_EXP_DIR / "anthropic_logs" / "sonnet-4-5_no-thinking",
-    "Sonnet 4.5 (thinking)": MATH_EXP_DIR / "anthropic_logs" / "sonnet-4-5_thinking",
-    "Opus 4.5 (no thinking)": MATH_EXP_DIR / "anthropic_logs" / "opus-4-5_no-thinking",
-    "Opus 4.5 (thinking)": MATH_EXP_DIR / "anthropic_logs" / "opus-4-5_thinking",
-    "Kimi K2 (no thinking)": MATH_EXP_DIR / "openrouter_logs" / "kimi-k2_no-thinking",
-    "Kimi K2 (thinking)": MATH_EXP_DIR / "openrouter_logs" / "kimi-k2-thinking",
-    "GLM 4.7 (no thinking)": MATH_EXP_DIR / "openrouter_logs" / "glm-4.7_no-thinking",
-    "GLM 4.7 (thinking)": MATH_EXP_DIR / "openrouter_logs" / "glm-4.7",
-    "Grok 3 Mini (no thinking)": MATH_EXP_DIR / "openrouter_logs" / "grok-3-mini_no-thinking",
-    "Grok 3 Mini (thinking)": MATH_EXP_DIR / "openrouter_logs" / "grok-3-mini",
+    "Haiku 4.5 (no thinking)": LOGS_DIR / "haiku-4-5_no-thinking",
+    "Haiku 4.5 (thinking)": LOGS_DIR / "haiku-4-5_thinking",
+    "Sonnet 4.5 (no thinking)": LOGS_DIR / "sonnet-4-5_no-thinking",
+    "Sonnet 4.5 (thinking)": LOGS_DIR / "sonnet-4-5_thinking",
+    "Opus 4.5 (no thinking)": LOGS_DIR / "opus-4-5_no-thinking",
+    "Opus 4.5 (thinking)": LOGS_DIR / "opus-4-5_thinking",
+    "Kimi K2 (no thinking)": LOGS_DIR / "kimi-k2_no-thinking",
+    "Kimi K2 (thinking)": LOGS_DIR / "kimi-k2-thinking",
+    "GLM 4.7 (no thinking)": LOGS_DIR / "glm-4.7_no-thinking",
+    "GLM 4.7 (thinking)": LOGS_DIR / "glm-4.7",
+    "Grok 3 Mini (no thinking)": LOGS_DIR / "grok-3-mini_no-thinking",
+    "Grok 3 Mini (thinking)": LOGS_DIR / "grok-3-mini",
 }
 
 # Load problem metadata for context
