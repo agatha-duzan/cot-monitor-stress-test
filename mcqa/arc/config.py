@@ -2,8 +2,6 @@
 
 Dataset: ARC (AI2 Reasoning Challenge) - Challenge subset
 Source: allenai/ai2_arc on HuggingFace
-
-TODO: Implement this config for ARC Challenge experiments.
 """
 
 from typing import Any
@@ -14,7 +12,7 @@ from inspect_ai.dataset import Sample
 # Dataset configuration
 DATASET_PATH = "allenai/ai2_arc"
 DATASET_NAME = "ARC-Challenge"
-DATASET_SPLIT = "test"
+DATASET_SPLIT = "validation"
 NUM_CHOICES = 4
 
 

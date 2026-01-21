@@ -92,13 +92,13 @@ def get_logs_dir(dataset: str) -> Path:
 def get_prompts_dir(dataset: str) -> Path:
     """Get the prompts directory for a specific dataset.
 
-    Falls back to WMDP prompts if dataset-specific ones don't exist.
+    Falls back to mcqa/ level prompts if dataset-specific ones don't exist.
     """
     dataset_prompts = get_dataset_dir(dataset)
     if (dataset_prompts / "attack_prompts.json").exists():
         return dataset_prompts
-    # Fall back to WMDP prompts
-    return MCQA_DIR / "wmdp"
+    # Fall back to shared prompts at mcqa/ level
+    return MCQA_DIR
 
 
 def load_attack_prompts(dataset: str) -> dict:
