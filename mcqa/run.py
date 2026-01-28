@@ -101,10 +101,20 @@ def get_prompts_dir(dataset: str) -> Path:
     return MCQA_DIR
 
 
-def load_attack_prompts(dataset: str) -> dict:
-    """Load attack prompts from JSON file."""
-    prompts_dir = get_prompts_dir(dataset)
-    with open(prompts_dir / "attack_prompts.json") as f:
+def load_attack_prompts(dataset: str, attack_file: str = None) -> dict:
+    """Load attack prompts from JSON file.
+
+    Args:
+        dataset: Dataset name (for default prompts location)
+        attack_file: Optional path to custom attack prompts file
+    """
+    if attack_file:
+        file_path = Path(attack_file)
+    else:
+        prompts_dir = get_prompts_dir(dataset)
+        file_path = prompts_dir / "attack_prompts.json"
+
+    with open(file_path) as f:
         attacks = json.load(f)
     return {a["attack_name"]: a for a in attacks}
 
@@ -386,7 +396,7 @@ def calculate_metrics(results: list[dict], prediction_key: str = "monitor_predic
 
 async def run_experiment(args):
     """Run model evaluations."""
-    attack_prompts = load_attack_prompts(args.dataset)
+    attack_prompts = load_attack_prompts(args.dataset, getattr(args, 'attack_file', None))
 
     # Determine which models to run
     if args.models == ["all"]:
@@ -629,7 +639,11 @@ Examples:
     # Attack configuration
     parser.add_argument(
         "--attack", nargs="+", default=None,
-        help="Attack strategy name(s) from attack_prompts.json"
+        help="Attack strategy name(s) from attack prompts file"
+    )
+    parser.add_argument(
+        "--attack-file", type=str, default=None,
+        help="Path to custom attack prompts JSON file (default: attack_prompts.json)"
     )
     parser.add_argument(
         "--all-attacks", action="store_true",
