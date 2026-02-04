@@ -204,5 +204,6 @@ math_exp/openrouter_logs/
 wmdb/baseline_anthropic_logs/
 wmdb/baseline_openrouter_logs/
 
-# AppWorld data
+# AppWorld
 appworld/data/
+appworld/experiments/outputs
