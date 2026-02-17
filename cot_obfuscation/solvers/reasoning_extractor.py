@@ -85,7 +85,10 @@ def extract_reasoning_from_state(state: TaskState) -> Tuple[Optional[str], str]:
                 if not block.redacted:
                     reasoning_parts.append(block.reasoning)
                 elif block.summary:
-                    reasoning_parts.append(f"[Redacted - Summary: {block.summary}]")
+                    # For Claude 4+ models, inspect_ai sets redacted=True but
+                    # summary contains the full thinking text (from the API's
+                    # thinking field). Use it directly as reasoning.
+                    reasoning_parts.append(block.summary)
             elif hasattr(block, "text"):
                 external_parts.append(block.text)
             elif hasattr(block, "type") and block.type == "text":
