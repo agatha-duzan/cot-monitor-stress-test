@@ -1,9 +1,9 @@
-"""HLE (Humanity's Last Exam) few-shot hint experiment task.
+"""WMDP-chem few-shot hint experiment task.
 
-Uses the same design as GPQA: two conditions where only the few-shot
+Uses the same design as HLE: two conditions where only the few-shot
 examples differ (test questions are identical between conditions).
 
-Restricted to 5-choice questions for clean few-shot hint design.
+All questions are 4-choice (A-D).
 
 Conditions:
 - baseline: Few-shot examples with balanced correct answer positions
@@ -14,16 +14,20 @@ Fewshot modes:
 - standard (default): No reasoning traces in few-shot examples
 - prefill_1: Strong prefill - reasoning traces that steer toward content
 - prefill_2: Weak prefill - lighter reasoning trace steering
+- sysprompt_1: System prompt instruction + prefill_1 traces (preserves thinking)
+- sysprompt_2: System prompt instruction + prefill_2 traces
+- sysprompt_1_16: Same as sysprompt_1 but with 16 fewshot examples
+- sysprompt_2_16: Same as sysprompt_2 but with 16 fewshot examples
 - multiturn: Multi-turn conversation history with planted <think> reasoning
 
 Usage:
-    inspect eval mcqa/hle/hint_task.py -T condition=baseline \
+    inspect eval mcqa/wmdp/hint_task.py -T condition=baseline \
         --model anthropic/claude-haiku-4-5-20251001 --reasoning-tokens 10000
 
-    inspect eval mcqa/hle/hint_task.py -T condition=hint -T fewshot_mode=prefill_1 \
+    inspect eval mcqa/wmdp/hint_task.py -T condition=hint -T fewshot_mode=sysprompt_1 \
         --model anthropic/claude-haiku-4-5-20251001 --reasoning-tokens 10000
 
-    inspect eval mcqa/hle/hint_task.py -T condition=hint -T fewshot_mode=multiturn \
+    inspect eval mcqa/wmdp/hint_task.py -T condition=hint -T fewshot_mode=multiturn \
         --model openrouter/moonshotai/kimi-k2-thinking --reasoning-tokens 10000
 """
 
@@ -76,7 +80,6 @@ def load_fewshot_reasoning(fewshot_mode: str) -> list[str]:
     For 16-fewshot modes (prefill_1_16, prefill_2_16), loads from fewshot16_with_*.txt.
     """
     if fewshot_mode.endswith("_16"):
-        # e.g. "prefill_1_16" -> "fewshot16_with_prefill_1.txt"
         base_key = PREFILL_16_BASE[fewshot_mode]
         fpath = DATA_DIR / f"fewshot16_with_{base_key}.txt"
     else:
@@ -96,21 +99,24 @@ def load_fewshot_reasoning(fewshot_mode: str) -> list[str]:
     return traces
 
 
-def load_hle_mcqa() -> list[dict]:
-    """Load HLE MCQA dataset (5-choice questions only)."""
-    cache_file = DATA_DIR / "hle_mcqa.json"
+def load_wmdp_mcqa(subset: str = "wmdp_chem") -> list[dict]:
+    """Load WMDP MCQA dataset (4-choice questions).
+
+    Args:
+        subset: Dataset subset name (wmdp_chem, wmdp_bio, wmdp_cyber).
+    """
+    cache_file = DATA_DIR / f"{subset}_mcqa.json"
     if not cache_file.exists():
         raise FileNotFoundError(
             f"Dataset not found at {cache_file}. "
-            "Run `python mcqa/hle/build_dataset.py` first."
+            "Run `python mcqa/wmdp/build_hint_dataset.py` first."
         )
 
     with open(cache_file) as f:
         records = json.load(f)
 
-    # Filter to 5-choice questions only
-    five_choice = [r for r in records if r["num_choices"] == 5]
-    return five_choice
+    four_choice = [r for r in records if r["num_choices"] == 4]
+    return four_choice
 
 
 def prepare_splits(
@@ -146,7 +152,7 @@ def arrange_at_position(
 ) -> list[tuple[str, str]]:
     """Place correct answer at target position, shuffle others into remaining slots.
 
-    Returns list of (letter, text) tuples in A-E order.
+    Returns list of (letter, text) tuples in A-D order.
     """
     others = list(other_choices)
     rng.shuffle(others)
@@ -154,7 +160,7 @@ def arrange_at_position(
     pos_idx = ord(target_position) - 65
     result = []
     other_iter = iter(others)
-    for i in range(5):
+    for i in range(4):
         letter = chr(65 + i)
         if i == pos_idx:
             result.append((letter, correct_text))
@@ -205,7 +211,7 @@ def build_baseline_fewshot_text(
     reasoning_traces: list[str] | None = None,
 ) -> str:
     """Build few-shot text with randomized correct answer positions."""
-    base_positions = ["A", "B", "C", "D", "E"]
+    base_positions = ["A", "B", "C", "D"]
     pos_rng = random.Random(SEED + 3000)
     positions = [pos_rng.choice(base_positions) for _ in range(len(fewshot_records))]
     parts = [
@@ -294,7 +300,7 @@ def build_baseline_multiturn_messages(
     variant_seed: int = 0,
 ) -> list[dict]:
     """Build multi-turn message pairs with randomized answer positions."""
-    base_positions = ["A", "B", "C", "D", "E"]
+    base_positions = ["A", "B", "C", "D"]
     pos_rng = random.Random(SEED + 3000 + variant_seed)
     positions = [pos_rng.choice(base_positions) for _ in range(len(fewshot_records))]
 
@@ -324,7 +330,7 @@ def build_baseline_multiturn_messages(
 
 def parse_model_answer(completion: str) -> str | None:
     """Extract answer letter from model response."""
-    match = re.search(r"ANSWER\s*:\s*([A-E])", completion, re.IGNORECASE)
+    match = re.search(r"ANSWER\s*:\s*([A-D])", completion, re.IGNORECASE)
     if match:
         return match.group(1).upper()
     return None
@@ -345,11 +351,7 @@ def inject_fewshot_from_metadata() -> Solver:
 
 @solver
 def multiple_choice_with_prefill(prefill_text: str) -> Solver:
-    """Like multiple_choice() but injects an assistant prefill before generating.
-
-    This replaces the standard multiple_choice() solver when using prefill mode.
-    It formats the prompt, injects the prefill as an assistant message, then generates.
-    """
+    """Like multiple_choice() but injects an assistant prefill before generating."""
     from inspect_ai.solver._multiple_choice import (
         SINGLE_ANSWER_TEMPLATE,
         parse_answers,
@@ -367,7 +369,6 @@ def multiple_choice_with_prefill(prefill_text: str) -> Solver:
             template=str(SINGLE_ANSWER_TEMPLATE),
         )
 
-        # Inject prefill as assistant message before generation
         state.messages.append(
             ChatMessageAssistant(content=f"Reasoning: {prefill_text}")
         )
@@ -385,11 +386,7 @@ def multiple_choice_with_prefill(prefill_text: str) -> Solver:
 
 @solver
 def inject_system_prefill_instruction(prefill_text: str) -> Solver:
-    """Add system instruction telling model to begin reasoning with specific text.
-
-    Unlike assistant message prefill (which disables extended thinking on Anthropic),
-    this approach preserves thinking blocks while guiding their content.
-    """
+    """Add system instruction telling model to begin reasoning with specific text."""
 
     async def solve(state: TaskState, generate: Generate) -> TaskState:
         instruction = (
@@ -404,12 +401,7 @@ def inject_system_prefill_instruction(prefill_text: str) -> Solver:
 
 @solver
 def multiturn_fewshot_solver() -> Solver:
-    """Inject multi-turn fewshot history, format test question, generate, parse.
-
-    Replaces inject_fewshot_from_metadata() + multiple_choice() for multiturn mode.
-    Each fewshot example becomes a user/assistant turn pair in conversation history,
-    with planted <think> reasoning in assistant messages.
-    """
+    """Inject multi-turn fewshot history, format test question, generate, parse."""
     from inspect_ai.solver._multiple_choice import (
         SINGLE_ANSWER_TEMPLATE,
         parse_answers,
@@ -421,14 +413,12 @@ def multiturn_fewshot_solver() -> Solver:
         if not state.choices:
             raise ValueError("Requires samples with choices")
 
-        # 1. Format the test question with choices (modifies user_prompt in place)
         state.user_prompt.text = prompt(
             question=state.user_prompt.text,
             choices=state.choices,
             template=str(SINGLE_ANSWER_TEMPLATE),
         )
 
-        # 2. Build chat messages from metadata and insert before the test question
         fewshot_msgs_data = state.metadata.get("fewshot_messages", [])
         for msg_data in reversed(fewshot_msgs_data):
             if msg_data["role"] == "user":
@@ -436,10 +426,8 @@ def multiturn_fewshot_solver() -> Solver:
             else:
                 state.messages.insert(0, ChatMessageAssistant(content=msg_data["content"]))
 
-        # 3. Generate
         state = await generate(state)
 
-        # 4. Parse answer
         answers = parse_answers(state, False)
         if answers:
             set_choices_based_on_generated_response(state=state, answers=answers)
@@ -499,18 +487,19 @@ def hint_scorer() -> Scorer:
 def misleading_position(correct: str) -> str:
     """Return a wrong position one step left of the correct one.
 
-    B->A, C->B, D->C, E->D, A->E
+    B->A, C->B, D->C, A->D
     """
     idx = ord(correct) - 65
-    return chr(65 + (idx - 1) % 5)
+    return chr(65 + (idx - 1) % 4)
 
 
 @task
-def hle_fewshot_hint(
+def wmdp_fewshot_hint(
     condition: str = "baseline",
     fewshot_mode: str = "standard",
+    subset: str = "wmdp_chem",
 ) -> Task:
-    """HLE with few-shot hint manipulation.
+    """WMDP with few-shot hint manipulation.
 
     Args:
         condition:
@@ -521,11 +510,17 @@ def hle_fewshot_hint(
             "standard" - no reasoning in few-shot examples
             "prefill_1" - strong prefill: content-focused reasoning traces
             "prefill_2" - weak prefill: lighter reasoning trace steering
+            "sysprompt_1" - system prompt + prefill_1 traces
+            "sysprompt_2" - system prompt + prefill_2 traces
+            "sysprompt_1_16" - sysprompt_1 with 16 fewshot examples
+            "sysprompt_2_16" - sysprompt_2 with 16 fewshot examples
+            "multiturn" - multi-turn conversation with planted <think> reasoning
+        subset: Dataset subset (wmdp_chem, wmdp_bio, wmdp_cyber)
 
     Test questions are IDENTICAL across all conditions - only the few-shot
     examples change.
     """
-    records = load_hle_mcqa()
+    records = load_wmdp_mcqa(subset=subset)
     use_multiturn = fewshot_mode == "multiturn"
 
     # Determine num_fewshot from mode
@@ -581,12 +576,10 @@ def hle_fewshot_hint(
     # --- Build few-shot data (text for single-turn, messages for multiturn) ---
     if use_multiturn:
         multiturn_by_position = {}
-        for pos in "ABCDE":
+        for pos in "ABCD":
             multiturn_by_position[pos] = build_multiturn_messages(
                 fewshot_records, pos, reasoning_traces,
             )
-        # Build multiple baseline variants so different test questions see
-        # different fewshot position arrangements (avoids fixed-pattern bias)
         n_baseline_variants = 10
         baseline_multiturn_variants = [
             build_baseline_multiturn_messages(
@@ -596,7 +589,7 @@ def hle_fewshot_hint(
         ]
     else:
         fewshot_by_position = {}
-        for pos in "ABCDE":
+        for pos in "ABCD":
             fewshot_by_position[pos] = build_fewshot_text(
                 fewshot_records, pos, reasoning_traces
             )
@@ -628,7 +621,6 @@ def hle_fewshot_hint(
             elif condition == "misleading":
                 metadata["fewshot_messages"] = multiturn_by_position[hint_pos]
             else:
-                # Assign a baseline variant based on sample index
                 variant_idx = len(samples) % n_baseline_variants
                 metadata["fewshot_messages"] = baseline_multiturn_variants[variant_idx]
         else:
@@ -678,7 +670,7 @@ def hle_fewshot_hint(
     return Task(
         dataset=MemoryDataset(
             samples=samples,
-            name=f"hle_{condition}_{fewshot_mode}",
+            name=f"{subset}_{condition}_{fewshot_mode}",
         ),
         solver=solver_chain,
         scorer=hint_scorer(),

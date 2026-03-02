@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Runner for HLE few-shot hint experiment.
+"""Runner for WMDP-chem few-shot hint experiment.
 
 Usage:
-    python mcqa/hle/run_experiment.py --log-name exp1
-    python mcqa/hle/run_experiment.py --models haiku --limit 5 --log-name test
+    python mcqa/wmdp/run_hint_experiment.py --log-name exp1
+    python mcqa/wmdp/run_hint_experiment.py --models haiku --limit 5 --log-name test
+    python mcqa/wmdp/run_hint_experiment.py --fewshot-mode sysprompt_1 --log-name exp3
 """
 
 import argparse
@@ -14,8 +15,8 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-HLE_DIR = Path(__file__).parent.resolve()
-PROJECT_DIR = HLE_DIR.parent.parent
+WMDP_DIR = Path(__file__).parent.resolve()
+PROJECT_DIR = WMDP_DIR.parent.parent
 
 MODEL_CONFIGS = {
     "haiku": {
@@ -43,11 +44,6 @@ MODEL_CONFIGS = {
         "display_name": "GLM 4.7",
         "thinking_args": ["-M", "reasoning_enabled=true"],
     },
-    "grok": {
-        "model_id": "openrouter/x-ai/grok-3-mini",
-        "display_name": "Grok 3 Mini",
-        "thinking_args": ["--reasoning-tokens", "10000"],
-    },
     "grok_xai": {
         "model_id": "openai/grok-3-mini",
         "display_name": "Grok 3 Mini (xAI)",
@@ -59,19 +55,19 @@ MODEL_CONFIGS = {
     },
 }
 
-MODEL_ORDER = ["haiku", "sonnet", "opus", "kimi", "glm", "grok", "grok_xai"]
+MODEL_ORDER = ["haiku", "sonnet", "opus", "kimi", "glm", "grok_xai"]
 CONDITIONS = ["baseline", "hint", "misleading"]
 
-
-FEWSHOT_MODES = ["standard", "prefill_1", "prefill_2", "sysprompt_1", "sysprompt_2", "sysprompt_1_16", "sysprompt_2_16", "multiturn"]
+FEWSHOT_MODES = [
+    "standard", "prefill_1", "prefill_2",
+    "sysprompt_1", "sysprompt_2",
+    "sysprompt_1_16", "sysprompt_2_16",
+    "multiturn",
+]
 
 
 def resolve_env_overrides(env_override: dict[str, str]) -> dict[str, str]:
-    """Build a modified env dict with overrides applied.
-
-    Values starting with '$' are resolved from the current environment.
-    E.g. "$XAI_API_KEY" -> os.environ["XAI_API_KEY"]
-    """
+    """Build a modified env dict with overrides applied."""
     env = os.environ.copy()
     for key, value in env_override.items():
         if value.startswith("$"):
@@ -97,6 +93,7 @@ async def run_single(
     timeout: int = 3600,
     max_connections: int = 10,
     fewshot_mode: str = "standard",
+    subset: str = "wmdp_chem",
 ) -> Path | None:
     """Run a single evaluation via inspect eval subprocess."""
     log_dir.mkdir(parents=True, exist_ok=True)
@@ -104,7 +101,7 @@ async def run_single(
     cmd = [
         "inspect",
         "eval",
-        "mcqa/hle/hint_task.py",
+        "mcqa/wmdp/hint_task.py",
         "--model",
         model_config["model_id"],
         "--limit",
@@ -119,6 +116,8 @@ async def run_single(
         f"condition={condition}",
         "-T",
         f"fewshot_mode={fewshot_mode}",
+        "-T",
+        f"subset={subset}",
     ]
 
     cmd.extend(model_config.get("thinking_args", []))
@@ -127,7 +126,6 @@ async def run_single(
     display = f"{model_config['display_name']} [{condition}{mode_tag}]"
     print(f"  Starting {display}...", flush=True)
 
-    # Build env with overrides if specified (e.g. for xAI direct API)
     proc_env = None
     if "env_override" in model_config:
         proc_env = resolve_env_overrides(model_config["env_override"])
@@ -148,7 +146,7 @@ async def run_single(
         return None
 
     if proc.returncode != 0:
-        err_msg = stderr.decode()[:300] if stderr else "unknown error"
+        err_msg = stderr.decode()[:500] if stderr else "unknown error"
         print(f"  ERROR: {display} - {err_msg}", flush=True)
         return None
 
@@ -167,12 +165,14 @@ async def run_experiment(args):
     models = MODEL_ORDER if args.models == ["all"] else args.models
     conditions = args.conditions or CONDITIONS
     fewshot_mode = args.fewshot_mode
+    subset = args.subset
 
-    base_log_dir = HLE_DIR / "logs" / args.log_name
+    base_log_dir = WMDP_DIR / "logs" / args.log_name
 
     print(f"\n{'='*70}")
-    print(f"HLE FEW-SHOT HINT EXPERIMENT: {args.log_name}")
+    print(f"WMDP FEW-SHOT HINT EXPERIMENT: {args.log_name}")
     print(f"{'='*70}")
+    print(f"Subset: {subset}")
     print(f"Models: {', '.join(models)}")
     print(f"Conditions: {', '.join(conditions)}")
     print(f"Fewshot mode: {fewshot_mode}")
@@ -200,6 +200,7 @@ async def run_experiment(args):
                     timeout=args.timeout,
                     max_connections=args.max_connections,
                     fewshot_mode=fewshot_mode,
+                    subset=subset,
                 ),
             )
 
@@ -221,6 +222,7 @@ async def run_experiment(args):
         "config": {
             "models": models,
             "conditions": conditions,
+            "fewshot_mode": fewshot_mode,
             "limit": args.limit,
         },
         "eval_files": results,
@@ -233,35 +235,35 @@ async def run_experiment(args):
     print(f"\n{'='*70}")
     print("RESULTS SUMMARY")
     print(f"{'='*70}")
-    print(f"{'Model':<15} {'Condition':<12} {'Status'}")
-    print("-" * 40)
+    print(f"{'Model':<20} {'Condition':<12} {'Status'}")
+    print("-" * 45)
     for condition in conditions:
         for model_id in models:
             status = (
                 "OK" if results.get(condition, {}).get(model_id) else "FAILED"
             )
             display = MODEL_CONFIGS[model_id]["display_name"]
-            print(f"{display:<15} {condition:<12} {status}")
+            print(f"{display:<20} {condition:<12} {status}")
 
     print(f"\nResults saved to: {base_log_dir}")
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Run HLE few-shot hint experiment"
+        description="Run WMDP-chem few-shot hint experiment"
     )
     parser.add_argument(
         "--models",
         nargs="+",
         default=["all"],
-        help="Models to run (haiku, sonnet, opus, kimi, glm, grok, grok_xai, or 'all')",
+        help="Models to run (haiku, sonnet, opus, kimi, glm, grok_xai, or 'all')",
     )
     parser.add_argument(
         "--conditions",
         nargs="+",
         default=None,
         choices=CONDITIONS,
-        help="Conditions to run (default: both)",
+        help="Conditions to run (default: all three)",
     )
     parser.add_argument(
         "--limit", type=int, default=100, help="Samples per evaluation (default: 100)"
@@ -289,7 +291,14 @@ def main():
         type=str,
         default="standard",
         choices=FEWSHOT_MODES,
-        help="Fewshot mode: standard, prefill_1, prefill_2 (default: standard)",
+        help="Fewshot mode (default: standard)",
+    )
+    parser.add_argument(
+        "--subset",
+        type=str,
+        default="wmdp_chem",
+        choices=["wmdp_chem", "wmdp_bio", "wmdp_cyber"],
+        help="WMDP subset (default: wmdp_chem)",
     )
     parser.add_argument(
         "--log-name", type=str, required=True, help="Name for log subdirectory"
