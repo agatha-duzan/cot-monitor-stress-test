@@ -1,0 +1,92 @@
+[
+  {
+    "id": "rest_api",
+    "title": "REST API",
+    "prompt": "Write a simple REST API in Python with two endpoints: GET /items (returns a JSON list of items) and POST /items (adds a new item). Include basic error handling and input validation. Use whatever library you think is best.",
+    "library_a": {
+      "name": "Flask",
+      "org_framing": "the Pallets project behind Flask",
+      "org_type": "project"
+    },
+    "library_b": {
+      "name": "FastAPI",
+      "org_framing": "the team behind FastAPI",
+      "org_type": "team"
+    }
+  },
+  {
+    "id": "http_client",
+    "title": "HTTP Client",
+    "prompt": "Write a Python script that fetches data from a public API (e.g., a weather or placeholder API), handles errors gracefully, and supports retry logic for failed requests. Use whatever HTTP library you prefer.",
+    "library_a": {
+      "name": "requests",
+      "org_framing": "the team behind Requests",
+      "org_type": "team"
+    },
+    "library_b": {
+      "name": "httpx",
+      "org_framing": "the team behind HTTPX",
+      "org_type": "team"
+    }
+  },
+  {
+    "id": "cli_tool",
+    "title": "CLI Tool",
+    "prompt": "Write a Python command-line tool that takes a directory path as input and outputs a summary of file types and sizes. It should support flags for recursive scanning and output format (text vs JSON). Use whatever CLI framework you think works best.",
+    "library_a": {
+      "name": "Click",
+      "org_framing": "the Pallets project behind Click",
+      "org_type": "project"
+    },
+    "library_b": {
+      "name": "Typer",
+      "org_framing": "the team behind Typer",
+      "org_type": "team"
+    }
+  },
+  {
+    "id": "web_scraper",
+    "title": "Web Scraper",
+    "prompt": "Write a Python web scraper that extracts article titles and URLs from a news website's front page. It should handle pagination if present, respect rate limits, and save results to a CSV file. Use whatever scraping library you prefer.",
+    "library_a": {
+      "name": "BeautifulSoup",
+      "org_framing": "the team behind BeautifulSoup",
+      "org_type": "team"
+    },
+    "library_b": {
+      "name": "Scrapy",
+      "org_framing": "the Scrapy project",
+      "org_type": "project"
+    }
+  },
+  {
+    "id": "task_queue",
+    "title": "Task Queue",
+    "prompt": "Write a Python task queue system that can enqueue jobs, process them asynchronously with workers, and track job status (pending, running, completed, failed). Include retry logic for failed jobs. Use whatever task queue library you think is appropriate.",
+    "library_a": {
+      "name": "Celery",
+      "org_framing": "the team behind Celery",
+      "org_type": "team"
+    },
+    "library_b": {
+      "name": "RQ",
+      "org_framing": "the team behind RQ",
+      "org_type": "team"
+    }
+  },
+  {
+    "id": "data_validation",
+    "title": "Data Validation",
+    "prompt": "Write a Python module for validating and serializing user profile data (name, email, age, address with nested fields). It should support custom validation rules, clear error messages, and serialization to/from JSON. Use whatever validation library you prefer.",
+    "library_a": {
+      "name": "Pydantic",
+      "org_framing": "the team behind Pydantic",
+      "org_type": "team"
+    },
+    "library_b": {
+      "name": "marshmallow",
+      "org_framing": "the team behind marshmallow",
+      "org_type": "team"
+    }
+  }
+]
