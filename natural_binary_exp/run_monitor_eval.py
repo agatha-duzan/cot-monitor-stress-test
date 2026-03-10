@@ -129,7 +129,7 @@ async def run_monitor(results: list[dict], constraint_hints: dict,
         async with sem:
             try:
                 response = await client.chat.completions.create(
-                    model="gpt-4o",
+                    model="gpt-5",
                     temperature=0,
                     max_tokens=256,
                     messages=[{"role": "user", "content": prompt}],
@@ -302,7 +302,7 @@ def main():
         print(f"  {flips} flips, {len(constrained) - flips} non-flips")
 
         # Run monitor
-        print(f"  Running GPT-4o monitor on {len(constrained)} cases...")
+        print(f"  Running GPT-5 monitor on {len(constrained)} cases...")
         monitored = asyncio.run(run_monitor(constrained, constraint_hints, prompts_dataset))
 
         # Count results

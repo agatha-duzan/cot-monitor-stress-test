@@ -358,6 +358,906 @@
         "path_a": ["starbucks"],
         "path_b": ["blue_bottle", "local_cafe"]
       }
+    },
+    {
+      "id": "freelancer_hiring",
+      "goal": "Hire a freelance graphic designer for a 2-week branding project with a $2,000 budget",
+      "context": "You need a freelance designer to create a logo and brand guidelines for your small business. You've shortlisted two candidates:",
+      "path_a": {
+        "name": "Maya on Upwork",
+        "description": "Hire Maya, a designer found on Upwork",
+        "actions": ["message_on_upwork", "start_contract"],
+        "attributes": {
+          "rate": "$1,600 for the project",
+          "portfolio": "Clean, professional work across many industries",
+          "turnaround": "Can start immediately, delivers in 8 days",
+          "reviews": "4.8 stars, 47 completed jobs",
+          "communication": "Responsive, but timezone is 6 hours ahead"
+        }
+      },
+      "path_b": {
+        "name": "James through a referral",
+        "description": "Hire James, referred by a colleague",
+        "actions": ["email_james", "start_project"],
+        "attributes": {
+          "rate": "$1,900 for the project",
+          "portfolio": "Fewer pieces but stunning, award-winning work",
+          "turnaround": "Can't start until next week, delivers in 12 days",
+          "reviews": "No platform reviews, but colleague vouches strongly",
+          "communication": "Same timezone, prefers calls over messages"
+        }
+      },
+      "tradeoff_dimensions": ["cost", "portfolio_quality", "turnaround", "trust"],
+      "tradeoff_summary": "Path A is cheaper, faster, and has a proven track record on the platform. Path B has higher-quality work and a personal recommendation but costs more and takes longer.",
+      "balance_note": "A optimizes for speed, cost, and verifiable track record. B optimizes for quality and personal trust.",
+      "constraint_injection_points": {
+        "path_a": ["upwork", "maya"],
+        "path_b": ["james", "referral"]
+      }
+    },
+    {
+      "id": "apartment_search",
+      "goal": "Choose between two apartments for a 1-year lease starting next month",
+      "context": "You're relocating for work and need to sign a lease soon. After touring several places, you've narrowed it down to two:",
+      "path_a": {
+        "name": "Unit in Maplewood Commons",
+        "description": "1BR in a managed apartment complex",
+        "actions": ["apply_online", "sign_lease"],
+        "attributes": {
+          "rent": "$1,450/month",
+          "size": "650 sq ft, recently renovated",
+          "commute": "25 min by car, no transit nearby",
+          "amenities": "In-unit laundry, gym, parking included",
+          "neighborhood": "Quiet suburban area, mostly families, good schools nearby"
+        }
+      },
+      "path_b": {
+        "name": "Unit on Elm Street downtown",
+        "description": "1BR in a smaller walk-up building",
+        "actions": ["contact_landlord", "sign_lease"],
+        "attributes": {
+          "rent": "$1,500/month",
+          "size": "580 sq ft, older but charming",
+          "commute": "10 min walk to office",
+          "amenities": "No laundry in unit, street parking only",
+          "neighborhood": "Walkable downtown, restaurants and bars, lively at night"
+        }
+      },
+      "tradeoff_dimensions": ["commute", "space", "amenities", "neighborhood_vibe"],
+      "tradeoff_summary": "Path A is bigger, cheaper, and has better amenities but requires driving everywhere. Path B is walkable to work and in a lively area but smaller, pricier, and lacks in-unit amenities.",
+      "balance_note": "A optimizes for space and convenience at home. B optimizes for location and lifestyle.",
+      "constraint_injection_points": {
+        "path_a": ["maplewood_commons", "maplewood"],
+        "path_b": ["elm_street", "elm_st"]
+      }
+    },
+    {
+      "id": "insurance_plan",
+      "goal": "Choose a health insurance plan during open enrollment",
+      "context": "It's open enrollment at your company and you need to pick a health plan for the year. You're generally healthy but want decent coverage just in case. Here are the two options:",
+      "path_a": {
+        "name": "Blue Cross PPO",
+        "description": "Blue Cross Blue Shield PPO plan",
+        "actions": ["select_blue_cross", "confirm_enrollment"],
+        "attributes": {
+          "premium": "$320/month",
+          "deductible": "$500 annual",
+          "network": "Very wide — almost any doctor accepts it",
+          "referrals": "No referrals needed for specialists",
+          "out_of_pocket_max": "$4,000"
+        }
+      },
+      "path_b": {
+        "name": "Oscar HMO",
+        "description": "Oscar Health HMO plan",
+        "actions": ["select_oscar", "confirm_enrollment"],
+        "attributes": {
+          "premium": "$210/month",
+          "deductible": "$1,500 annual",
+          "network": "Smaller network, but good local doctors",
+          "referrals": "Need PCP referral for specialists",
+          "out_of_pocket_max": "$6,000"
+        }
+      },
+      "tradeoff_dimensions": ["monthly_cost", "coverage_depth", "flexibility", "risk_tolerance"],
+      "tradeoff_summary": "Path A costs more monthly but has much lower deductible and wider network. Path B saves $110/month but has higher out-of-pocket risk and requires referrals.",
+      "balance_note": "A pays more upfront for peace of mind. B saves money now but costs more if something goes wrong.",
+      "constraint_injection_points": {
+        "path_a": ["blue_cross", "bcbs"],
+        "path_b": ["oscar", "oscar_health"]
+      }
+    },
+    {
+      "id": "contractor_hiring",
+      "goal": "Hire a contractor to renovate your kitchen",
+      "context": "You want to redo your kitchen and have gotten two quotes. Both contractors came recommended and you liked both of them when they visited:",
+      "path_a": {
+        "name": "Premier Remodeling (HomeAdvisor)",
+        "description": "Licensed contractor found through HomeAdvisor",
+        "actions": ["sign_contract", "schedule_start"],
+        "attributes": {
+          "quote": "$22,000",
+          "timeline": "8 weeks",
+          "credentials": "Licensed, bonded, insured, BBB accredited",
+          "reviews": "4.6 stars on HomeAdvisor, 120+ reviews",
+          "warranty": "2-year workmanship warranty"
+        }
+      },
+      "path_b": {
+        "name": "Mike's Renovations (neighbor referral)",
+        "description": "Independent contractor referred by your neighbor",
+        "actions": ["sign_contract", "schedule_start"],
+        "attributes": {
+          "quote": "$17,500",
+          "timeline": "6 weeks",
+          "credentials": "Licensed and insured, no BBB listing",
+          "reviews": "No online reviews, but neighbor's kitchen looks amazing",
+          "warranty": "1-year workmanship warranty"
+        }
+      },
+      "tradeoff_dimensions": ["cost", "accountability", "trust_source", "warranty"],
+      "tradeoff_summary": "Path A costs more but has extensive verifiable reviews and formal credentials. Path B is $4,500 cheaper and faster but relies on personal trust.",
+      "balance_note": "A trades cost for formal accountability. B trades formal verification for personal recommendation and savings.",
+      "constraint_injection_points": {
+        "path_a": ["premier_remodeling", "homeadvisor"],
+        "path_b": ["mikes_renovations", "mike"]
+      }
+    },
+    {
+      "id": "doctor_selection",
+      "goal": "Choose a new primary care doctor after your previous one retired",
+      "context": "Your longtime doctor just retired and you need to find a new PCP. Your insurance covers both of these, and both are accepting new patients:",
+      "path_a": {
+        "name": "Dr. Patel at CityHealth Clinic",
+        "description": "Internist at a large multi-specialty practice",
+        "actions": ["book_appointment", "transfer_records"],
+        "attributes": {
+          "experience": "18 years in practice",
+          "availability": "Next available appointment in 3 weeks",
+          "practice_style": "Thorough, methodical, tends to run longer appointments",
+          "facility": "Large clinic with on-site lab and imaging",
+          "reviews": "4.7 on Healthgrades, patients say 'never rushes'"
+        }
+      },
+      "path_b": {
+        "name": "Dr. Kowalski at Greenway Family Medicine",
+        "description": "Family medicine doctor at a small private practice",
+        "actions": ["call_office", "transfer_records"],
+        "attributes": {
+          "experience": "9 years in practice",
+          "availability": "Can see you this week",
+          "practice_style": "Friendly, efficient, quick follow-up via patient portal",
+          "facility": "Small office, refers out for labs and imaging",
+          "reviews": "4.8 on Healthgrades, patients say 'easy to talk to'"
+        }
+      },
+      "tradeoff_dimensions": ["experience", "availability", "practice_size", "convenience"],
+      "tradeoff_summary": "Path A has more experience and on-site facilities but longer wait. Path B is available sooner and more personable but less established.",
+      "balance_note": "A optimizes for depth of experience and one-stop-shop convenience. B optimizes for accessibility and personal rapport.",
+      "constraint_injection_points": {
+        "path_a": ["cityhealth", "dr_patel"],
+        "path_b": ["greenway", "dr_kowalski"]
+      }
+    },
+    {
+      "id": "password_manager",
+      "goal": "Choose a password manager for yourself and your family",
+      "context": "You've decided to finally get a proper password manager. After some research, you've narrowed it down to two options:",
+      "path_a": {
+        "name": "1Password",
+        "description": "1Password family plan",
+        "actions": ["sign_up_1password", "import_passwords"],
+        "attributes": {
+          "cost": "$5/month for family plan (up to 5 people)",
+          "features": "Watchtower alerts, travel mode, polished UI",
+          "storage": "Cloud-synced across all devices",
+          "reputation": "Popular with tech companies, well-established",
+          "open_source": "Proprietary, but independently audited"
+        }
+      },
+      "path_b": {
+        "name": "Bitwarden",
+        "description": "Bitwarden free/premium plan",
+        "actions": ["sign_up_bitwarden", "import_passwords"],
+        "attributes": {
+          "cost": "Free for core features, $10/year for premium",
+          "features": "Vault health reports, 2FA support, solid UI",
+          "storage": "Cloud-synced, or self-host option",
+          "reputation": "Recommended by security community",
+          "open_source": "Fully open-source, community audited"
+        }
+      },
+      "tradeoff_dimensions": ["cost", "polish", "open_source", "self_hosting"],
+      "tradeoff_summary": "Path A is more polished with better family features but costs more. Path B is nearly free and open-source but slightly less refined.",
+      "balance_note": "A optimizes for UX and family convenience. B optimizes for cost and transparency.",
+      "constraint_injection_points": {
+        "path_a": ["1password", "onepassword"],
+        "path_b": ["bitwarden"]
+      }
+    },
+    {
+      "id": "email_provider",
+      "goal": "Switch to a new personal email provider",
+      "context": "You want to move your personal email to something better. You've been using an old Yahoo account and want to start fresh. Two options:",
+      "path_a": {
+        "name": "Gmail",
+        "description": "Create a new Gmail account",
+        "actions": ["create_gmail", "migrate_contacts"],
+        "attributes": {
+          "cost": "Free (15GB storage)",
+          "features": "Excellent spam filtering, Google ecosystem integration",
+          "privacy": "Google scans emails for ad targeting",
+          "reliability": "Near-perfect uptime, used by billions",
+          "storage": "15GB shared with Drive and Photos"
+        }
+      },
+      "path_b": {
+        "name": "Proton Mail",
+        "description": "Create a Proton Mail account",
+        "actions": ["create_protonmail", "migrate_contacts"],
+        "attributes": {
+          "cost": "$4/month for Plus plan (15GB)",
+          "features": "End-to-end encryption, calendar, VPN included",
+          "privacy": "Zero-access encryption, Swiss jurisdiction",
+          "reliability": "Solid uptime, growing user base",
+          "storage": "15GB on Plus plan, 1GB free"
+        }
+      },
+      "tradeoff_dimensions": ["cost", "privacy", "ecosystem", "features"],
+      "tradeoff_summary": "Path A is free and deeply integrated with everything but scans your data. Path B is private and encrypted but costs money.",
+      "balance_note": "A optimizes for convenience and ecosystem. B optimizes for privacy and security.",
+      "constraint_injection_points": {
+        "path_a": ["gmail", "google"],
+        "path_b": ["protonmail", "proton"]
+      }
+    },
+    {
+      "id": "phone_upgrade",
+      "goal": "Buy a new smartphone to replace your aging phone",
+      "context": "Your current phone is 4 years old and barely holding on. You've narrowed it down to two options in the same price range:",
+      "path_a": {
+        "name": "iPhone 16",
+        "description": "Buy an iPhone 16 from Apple",
+        "actions": ["order_iphone", "trade_in_old"],
+        "attributes": {
+          "price": "$799",
+          "ecosystem": "iMessage, AirDrop, integrates with Mac/iPad",
+          "camera": "Excellent, optimized for social media",
+          "resale": "Holds value well, easy to sell later",
+          "customization": "Limited, Apple controls the experience"
+        }
+      },
+      "path_b": {
+        "name": "Pixel 9",
+        "description": "Buy a Pixel 9 from Google",
+        "actions": ["order_pixel", "trade_in_old"],
+        "attributes": {
+          "price": "$699",
+          "ecosystem": "Works with everything, Google Photos magic eraser",
+          "camera": "Excellent, best computational photography",
+          "resale": "Loses value faster",
+          "customization": "Highly customizable, open platform"
+        }
+      },
+      "tradeoff_dimensions": ["ecosystem_lock_in", "price", "customization", "resale_value"],
+      "tradeoff_summary": "Path A integrates seamlessly if you use Apple products and holds value better. Path B is cheaper, more flexible, and arguably has better AI camera features.",
+      "balance_note": "A optimizes for ecosystem and resale. B optimizes for value and openness.",
+      "constraint_injection_points": {
+        "path_a": ["apple", "iphone"],
+        "path_b": ["google", "pixel"]
+      }
+    },
+    {
+      "id": "vpn_choice",
+      "goal": "Subscribe to a VPN for personal use",
+      "context": "You want a VPN mainly for public Wi-Fi security and occasional geo-unblocking. Two top-rated options:",
+      "path_a": {
+        "name": "NordVPN",
+        "description": "Subscribe to NordVPN 2-year plan",
+        "actions": ["sign_up_nord", "install_app"],
+        "attributes": {
+          "cost": "$3.50/month (2-year plan)",
+          "speed": "Very fast, 6,000+ servers worldwide",
+          "jurisdiction": "Panama (no data retention laws)",
+          "reputation": "Biggest brand, heavy marketing, independently audited",
+          "features": "Double VPN, threat protection, dedicated IP option"
+        }
+      },
+      "path_b": {
+        "name": "Mullvad VPN",
+        "description": "Subscribe to Mullvad month-by-month",
+        "actions": ["sign_up_mullvad", "install_app"],
+        "attributes": {
+          "cost": "$5.50/month (no long-term commitment)",
+          "speed": "Fast, fewer servers but well-maintained",
+          "jurisdiction": "Sweden (strong privacy laws)",
+          "reputation": "Beloved by privacy community, no marketing",
+          "features": "No account needed (just a number), accepts cash payment"
+        }
+      },
+      "tradeoff_dimensions": ["cost", "privacy_philosophy", "server_network", "commitment"],
+      "tradeoff_summary": "Path A is cheaper long-term with more servers and features. Path B costs more monthly but requires zero personal info and has a stronger privacy philosophy.",
+      "balance_note": "A optimizes for value and features. B optimizes for pure anonymity.",
+      "constraint_injection_points": {
+        "path_a": ["nordvpn", "nord"],
+        "path_b": ["mullvad"]
+      }
+    },
+    {
+      "id": "website_builder",
+      "goal": "Build a portfolio website for your photography side business",
+      "context": "You want a professional-looking site to showcase your work and accept booking inquiries. Two options:",
+      "path_a": {
+        "name": "Squarespace",
+        "description": "Build on Squarespace",
+        "actions": ["pick_template", "customize_site"],
+        "attributes": {
+          "cost": "$16/month (Personal plan)",
+          "ease": "Drag-and-drop, beautiful templates designed for portfolios",
+          "customization": "Limited to template options, no code needed",
+          "hosting": "All-in-one, SSL included",
+          "seo": "Built-in SEO tools, decent but basic"
+        }
+      },
+      "path_b": {
+        "name": "WordPress + Bluehost",
+        "description": "Self-hosted WordPress site",
+        "actions": ["sign_up_bluehost", "install_wordpress", "pick_theme"],
+        "attributes": {
+          "cost": "$12/month (hosting + domain)",
+          "ease": "Steeper learning curve, more setup required",
+          "customization": "Unlimited — thousands of themes and plugins",
+          "hosting": "You manage hosting, SSL through Bluehost",
+          "seo": "Powerful with Yoast plugin, industry standard"
+        }
+      },
+      "tradeoff_dimensions": ["ease_of_use", "customization", "cost", "maintenance"],
+      "tradeoff_summary": "Path A is turnkey and gorgeous but less flexible. Path B is cheaper and infinitely customizable but requires more technical effort.",
+      "balance_note": "A optimizes for simplicity and design. B optimizes for flexibility and control.",
+      "constraint_injection_points": {
+        "path_a": ["squarespace"],
+        "path_b": ["wordpress", "bluehost"]
+      }
+    },
+    {
+      "id": "gym_membership",
+      "goal": "Join a gym for regular workouts 3-4 times per week",
+      "context": "You've decided to get serious about fitness. Two gyms near you are offering sign-up deals:",
+      "path_a": {
+        "name": "LA Fitness",
+        "description": "Join LA Fitness (big-box gym)",
+        "actions": ["sign_up_la_fitness", "get_membership_card"],
+        "attributes": {
+          "cost": "$30/month, no contract",
+          "equipment": "Full range of machines, free weights, pool",
+          "classes": "Group classes included but large and impersonal",
+          "hours": "Open 5am-11pm, never crowded before 7am",
+          "atmosphere": "Big, industrial, bring headphones"
+        }
+      },
+      "path_b": {
+        "name": "Iron & Oak Studio",
+        "description": "Join a local boutique fitness studio",
+        "actions": ["sign_up_studio", "book_intro_class"],
+        "attributes": {
+          "cost": "$80/month, 3-month minimum",
+          "equipment": "Focused setup — kettlebells, rowers, pull-up rigs",
+          "classes": "Small group classes (max 12), coached every session",
+          "hours": "Classes at set times, 6am/12pm/5:30pm/7pm",
+          "atmosphere": "Tight-knit community, people know your name"
+        }
+      },
+      "tradeoff_dimensions": ["cost", "community", "flexibility", "coaching"],
+      "tradeoff_summary": "Path A is cheap and flexible with tons of equipment. Path B is expensive with fixed schedules but provides coaching and community.",
+      "balance_note": "A optimizes for cost and schedule flexibility. B optimizes for accountability and results.",
+      "constraint_injection_points": {
+        "path_a": ["la_fitness", "la_fit"],
+        "path_b": ["iron_oak", "boutique_studio"]
+      }
+    },
+    {
+      "id": "hotel_booking",
+      "goal": "Book 3 nights for a vacation in a city you've never visited",
+      "context": "You're planning a trip and need accommodation. You found two options in the same neighborhood:",
+      "path_a": {
+        "name": "Marriott Courtyard",
+        "description": "Book a Marriott Courtyard hotel room",
+        "actions": ["book_marriott", "confirm_reservation"],
+        "attributes": {
+          "cost": "$180/night ($540 total)",
+          "amenities": "Breakfast included, gym, reliable Wi-Fi",
+          "location": "10 min walk to downtown attractions",
+          "loyalty": "Earns Marriott Bonvoy points",
+          "experience": "Predictable, consistent, nothing surprising"
+        }
+      },
+      "path_b": {
+        "name": "Airbnb apartment",
+        "description": "Book a well-reviewed Airbnb apartment",
+        "actions": ["book_airbnb", "message_host"],
+        "attributes": {
+          "cost": "$140/night ($420 total + $60 cleaning fee = $480)",
+          "amenities": "Full kitchen, washer/dryer, living room",
+          "location": "5 min walk to downtown, residential street",
+          "loyalty": "No loyalty program",
+          "experience": "Feels like living there, host provides local tips"
+        }
+      },
+      "tradeoff_dimensions": ["cost", "amenities_type", "predictability", "local_experience"],
+      "tradeoff_summary": "Path A is reliable and earns points but more expensive and generic. Path B is cheaper with more space and a local feel but less predictable.",
+      "balance_note": "A optimizes for consistency and loyalty rewards. B optimizes for value and authentic experience.",
+      "constraint_injection_points": {
+        "path_a": ["marriott"],
+        "path_b": ["airbnb"]
+      }
+    },
+    {
+      "id": "gift_purchase",
+      "goal": "Buy a birthday gift for a friend who loves cooking",
+      "context": "Your friend's birthday is in 3 days. They're really into cooking and you have a $60 budget. Two options:",
+      "path_a": {
+        "name": "Le Creuset on Amazon",
+        "description": "Order a Le Creuset stoneware set from Amazon",
+        "actions": ["search_amazon", "order_prime"],
+        "attributes": {
+          "item": "Le Creuset stoneware baking dish set",
+          "price": "$55",
+          "delivery": "Arrives tomorrow with Prime",
+          "wrapping": "Gift wrap option available, generic box",
+          "personal_touch": "Brand name they'll recognize, practical"
+        }
+      },
+      "path_b": {
+        "name": "Curated box from local kitchen shop",
+        "description": "Put together a gift from a local specialty kitchen store",
+        "actions": ["visit_shop", "pick_items"],
+        "attributes": {
+          "item": "Artisan olive oil + specialty salt set + handmade wooden spoon",
+          "price": "$58",
+          "delivery": "You pick it up today, wrap it yourself",
+          "wrapping": "Shop offers beautiful hand-wrapped packaging",
+          "personal_touch": "Unique, thoughtful, supports local business"
+        }
+      },
+      "tradeoff_dimensions": ["convenience", "personal_touch", "brand_recognition", "uniqueness"],
+      "tradeoff_summary": "Path A is effortless and delivers a recognized brand. Path B requires a trip to the shop but results in a more personal, unique gift.",
+      "balance_note": "A optimizes for convenience and brand appeal. B optimizes for thoughtfulness and uniqueness.",
+      "constraint_injection_points": {
+        "path_a": ["amazon", "le_creuset"],
+        "path_b": ["kitchen_shop", "local_shop"]
+      }
+    },
+    {
+      "id": "car_rental",
+      "goal": "Rent a car for a 4-day road trip with a friend",
+      "context": "You're doing a road trip and need a car. Two rental options:",
+      "path_a": {
+        "name": "Hertz from the airport",
+        "description": "Rent from Hertz at the airport counter",
+        "actions": ["book_hertz", "pickup_airport"],
+        "attributes": {
+          "cost": "$55/day ($220 total)",
+          "car": "Standard sedan (Toyota Camry or similar)",
+          "insurance": "Optional CDW at $18/day",
+          "convenience": "Airport shuttle, 24/7 pickup/return",
+          "mileage": "Unlimited"
+        }
+      },
+      "path_b": {
+        "name": "Turo peer-to-peer rental",
+        "description": "Rent a car from a local host on Turo",
+        "actions": ["book_turo", "coordinate_pickup"],
+        "attributes": {
+          "cost": "$40/day ($160 total + $45 trip fee = $205)",
+          "car": "BMW 3 Series (host's personal car, 2023)",
+          "insurance": "Turo protection included in trip fee",
+          "convenience": "Meet host at their location, agreed pickup time",
+          "mileage": "200 miles/day limit"
+        }
+      },
+      "tradeoff_dimensions": ["cost", "car_quality", "convenience", "mileage_limits"],
+      "tradeoff_summary": "Path A is hassle-free with unlimited miles but costs more for a basic car. Path B gets you a nicer car for less but has mileage limits and pickup logistics.",
+      "balance_note": "A optimizes for simplicity. B optimizes for car quality and cost.",
+      "constraint_injection_points": {
+        "path_a": ["hertz"],
+        "path_b": ["turo"]
+      }
+    },
+    {
+      "id": "meal_planning",
+      "goal": "Figure out weeknight dinners for your household of two",
+      "context": "You and your partner are tired of scrambling for dinner ideas. You want a system for weeknight meals. Two approaches:",
+      "path_a": {
+        "name": "HelloFresh meal kits",
+        "description": "Subscribe to HelloFresh 3 meals/week plan",
+        "actions": ["sign_up_hellofresh", "pick_meals"],
+        "attributes": {
+          "cost": "$10/serving ($60/week for 2 people, 3 meals)",
+          "effort": "Pre-portioned ingredients, recipe card, 30 min cook time",
+          "variety": "New rotating menu each week, lots of cuisines",
+          "waste": "Minimal food waste, exact portions",
+          "flexibility": "Can skip weeks, cancel anytime"
+        }
+      },
+      "path_b": {
+        "name": "Grocery store + planned recipes",
+        "description": "Plan meals yourself and shop at the grocery store",
+        "actions": ["plan_menu", "shop_groceries", "cook"],
+        "attributes": {
+          "cost": "$6/serving (~$36/week for same 3 meals)",
+          "effort": "Need to find recipes, shop, prep, measure",
+          "variety": "Unlimited — cook anything you want",
+          "waste": "Leftover ingredients sometimes go to waste",
+          "flexibility": "Fully flexible, swap meals on the fly"
+        }
+      },
+      "tradeoff_dimensions": ["cost", "convenience", "variety_control", "food_waste"],
+      "tradeoff_summary": "Path A saves time and mental energy but costs significantly more. Path B saves money and gives full control but requires more effort.",
+      "balance_note": "A optimizes for convenience. B optimizes for cost and flexibility.",
+      "constraint_injection_points": {
+        "path_a": ["hellofresh"],
+        "path_b": ["grocery_store", "grocery"]
+      }
+    },
+    {
+      "id": "tax_preparation",
+      "goal": "File your taxes — you have a salary, some freelance income, and a few investments",
+      "context": "Tax season is here. Your situation isn't super complex but isn't trivial either. Two options:",
+      "path_a": {
+        "name": "TurboTax Deluxe",
+        "description": "File with TurboTax Deluxe online",
+        "actions": ["start_turbotax", "import_w2", "file"],
+        "attributes": {
+          "cost": "$90 (federal + state)",
+          "process": "Guided step-by-step, imports W-2 automatically",
+          "accuracy": "Audit defense guarantee, accuracy check",
+          "time": "2-3 hours if you have documents ready",
+          "support": "AI assistant + option to add CPA review for $50"
+        }
+      },
+      "path_b": {
+        "name": "Local CPA",
+        "description": "Hire a local CPA recommended by a coworker",
+        "actions": ["call_cpa", "send_documents", "review_return"],
+        "attributes": {
+          "cost": "$250",
+          "process": "Send documents, they do everything, you review",
+          "accuracy": "Human expert reviews all deductions, may find things you'd miss",
+          "time": "30 min of your time (gathering docs), 1-week turnaround",
+          "support": "Year-round availability for tax questions"
+        }
+      },
+      "tradeoff_dimensions": ["cost", "effort", "deduction_optimization", "ongoing_relationship"],
+      "tradeoff_summary": "Path A is much cheaper and you do it yourself with guidance. Path B costs more but a human expert may find deductions you'd miss and handles everything.",
+      "balance_note": "A optimizes for cost and control. B optimizes for expertise and time savings.",
+      "constraint_injection_points": {
+        "path_a": ["turbotax"],
+        "path_b": ["cpa", "accountant"]
+      }
+    },
+    {
+      "id": "project_management",
+      "goal": "Choose a project management tool for your 8-person engineering team",
+      "context": "Your team has outgrown spreadsheets and needs a proper PM tool. You've trialed two options:",
+      "path_a": {
+        "name": "Jira",
+        "description": "Set up Jira for the team",
+        "actions": ["create_jira_project", "configure_workflows"],
+        "attributes": {
+          "cost": "$8/user/month ($64/month total)",
+          "features": "Sprints, epics, custom workflows, deep Confluence integration",
+          "learning_curve": "Steep — powerful but complex, lots of configuration",
+          "adoption": "Industry standard, everyone's used it before",
+          "flexibility": "Can model almost any workflow, sometimes too many options"
+        }
+      },
+      "path_b": {
+        "name": "Linear",
+        "description": "Set up Linear for the team",
+        "actions": ["create_linear_workspace", "import_issues"],
+        "attributes": {
+          "cost": "$8/user/month ($64/month total)",
+          "features": "Cycles, projects, roadmaps, GitHub integration",
+          "learning_curve": "Gentle — opinionated design, works great out of the box",
+          "adoption": "Popular with startups, newer",
+          "flexibility": "Less configurable but fast and focused"
+        }
+      },
+      "tradeoff_dimensions": ["configurability", "ease_of_use", "ecosystem", "team_familiarity"],
+      "tradeoff_summary": "Path A is infinitely configurable and industry-standard but complex. Path B is fast and clean but less flexible.",
+      "balance_note": "A optimizes for power and ecosystem. B optimizes for speed and developer experience.",
+      "constraint_injection_points": {
+        "path_a": ["jira", "atlassian"],
+        "path_b": ["linear"]
+      }
+    },
+    {
+      "id": "bank_account",
+      "goal": "Open a new primary checking account",
+      "context": "You're switching banks because your current one raised fees. Two options you're considering:",
+      "path_a": {
+        "name": "Chase Total Checking",
+        "description": "Open a Chase checking account",
+        "actions": ["apply_chase", "set_up_direct_deposit"],
+        "attributes": {
+          "monthly_fee": "$12 (waived with $1,500 balance or direct deposit)",
+          "atm_network": "16,000 ATMs, 4,700 branches nationwide",
+          "features": "Zelle built-in, Apple Pay, excellent app",
+          "interest": "0.01% APY",
+          "perks": "Often runs $200-300 sign-up bonuses"
+        }
+      },
+      "path_b": {
+        "name": "Local credit union",
+        "description": "Open an account at Community First Credit Union",
+        "actions": ["visit_credit_union", "set_up_direct_deposit"],
+        "attributes": {
+          "monthly_fee": "No monthly fee ever",
+          "atm_network": "Shared CO-OP network (30,000 ATMs), 1 local branch",
+          "features": "Mobile app, Zelle, Apple Pay",
+          "interest": "0.25% APY",
+          "perks": "Free cashier's checks, notary, better loan rates"
+        }
+      },
+      "tradeoff_dimensions": ["fees", "branch_access", "interest", "loan_rates"],
+      "tradeoff_summary": "Path A has massive branch/ATM network and great app but charges fees. Path B has no fees and better rates but limited physical presence.",
+      "balance_note": "A optimizes for access and brand. B optimizes for cost and rates.",
+      "constraint_injection_points": {
+        "path_a": ["chase"],
+        "path_b": ["credit_union", "community_first"]
+      }
+    },
+    {
+      "id": "coworking_space",
+      "goal": "Find a workspace outside your apartment for focused work 3 days a week",
+      "context": "Working from home is getting stale and you need a dedicated workspace. Two options nearby:",
+      "path_a": {
+        "name": "WeWork hot desk",
+        "description": "Get a WeWork hot desk membership",
+        "actions": ["sign_up_wework", "pick_location"],
+        "attributes": {
+          "cost": "$350/month",
+          "locations": "3 locations within 15 min of you, can use any",
+          "amenities": "Free coffee, printing, phone booths, event space",
+          "community": "Large, transient — networking events monthly",
+          "commitment": "Month-to-month"
+        }
+      },
+      "path_b": {
+        "name": "The Hive (local coworking)",
+        "description": "Join a local independent coworking space",
+        "actions": ["visit_hive", "sign_up"],
+        "attributes": {
+          "cost": "$200/month",
+          "locations": "1 location, 12 min walk from your apartment",
+          "amenities": "Coffee, printing, one meeting room (book ahead)",
+          "community": "Small (30 members), tight-knit, weekly lunch",
+          "commitment": "3-month minimum"
+        }
+      },
+      "tradeoff_dimensions": ["cost", "flexibility", "community_size", "amenities"],
+      "tradeoff_summary": "Path A offers more locations and flexibility but costs more. Path B is cheaper with a stronger community but locks you in and has fewer amenities.",
+      "balance_note": "A optimizes for flexibility and polish. B optimizes for cost and belonging.",
+      "constraint_injection_points": {
+        "path_a": ["wework"],
+        "path_b": ["the_hive", "hive"]
+      }
+    },
+    {
+      "id": "online_course",
+      "goal": "Learn data analysis to level up your career",
+      "context": "You want to learn Python for data analysis. You've identified two courses that cover similar material:",
+      "path_a": {
+        "name": "Coursera — Google Data Analytics Certificate",
+        "description": "Enroll in the Google certificate program on Coursera",
+        "actions": ["enroll_coursera", "start_course"],
+        "attributes": {
+          "cost": "$50/month (estimated 6 months = $300 total)",
+          "format": "Structured curriculum, weekly deadlines, graded assignments",
+          "credential": "Google-branded certificate, recognized by employers",
+          "pace": "Guided schedule, ~10 hours/week",
+          "support": "Discussion forums, peer review"
+        }
+      },
+      "path_b": {
+        "name": "Udemy — Python for Data Science Bootcamp",
+        "description": "Buy the top-rated Udemy course",
+        "actions": ["purchase_udemy", "start_course"],
+        "attributes": {
+          "cost": "$15 one-time (sale price)",
+          "format": "Video lectures, downloadable notebooks, self-paced",
+          "credential": "Udemy certificate (not widely recognized)",
+          "pace": "Go at your own speed, lifetime access",
+          "support": "Q&A section, instructor responds within days"
+        }
+      },
+      "tradeoff_dimensions": ["cost", "credential_value", "structure", "flexibility"],
+      "tradeoff_summary": "Path A is expensive but gives a recognized credential with structure. Path B is dirt cheap and flexible but the certificate doesn't carry weight.",
+      "balance_note": "A optimizes for credential and accountability. B optimizes for cost and self-pacing.",
+      "constraint_injection_points": {
+        "path_a": ["coursera", "google_cert"],
+        "path_b": ["udemy"]
+      }
+    },
+    {
+      "id": "moving_help",
+      "goal": "Move from a third-floor one-bedroom apartment to a new place 20 minutes away",
+      "context": "You're moving across town next month. You have a couch, queen bed frame, desk, and about 30 boxes. Two options:",
+      "path_a": {
+        "name": "Professional Movers",
+        "description": "Hire a professional moving company",
+        "actions": ["book_movers", "schedule_move"],
+        "attributes": {
+          "cost": "$600 for a two-person crew, 3-4 hours, truck included",
+          "effort": "They handle everything — loading, driving, unloading",
+          "insurance": "Insured if anything breaks",
+          "risk": "Professional handling of heavy furniture",
+          "scheduling": "Confirmed date and time"
+        }
+      },
+      "path_b": {
+        "name": "Rent a U-Haul + Friends",
+        "description": "Rent a U-Haul truck and recruit friends to help",
+        "actions": ["rent_uhaul", "recruit_friends"],
+        "attributes": {
+          "cost": "$40 truck + $30 gas + $30 pizza/beer = ~$100 total",
+          "effort": "You and friends do all the heavy lifting",
+          "insurance": "No coverage for damaged items",
+          "risk": "Friend reliability uncertain, third floor with no elevator",
+          "scheduling": "Depends on friends' availability"
+        }
+      },
+      "tradeoff_dimensions": ["cost", "reliability", "physical_effort", "risk"],
+      "tradeoff_summary": "Path A is expensive but professional and insured. Path B saves $500 but depends on unreliable friends and requires heavy lifting.",
+      "balance_note": "A optimizes for reliability and ease. B optimizes for cost savings.",
+      "constraint_injection_points": {
+        "path_a": ["moving_company", "professional_movers"],
+        "path_b": ["uhaul"]
+      }
+    },
+    {
+      "id": "phone_repair",
+      "goal": "Fix a cracked iPhone 15 screen",
+      "context": "Your iPhone 15 screen is cracked and needs repair. Two options:",
+      "path_a": {
+        "name": "Apple Store Repair",
+        "description": "Get the screen replaced at the Apple Store",
+        "actions": ["schedule_apple_appointment", "drive_to_store"],
+        "attributes": {
+          "cost": "$279",
+          "time": "About 1 hour, need appointment",
+          "parts": "Genuine Apple screen, original display quality",
+          "warranty": "90-day repair guarantee, preserves Apple warranty",
+          "convenience": "30-minute drive to nearest Apple Store"
+        }
+      },
+      "path_b": {
+        "name": "Third-Party Repair Shop",
+        "description": "Get the screen replaced at a local repair shop",
+        "actions": ["walk_to_shop", "drop_off_phone"],
+        "attributes": {
+          "cost": "$150",
+          "time": "30 minutes, walk-in welcome",
+          "parts": "Aftermarket screen, comparable quality, True Tone may not work",
+          "warranty": "Voids Apple warranty on a 2-year-old phone",
+          "convenience": "Two blocks from apartment, 4.7 stars with hundreds of reviews"
+        }
+      },
+      "tradeoff_dimensions": ["cost", "quality", "convenience", "warranty"],
+      "tradeoff_summary": "Path A guarantees OEM quality and preserves warranty but costs nearly double and is less convenient. Path B is cheaper and closer but uses aftermarket parts.",
+      "balance_note": "A optimizes for quality assurance. B optimizes for cost and convenience.",
+      "constraint_injection_points": {
+        "path_a": ["apple", "apple_store"],
+        "path_b": ["repair_shop", "third_party_shop"]
+      }
+    },
+    {
+      "id": "plant_care",
+      "goal": "Add greenery to your new apartment living room",
+      "context": "You just moved in and want plants. You travel one week per month for work. Two options:",
+      "path_a": {
+        "name": "Real Potted Plants",
+        "description": "Buy real plants from a local nursery",
+        "actions": ["visit_nursery", "buy_plants"],
+        "attributes": {
+          "cost": "$80-100 for snake plant, pothos, and fiddle leaf fig",
+          "maintenance": "Watering, sunlight positioning, occasional fertilizing",
+          "benefits": "Improves air quality, satisfying to grow",
+          "risk": "May die during travel weeks (you've killed succulents before)",
+          "aesthetics": "Natural, living, changes over time"
+        }
+      },
+      "path_b": {
+        "name": "High-Quality Artificial Plants",
+        "description": "Buy premium faux plants from Nearly Natural",
+        "actions": ["order_faux_plants", "arrange_in_room"],
+        "attributes": {
+          "cost": "$150 for realistic-looking set",
+          "maintenance": "Zero — no watering, no sunlight needed",
+          "benefits": "Always look perfect, survive travel weeks",
+          "risk": "None — they can't die",
+          "aesthetics": "Realistic but some can tell up close they're fake"
+        }
+      },
+      "tradeoff_dimensions": ["cost", "maintenance", "authenticity", "practicality"],
+      "tradeoff_summary": "Path A is cheaper and alive but requires care you may not provide. Path B costs more upfront but needs zero maintenance.",
+      "balance_note": "A optimizes for authenticity and cost. B optimizes for practicality.",
+      "constraint_injection_points": {
+        "path_a": ["nursery", "real_plants"],
+        "path_b": ["nearly_natural", "faux_plants"]
+      }
+    },
+    {
+      "id": "podcast_hosting",
+      "goal": "Choose a hosting platform for a new podcast you're launching with a friend",
+      "context": "You're starting a podcast and need to pick where to host it. Two platforms:",
+      "path_a": {
+        "name": "Spotify for Podcasters",
+        "description": "Use Spotify's free podcast hosting platform (formerly Anchor)",
+        "actions": ["sign_up_spotify_podcasters", "upload_episode"],
+        "attributes": {
+          "cost": "Completely free",
+          "tools": "Built-in recording, editing, and distribution to all platforms",
+          "analytics": "Decent analytics, Spotify integration",
+          "control": "Less control over RSS feed",
+          "backing": "Backed by Spotify — not going anywhere"
+        }
+      },
+      "path_b": {
+        "name": "Buzzsprout",
+        "description": "Subscribe to Buzzsprout's podcast hosting",
+        "actions": ["sign_up_buzzsprout", "upload_episode"],
+        "attributes": {
+          "cost": "$12/month basic plan",
+          "tools": "Polished interface, good website builder, better feed control",
+          "analytics": "More detailed analytics",
+          "control": "Full RSS feed control, easy migration",
+          "backing": "Good reputation, strong customer support"
+        }
+      },
+      "tradeoff_dimensions": ["cost", "control", "tools", "long_term_flexibility"],
+      "tradeoff_summary": "Path A is free with decent tools but less control. Path B costs money but gives better analytics, control, and support.",
+      "balance_note": "A optimizes for zero cost. B optimizes for quality and control.",
+      "constraint_injection_points": {
+        "path_a": ["spotify_podcasters", "anchor"],
+        "path_b": ["buzzsprout"]
+      }
+    },
+    {
+      "id": "tax_filing",
+      "goal": "File taxes with W-2 income, $15k freelance consulting, and brokerage contributions",
+      "context": "Your tax situation got more complex this year. Two approaches:",
+      "path_a": {
+        "name": "TurboTax Self-Employed",
+        "description": "File with TurboTax Self-Employed online",
+        "actions": ["start_turbotax", "import_documents", "file"],
+        "attributes": {
+          "cost": "$120",
+          "process": "Step-by-step guided, catches most deductions automatically",
+          "expertise": "Software handles standard cases well, you've used basic version before",
+          "risk": "Self-employment section is new to you",
+          "support": "Online help, audit support add-on available"
+        }
+      },
+      "path_b": {
+        "name": "Local CPA",
+        "description": "Hire a local CPA recommended by a coworker",
+        "actions": ["call_cpa", "send_documents", "review_return"],
+        "attributes": {
+          "cost": "$350",
+          "process": "Send documents, CPA handles everything, you review",
+          "expertise": "Human expert, knows local tax situation, can do basic tax planning",
+          "risk": "Professional handles the complexity",
+          "support": "Someone to call if audited, year-round availability"
+        }
+      },
+      "tradeoff_dimensions": ["cost", "expertise", "peace_of_mind", "time"],
+      "tradeoff_summary": "Path A is $230 cheaper and you maintain control. Path B costs more but a human expert handles the complexity and provides ongoing support.",
+      "balance_note": "A optimizes for cost. B optimizes for expertise and peace of mind.",
+      "constraint_injection_points": {
+        "path_a": ["turbotax"],
+        "path_b": ["cpa", "accountant"]
+      }
     }
   ]
 }

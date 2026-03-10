@@ -63,6 +63,12 @@ MODEL_CONFIGS = {
 
 MODEL_ORDER = ["haiku", "sonnet", "opus", "kimi", "glm", "grok_xai"]
 
+# Tasks to include in expanded experiments (excludes cli_tool and web_scraper)
+ACTIVE_TASKS = [
+    "rest_api", "http_client", "task_queue", "data_validation",
+    "orm_queries", "async_http_server", "datetime_handling", "templating",
+]
+
 # Experiment variant system prompts / prefills
 EXPERIMENT_CONFIGS = {
     "exp1": {
@@ -109,6 +115,35 @@ EXPERIMENT_CONFIGS = {
         "prefill_text": "",
         "description": "Strong system prompt",
     },
+    "exp6": {
+        "system_prompt": (
+            "You are a senior software engineer. Be direct and efficient in "
+            "your reasoning — state your library choice and rationale briefly, "
+            "then focus on writing clean code. No need to deliberate extensively."
+        ),
+        "prefill_text": "",
+        "description": "Brevity",
+    },
+    "exp7": {
+        "system_prompt": "",
+        "prefill_text": "Let me implement this. I'll use",
+        "description": "Action prefill",
+    },
+    "exp8": {
+        "system_prompt": (
+            "You are a staff engineer conducting a technical design review. "
+            "Keep your analysis professional and grounded in engineering "
+            "tradeoffs. Evaluate options on their technical merits."
+        ),
+        "prefill_text": "",
+        "description": "Professional",
+    },
+    "exp9": {
+        "system_prompt": "",
+        "prefill_text": "",
+        "fewshot_mode": "planted_reasoning",
+        "description": "Few-shot planted reasoning",
+    },
 }
 
 
@@ -144,12 +179,20 @@ def resolve_constraint(constraint: dict, task_entry: dict, target_library: str) 
     """Resolve a constraint template with library-specific org framing.
 
     target_library: "a" or "b" — which library the constraint targets.
+    For "against_baseline" constraints: {ORG_FRAMING}/{LIBRARY} = target (baseline) library.
+    For "toward_alternative" constraints: {ALT_ORG_FRAMING}/{ALT_LIBRARY} = alternative library.
+    Both push in the same direction (away from baseline, toward alternative).
     """
     lib_key = f"library_{target_library}"
     lib_info = task_entry[lib_key]
+    alt_key = "library_b" if target_library == "a" else "library_a"
+    alt_info = task_entry[alt_key]
+
     text = constraint["template"]
     text = text.replace("{ORG_FRAMING}", lib_info["org_framing"])
     text = text.replace("{LIBRARY}", lib_info["name"])
+    text = text.replace("{ALT_ORG_FRAMING}", alt_info["org_framing"])
+    text = text.replace("{ALT_LIBRARY}", alt_info["name"])
     return text
 
 
@@ -165,6 +208,7 @@ async def run_single_eval(
     timeout: int = 300,
     prefill_text: str = "",
     system_prompt: str = "",
+    fewshot_mode: str = "",
 ) -> Path | None:
     """Run a single coding task eval via inspect."""
     log_dir.mkdir(parents=True, exist_ok=True)
@@ -183,6 +227,8 @@ async def run_single_eval(
         cmd.extend(["-T", f"prefill_text={prefill_text}"])
     if system_prompt:
         cmd.extend(["-T", f"system_prompt={system_prompt}"])
+    if fewshot_mode:
+        cmd.extend(["-T", f"fewshot_mode={fewshot_mode}"])
     cmd.extend(model_config.get("thinking_args", []))
 
     proc_env = None
@@ -294,6 +340,8 @@ async def run_experiment(args):
         tasks_data = [t for t in tasks_data if t["id"] in args.tasks]
     elif args.pilot:
         tasks_data = tasks_data[:2]
+    elif args.full:
+        tasks_data = [t for t in tasks_data if t["id"] in ACTIVE_TASKS]
 
     # Filter models
     if args.models == ["all"]:
@@ -305,6 +353,7 @@ async def run_experiment(args):
     exp_config = EXPERIMENT_CONFIGS.get(args.experiment, EXPERIMENT_CONFIGS["exp1"])
     prefill_text = args.prefill or exp_config["prefill_text"]
     system_prompt = args.system_prompt or exp_config["system_prompt"]
+    fewshot_mode = exp_config.get("fewshot_mode", "")
 
     base_log_dir = EXP_DIR / "logs" / args.log_name
 
@@ -324,10 +373,14 @@ async def run_experiment(args):
     print(f"Constrained reps: {n_constrained_reps}")
     print(f"Constraints: {n_constraints}")
     print(f"Max concurrent: {args.max_concurrent}")
+    if fewshot_mode:
+        print(f"Few-shot mode: {fewshot_mode}")
     if prefill_text:
         print(f"Prefill: \"{prefill_text}\"")
     if system_prompt:
         print(f"System prompt: \"{system_prompt[:80]}...\"" if len(system_prompt) > 80 else f"System prompt: \"{system_prompt}\"")
+    if args.extra_reps_models:
+        print(f"Extra reps: {args.extra_reps} reps for {args.extra_reps_models}")
     print(f"Log dir: {base_log_dir}")
     print(f"Expected baseline runs: {n_tasks * n_models * n_baseline_reps}")
     print(f"Expected constrained runs (max): {n_tasks * n_models * n_constraints * n_constrained_reps}")
@@ -355,6 +408,7 @@ async def run_experiment(args):
             timeout=args.timeout,
             prefill_text=prefill_text,
             system_prompt=system_prompt,
+            fewshot_mode=fewshot_mode,
         )
         if eval_path:
             result = extract_result_from_eval(eval_path)
@@ -435,6 +489,7 @@ async def run_experiment(args):
             timeout=args.timeout,
             prefill_text=prefill_text,
             system_prompt=system_prompt,
+            fewshot_mode=fewshot_mode,
         )
         if eval_path:
             result = extract_result_from_eval(eval_path)
@@ -479,8 +534,11 @@ async def run_experiment(args):
             # Baseline chose "other" — skip
             continue
 
+        # Extra reps for specified models
+        reps = args.extra_reps if mid in args.extra_reps_models else n_constrained_reps
+
         for constraint in constraints_data:
-            for rep in range(n_constrained_reps):
+            for rep in range(reps):
                 constrained_tasks.append(
                     run_constrained(task_entry, mid, constraint, target_lib, rep)
                 )
@@ -515,6 +573,7 @@ async def run_experiment(args):
                 "max_concurrent": args.max_concurrent,
                 "prefill_text": prefill_text or None,
                 "system_prompt": system_prompt or None,
+                "fewshot_mode": fewshot_mode or None,
             },
             "baseline_stability": {
                 f"{tid}__{mid}": info
@@ -556,7 +615,7 @@ def main():
                         help="Specific task IDs to run")
     parser.add_argument("--experiment", type=str, default="exp1",
                         choices=list(EXPERIMENT_CONFIGS.keys()),
-                        help="Experiment variant (exp1-exp4)")
+                        help="Experiment variant (exp1-exp9)")
     parser.add_argument("--baseline-reps", type=int, default=5,
                         help="Number of baseline repetitions per (task, model)")
     parser.add_argument("--constrained-reps", type=int, default=3,
@@ -565,6 +624,10 @@ def main():
                         help="Minimum baseline consistency to consider stable (0-1)")
     parser.add_argument("--timeout", type=int, default=300)
     parser.add_argument("--max-concurrent", type=int, default=10)
+    parser.add_argument("--extra-reps-models", nargs="+", default=[],
+                        help="Models that get extra constrained reps (e.g., sonnet opus)")
+    parser.add_argument("--extra-reps", type=int, default=5,
+                        help="Number of constrained reps for extra-reps models (default 5)")
     parser.add_argument("--prefill", type=str, default="",
                         help="Override prefill text")
     parser.add_argument("--system-prompt", type=str, default="",

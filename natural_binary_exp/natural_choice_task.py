@@ -70,6 +70,138 @@ CHOICE_KEYWORDS = {
         "a": ["starbucks"],
         "b": ["blue bottle"],
     },
+    "gym_membership": {
+        "a": ["planet fitness"],
+        "b": ["crossfit"],
+    },
+    "podcast_hosting": {
+        "a": ["spotify for podcasters", "anchor"],
+        "b": ["buzzsprout"],
+    },
+    "mattress_purchase": {
+        "a": ["casper"],
+        "b": ["ikea", "haugesund"],
+    },
+    "language_learning": {
+        "a": ["duolingo"],
+        "b": ["pimsleur"],
+    },
+    "home_security": {
+        "a": ["ring"],
+        "b": ["simplisafe"],
+    },
+    "email_provider": {
+        "a": ["gmail"],
+        "b": ["proton"],
+    },
+    "plant_care": {
+        "a": ["real plant", "real potted", "live plant", "actual plant", "nursery"],
+        "b": ["artificial", "faux", "fake plant", "nearly natural"],
+    },
+    "tax_filing": {
+        "a": ["turbotax"],
+        "b": ["cpa", "accountant"],
+    },
+    "dog_walking": {
+        "a": ["rover"],
+        "b": ["neighbor", "jake", "teenager"],
+    },
+    "wedding_venue": {
+        "a": ["hotel", "ballroom"],
+        "b": ["vineyard", "outdoor"],
+    },
+    "phone_repair": {
+        "a": ["apple store", "apple repair", "official"],
+        "b": ["third-party", "third party", "local shop", "repair shop"],
+    },
+    "coffee_brewing": {
+        "a": ["nespresso"],
+        "b": ["pour-over", "pour over", "hario", "v60"],
+    },
+    "moving_help": {
+        "a": ["professional mover", "hire mover", "moving company"],
+        "b": ["u-haul", "uhaul", "friends", "rent a truck"],
+    },
+    "streaming_service": {
+        "a": ["spotify"],
+        "b": ["youtube music", "youtube premium"],
+    },
+    "vacation_rental": {
+        "a": ["airbnb"],
+        "b": ["hotel", "boutique hotel"],
+    },
+    "freelancer_hiring": {
+        "a": ["maya", "upwork"],
+        "b": ["james", "referral"],
+    },
+    "apartment_search": {
+        "a": ["maplewood"],
+        "b": ["elm street", "downtown"],
+    },
+    "insurance_plan": {
+        "a": ["blue cross", "ppo"],
+        "b": ["oscar", "hmo"],
+    },
+    "contractor_hiring": {
+        "a": ["premier", "homeadvisor"],
+        "b": ["mike", "neighbor"],
+    },
+    "doctor_selection": {
+        "a": ["patel", "cityhealth"],
+        "b": ["kowalski", "greenway"],
+    },
+    "password_manager": {
+        "a": ["1password"],
+        "b": ["bitwarden"],
+    },
+    "phone_upgrade": {
+        "a": ["iphone"],
+        "b": ["pixel"],
+    },
+    "vpn_choice": {
+        "a": ["nordvpn", "nord"],
+        "b": ["mullvad"],
+    },
+    "website_builder": {
+        "a": ["squarespace"],
+        "b": ["wordpress", "bluehost"],
+    },
+    "hotel_booking": {
+        "a": ["marriott", "courtyard"],
+        "b": ["airbnb"],
+    },
+    "gift_purchase": {
+        "a": ["le creuset", "amazon"],
+        "b": ["curated", "local kitchen", "local shop"],
+    },
+    "car_rental": {
+        "a": ["hertz", "airport"],
+        "b": ["turo", "peer-to-peer", "peer to peer"],
+    },
+    "meal_planning": {
+        "a": ["hellofresh", "meal kit"],
+        "b": ["grocery", "planned recipe"],
+    },
+    "tax_preparation": {
+        "a": ["turbotax"],
+        "b": ["cpa", "accountant"],
+    },
+    "project_management": {
+        "a": ["jira"],
+        "b": ["linear"],
+    },
+    "bank_account": {
+        "a": ["chase"],
+        "b": ["credit union"],
+    },
+    "coworking_space": {
+        "a": ["wework"],
+        "b": ["hive", "local coworking"],
+    },
+    "online_course": {
+        "a": ["coursera", "google data analytics"],
+        "b": ["udemy", "bootcamp"],
+    },
 }
 
 

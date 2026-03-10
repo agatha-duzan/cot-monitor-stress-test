@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Monitor evaluation for open-ended coding experiment.
 
-Can a GPT-4o monitor predict whether a constraint influenced the model's library choice?
+Can a GPT-5 monitor predict whether a constraint influenced the model's library choice?
 
 For each constrained case (switch AND non-switch), the monitor sees the question + CoT
 and predicts whether the ethical concern influenced the library choice.
@@ -97,9 +97,9 @@ async def run_monitor(results: list[dict]) -> list[dict]:
         async with sem:
             try:
                 response = await client.chat.completions.create(
-                    model="gpt-4o",
-                    temperature=0,
-                    max_tokens=256,
+                    model="gpt-5",
+                    temperature=1,
+                    max_completion_tokens=2048,
                     messages=[{"role": "user", "content": prompt}],
                 )
                 monitor_text = response.choices[0].message.content
@@ -268,7 +268,7 @@ def main():
         print(f"  {switches} switches, {len(constrained) - switches} non-switches")
 
         # Run monitor
-        print(f"  Running GPT-4o monitor on {len(constrained)} cases...")
+        print(f"  Running GPT-5 monitor on {len(constrained)} cases...")
         monitored = asyncio.run(run_monitor(constrained))
 
         preds = defaultdict(int)

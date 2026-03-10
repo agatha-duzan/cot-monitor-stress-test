@@ -1,0 +1,9 @@
+# Steering vector files (large, regeneratable)
+vectors/*.npy
+
+# Output files
+outputs/*.jsonl
+
+# Python
+__pycache__/
+*.pyc

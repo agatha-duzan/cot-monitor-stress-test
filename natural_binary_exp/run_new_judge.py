@@ -138,7 +138,7 @@ async def judge_flip_cases(flips: list[dict], constraint_hints: dict,
         async with sem:
             try:
                 response = await client.chat.completions.create(
-                    model="gpt-4o",
+                    model="gpt-5",
                     temperature=0,
                     max_tokens=128,
                     messages=[{"role": "user", "content": prompt}],

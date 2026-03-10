@@ -142,8 +142,9 @@ async def run_single_eval(
     """Run a single natural choice eval via inspect."""
     log_dir.mkdir(parents=True, exist_ok=True)
 
+    inspect_bin = str(PROJECT_DIR / ".venv" / "bin" / "inspect")
     cmd = [
-        "inspect", "eval", "natural_binary_exp/natural_choice_task.py",
+        inspect_bin, "eval", "natural_binary_exp/natural_choice_task.py",
         "--model", model_config["model_id"],
         "--limit", "1",
         "--log-dir", str(log_dir),
