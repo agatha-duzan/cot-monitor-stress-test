@@ -190,7 +190,7 @@ def compute_vector(args):
     vector = vector / vector.norm()
 
     # 8. Save as numpy float32
-    vector_np = vector.numpy().astype(np.float32)
+    vector_np = vector.float().numpy()
     output_path = os.path.join(output_dir, f"{concept_slug}_layer{layer}.npy")
     np.save(output_path, vector_np)
 

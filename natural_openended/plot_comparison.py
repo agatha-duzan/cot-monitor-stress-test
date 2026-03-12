@@ -39,27 +39,47 @@ EXPANDED_EXP_CONFIGS = {
     "exp6_brevity": {"label": "Brevity", "dir": "exp6_brevity"},
     "exp7_action": {"label": "Action PF", "dir": "exp7_action"},
     "exp8_prof": {"label": "Prof.", "dir": "exp8_prof"},
-    "exp9_fewshot": {"label": "Few-Shot", "dir": "exp9_fewshot"},
+    "exp9_fewshot": {"label": "Conv.", "dir": "exp9_fewshot"},
+}
+
+# Redirect system prompt experiments (Bare vs new SP variants)
+REDIRECT_EXP_CONFIGS = {
+    "exp1_expanded": {"label": "Bare", "dir": "exp1_expanded"},
+    "exp10_soft_redirect": {"label": "Soft Redirect", "dir": "exp10_soft_redirect"},
+    "exp11_noise_framing": {"label": "Noise Framing", "dir": "exp11_noise_framing"},
+    "exp12_redirect_prefill": {"label": "Redirect+PF", "dir": "exp12_redirect_prefill"},
+    "exp13_both_valid": {"label": "Both Valid", "dir": "exp13_both_valid"},
+    "exp14_mention_dismiss": {"label": "Ack+Dismiss", "dir": "exp14_mention_dismiss"},
 }
 
 # Combined for lookup by key
-EXP_CONFIGS = {**SMALL_EXP_CONFIGS, **EXPANDED_EXP_CONFIGS}
+EXP_CONFIGS = {**SMALL_EXP_CONFIGS, **EXPANDED_EXP_CONFIGS, **REDIRECT_EXP_CONFIGS}
 
 
-def load_exp_stats(exp_key: str) -> dict:
-    """Load binary judge stats per model for one experiment."""
+def load_exp_stats(exp_key: str, max_rep: int | None = None) -> dict:
+    """Load binary judge stats per model for one experiment.
+
+    Args:
+        exp_key: Experiment key from EXP_CONFIGS.
+        max_rep: If set, only include results with rep <= max_rep.
+                 Use max_rep=0 to get exactly 1 sample per config.
+    """
     dir_name = EXP_CONFIGS[exp_key]["dir"]
     path = EXP_DIR / "logs" / dir_name / "all_results_judged.json"
     with open(path) as f:
         data = json.load(f)
 
+    results = data["results"]
+    if max_rep is not None:
+        results = [r for r in results if r.get("rep", 0) <= max_rep]
+
     stats = {}
     for model in MODEL_ORDER:
-        switches = [r for r in data["results"]
+        switches = [r for r in results
                     if r.get("phase") == "constrained"
                     and r.get("switched")
                     and r.get("model_id") == model]
-        constrained = [r for r in data["results"]
+        constrained = [r for r in results
                        if r.get("phase") == "constrained"
                        and r.get("model_id") == model]
         yes = sum(1 for r in switches if r.get("cot_mentions") == "YES")
@@ -267,12 +287,12 @@ def plot_switching_rate_comparison(all_stats: dict, exp_configs: dict, output_di
     print(f"Saved: {output_dir / filename}")
 
 
-def _load_group(configs: dict) -> dict:
+def _load_group(configs: dict, max_rep: int | None = None) -> dict:
     """Load stats for a group of experiments, skipping missing ones."""
     stats = {}
     for exp_key in configs:
         try:
-            stats[exp_key] = load_exp_stats(exp_key)
+            stats[exp_key] = load_exp_stats(exp_key, max_rep=max_rep)
         except FileNotFoundError:
             print(f"Skipping {exp_key}: no judged results found")
     return stats
@@ -309,8 +329,9 @@ if __name__ == "__main__":
         _print_summary(small_stats, SMALL_EXP_CONFIGS)
 
     # --- Expanded experiments + new interventions (exp6-9) ---
-    print("\n=== Expanded experiments + interventions ===")
-    expanded_stats = _load_group(EXPANDED_EXP_CONFIGS)
+    # Use max_rep=0 so all experiments have exactly 1 sample per config (comparable counts)
+    print("\n=== Expanded experiments + interventions (1 rep each) ===")
+    expanded_stats = _load_group(EXPANDED_EXP_CONFIGS, max_rep=0)
     if expanded_stats:
         plot_comparison_counts(expanded_stats, EXPANDED_EXP_CONFIGS, output_dir,
                                filename="cot_attribution_comparison_counts.png",
@@ -322,3 +343,18 @@ if __name__ == "__main__":
                                       filename="switching_rate_comparison.png",
                                       title="Switching Rate — Expanded + Interventions")
         _print_summary(expanded_stats, EXPANDED_EXP_CONFIGS)
+
+    # --- Redirect SP experiments (Bare vs exp10/exp11) ---
+    print("\n=== Redirect system prompt experiments ===")
+    redirect_stats = _load_group(REDIRECT_EXP_CONFIGS, max_rep=0)
+    if redirect_stats:
+        plot_comparison_counts(redirect_stats, REDIRECT_EXP_CONFIGS, output_dir,
+                               filename="redirect_cot_attribution_counts.png",
+                               title="CoT Attribution — Redirect SP vs Bare (Counts)")
+        plot_comparison_pct(redirect_stats, REDIRECT_EXP_CONFIGS, output_dir,
+                            filename="redirect_cot_attribution_pct.png",
+                            title="CoT Attribution — Redirect SP vs Bare (Percentage)")
+        plot_switching_rate_comparison(redirect_stats, REDIRECT_EXP_CONFIGS, output_dir,
+                                      filename="redirect_switching_rate.png",
+                                      title="Switching Rate — Redirect SP vs Bare")
+        _print_summary(redirect_stats, REDIRECT_EXP_CONFIGS)

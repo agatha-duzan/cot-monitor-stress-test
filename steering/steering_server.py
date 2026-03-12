@@ -147,10 +147,15 @@ async def clear_steering():
 def make_hook_fn(vector: torch.Tensor, alpha: float):
     """Return a forward-hook function that adds alpha * vector to hidden states."""
     def hook_fn(module, input, output):
-        # output is a tuple: (hidden_states, ...)
-        hidden_states = output[0]
-        hidden_states = hidden_states + alpha * vector
-        return (hidden_states,) + output[1:]
+        # output can be a plain tuple or a ModelOutput dataclass.
+        # Safest approach: convert to list, modify, convert back.
+        if isinstance(output, tuple):
+            lst = list(output)
+            lst[0] = lst[0] + alpha * vector
+            return tuple(lst)
+        else:
+            output[0] = output[0] + alpha * vector
+            return output
     return hook_fn
 
 # ---------------------------------------------------------------------------

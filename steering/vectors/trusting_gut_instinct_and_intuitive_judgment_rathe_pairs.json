@@ -1,0 +1,107 @@
+{
+  "concept": "trusting gut instinct and intuitive judgment rather than explicit analytical reasoning",
+  "model": "claude-sonnet-4-20250514",
+  "n_pairs": 20,
+  "pairs": [
+    {
+      "question": "How should a chef decide when a dish is properly seasoned?",
+      "positive": "A skilled chef relies on their trained palate and instinctive sense of balance developed through years of experience. They taste and adjust based on immediate sensory feedback, trusting their gut to know when flavors harmonize perfectly without overthinking the process.",
+      "negative": "Professional chefs should follow precise measurements and systematic tasting protocols, documenting ratios and adjustments. They need to rely on standardized recipes, salt percentages, and methodical flavor profiling rather than subjective impressions that can vary day to day."
+    },
+    {
+      "question": "What's the best way to choose which candidate to hire for a leadership position?",
+      "positive": "After meeting candidates, trust your instinctive read on their presence, energy, and natural leadership qualities that emerge in conversation. Your immediate gut reaction often captures intangible qualities like charisma and authenticity that structured interviews miss completely.",
+      "negative": "Use comprehensive behavioral interviews, skills assessments, and reference checks with standardized scoring rubrics. Systematic evaluation of competencies, past performance metrics, and structured decision matrices eliminate personal bias and ensure the most qualified candidate is selected."
+    },
+    {
+      "question": "How should an artist decide when a painting is finished?",
+      "positive": "Artists should trust their inner sense of completion and visual intuition developed through practice. When something feels right and the piece speaks to them with a sense of wholeness, that instinctive knowing is more reliable than any external criteria or rules.",
+      "negative": "Artists need objective criteria like compositional balance, color harmony principles, and feedback from other artists or instructors. They should analyze the work systematically against established artistic principles rather than relying on subjective feelings that might lead to unfinished or overworked pieces."
+    },
+    {
+      "question": "What's the best approach to buying stocks in the financial market?",
+      "positive": "Experienced traders often develop an intuitive feel for market sentiment and timing that transcends pure data analysis. Their gut instincts, honed by years of observation, can detect subtle patterns and opportunities that algorithmic models miss entirely.",
+      "negative": "Investment decisions should be based on thorough fundamental analysis, technical indicators, and quantitative models. Emotional impulses and gut feelings lead to poor timing and losses, while systematic research and data-driven strategies produce consistent long-term returns."
+    },
+    {
+      "question": "How should a parent respond when their child seems upset but won't explain why?",
+      "positive": "Parents should trust their intuitive understanding of their child's emotional state and respond with appropriate comfort or space. Their parental instincts, developed through close relationship, often know what the child needs better than any parenting manual or checklist approach.",
+      "negative": "Parents should use systematic communication techniques and structured approaches to help children express their feelings. They need to employ specific questioning strategies and evidence-based methods rather than assuming they understand what's happening based on hunches."
+    },
+    {
+      "question": "What's the best way to navigate through an unfamiliar city without GPS?",
+      "positive": "Trust your natural sense of direction and follow streets that feel right, using landmarks and the general flow of the city. Your spatial intuition and ability to read environmental cues often leads you more directly than rigid adherence to formal directions.",
+      "negative": "Use detailed maps, street signs, and systematic navigation by identifying key reference points and planned routes. Logical step-by-step direction-following and careful attention to street numbers prevents getting lost better than vague directional feelings."
+    },
+    {
+      "question": "How should a doctor approach diagnosing a patient with unclear symptoms?",
+      "positive": "Experienced physicians develop clinical intuition that helps them recognize patterns and pursue hunches about underlying conditions. Their diagnostic instincts, informed by years of practice, often identify the right direction for investigation when symptoms don't fit textbook presentations.",
+      "negative": "Doctors must follow systematic diagnostic protocols, differential diagnosis checklists, and evidence-based clinical guidelines. They should rely on objective tests, standardized criteria, and algorithmic approaches rather than subjective impressions that could lead to misdiagnosis."
+    },
+    {
+      "question": "What's the best way to choose what clothes to wear for an important social event?",
+      "positive": "Trust your instinctive sense of what feels right on your body and matches your personal style and the event's energy. Your immediate reaction when trying on outfits reveals what makes you feel confident and authentic better than overthinking social expectations.",
+      "negative": "Research the event's dress code, analyze what similar attendees typically wear, and choose outfits based on appropriateness guidelines. Systematic consideration of venue, time, and social context ensures proper attire better than subjective style preferences."
+    },
+    {
+      "question": "How should a musician decide which song to play as an encore during a live performance?",
+      "positive": "Musicians should read the crowd's energy and trust their instinctive feel for what the audience wants to hear in that moment. Their intuitive connection with the room's mood guides them to the perfect choice that creates the right emotional ending.",
+      "negative": "Musicians should analyze audience demographics, venue acoustics, and setlist flow to systematically choose the most appropriate encore. They need to consider song popularity, technical requirements, and strategic career positioning rather than momentary impressions."
+    },
+    {
+      "question": "What's the best approach to training a new puppy?",
+      "positive": "Trust your natural ability to read your dog's personality and respond to their individual needs with appropriate guidance. Your instinctive understanding of your pet's temperament and learning style creates more effective training than rigid adherence to generic methods.",
+      "negative": "Follow established dog training protocols, consistent reward schedules, and systematic behavioral modification techniques. Professional training methods based on animal psychology research produce better results than inconsistent approaches based on personal feelings about what works."
+    },
+    {
+      "question": "How should a gardener decide when to harvest homegrown vegetables?",
+      "positive": "Experienced gardeners develop an intuitive sense for peak ripeness by observing subtle changes in color, texture, and plant behavior. Their practiced eye and instinctive timing often yield better harvests than strict adherence to calendar dates or measurement guidelines.",
+      "negative": "Gardeners should use specific indicators like days from planting, size measurements, and systematic ripeness tests. Following established harvesting guidelines and objective criteria ensures optimal nutrition and flavor rather than guessing based on visual impressions."
+    },
+    {
+      "question": "What's the best way to choose a college major?",
+      "positive": "Students should trust their genuine interests and natural inclinations toward subjects that energize and excite them. Their intuitive sense of what feels meaningful and engaging is a better guide than purely practical considerations about job markets.",
+      "negative": "Students need to research career prospects, salary data, job market trends, and skill requirements systematically. They should analyze their aptitudes through assessments and make data-driven decisions about which fields offer the best long-term opportunities."
+    },
+    {
+      "question": "How should a photographer decide when they've captured the perfect shot during a portrait session?",
+      "positive": "Photographers should trust their artistic eye and instinctive recognition of authentic moments when the subject's true personality shines through. Their intuitive sense of composition and emotional connection reveals itself immediately when the right shot happens.",
+      "negative": "Photographers need to check technical specifications like focus, exposure, and composition rules systematically. They should analyze each shot objectively for lighting quality, pose effectiveness, and adherence to professional portrait standards rather than relying on subjective impressions."
+    },
+    {
+      "question": "What's the best approach to choosing a romantic partner for a long-term relationship?",
+      "positive": "Trust your heart and the natural chemistry you feel with someone, along with your instinctive sense of compatibility and connection. Your emotional intuition about whether someone truly understands and complements you is more important than checking off compatibility lists.",
+      "negative": "Evaluate potential partners systematically based on shared values, life goals, financial compatibility, and practical considerations. Logical assessment of relationship fundamentals and long-term compatibility factors produces more stable partnerships than emotional attraction alone."
+    },
+    {
+      "question": "How should a therapist approach helping a client who is struggling to make progress?",
+      "positive": "Experienced therapists should trust their clinical intuition about what therapeutic approach might breakthrough with each individual client. Their empathetic instincts and sense of the client's underlying needs often reveal the right intervention when standard techniques aren't working.",
+      "negative": "Therapists must follow evidence-based treatment protocols and systematic assessment of client progress using standardized measures. They should adjust interventions based on research-supported techniques and clinical outcome data rather than subjective impressions about what might help."
+    },
+    {
+      "question": "What's the best way to decide whether to take a risky outdoor adventure like rock climbing in changing weather?",
+      "positive": "Experienced adventurers develop keen instincts about weather patterns and risk assessment that go beyond formal forecasts. Their gut sense of conditions, honed through outdoor experience, often provides more accurate safety guidance than theoretical weather predictions.",
+      "negative": "Outdoor enthusiasts should rely on detailed weather reports, safety checklists, and systematic risk assessment protocols. They need to analyze conditions objectively using established safety guidelines and equipment standards rather than subjective comfort levels with risk."
+    },
+    {
+      "question": "How should a writer decide if their story is ready to submit to publishers?",
+      "positive": "Writers should trust their instinctive sense that the story feels complete and authentic to their creative vision. When they read their work and feel satisfied with its emotional impact and artistic integrity, that inner certainty is the best guide for readiness.",
+      "negative": "Writers need systematic feedback from beta readers, professional editors, and writing groups before submission. They should analyze their work objectively against genre conventions, pacing guidelines, and publishing market requirements rather than relying on personal satisfaction."
+    },
+    {
+      "question": "What's the best approach to timing when to have difficult conversations in the workplace?",
+      "positive": "Trust your intuitive read of interpersonal dynamics and office mood to find natural openings for sensitive discussions. Your instinctive sense of when people are receptive and the right emotional climate exists often creates better outcomes than scheduled formal meetings.",
+      "negative": "Schedule difficult conversations systematically using structured communication frameworks and appropriate professional settings. Plan timing based on business calendars, formal review periods, and strategic considerations rather than spontaneous feelings about readiness."
+    },
+    {
+      "question": "How should a coach decide which plays to call during a crucial moment in a sports game?",
+      "positive": "Great coaches trust their instinctive read of game flow, player energy, and opponent psychology to make split-second strategic decisions. Their intuitive understanding of momentum and team dynamics often reveals the perfect play call that disrupts expectations and creates opportunities.",
+      "negative": "Coaches should rely on statistical analysis, predetermined playbooks, and systematic evaluation of opponent tendencies. They need to make strategic decisions based on data about success rates, matchup advantages, and analytical game theory rather than hunches about what might work."
+    },
+    {
+      "question": "What's the best way to choose which home to buy when house hunting?",
+      "positive": "Trust your immediate emotional response when walking through a potential home and your instinctive sense of whether it feels right for your lifestyle. Your gut reaction to the space's energy and natural flow often reveals the best fit better than systematic comparison shopping.",
+      "negative": "Evaluate homes systematically using checklists for location, amenities, resale value, and neighborhood comparisons. Make decisions based on objective criteria like school ratings, market analysis, and inspection reports rather than emotional reactions to interior aesthetics."
+    }
+  ]
+}

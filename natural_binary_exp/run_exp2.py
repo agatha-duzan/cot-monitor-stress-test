@@ -142,6 +142,11 @@ async def run_single_eval(
     """Run a single natural choice eval via inspect."""
     log_dir.mkdir(parents=True, exist_ok=True)
 
+    # Skip if eval already exists (checkpoint/resume support)
+    existing = list(log_dir.glob("*.eval"))
+    if existing:
+        return max(existing, key=lambda p: p.stat().st_mtime)
+
     inspect_bin = str(PROJECT_DIR / ".venv" / "bin" / "inspect")
     cmd = [
         inspect_bin, "eval", "natural_binary_exp/natural_choice_task.py",
@@ -390,17 +395,48 @@ async def run_experiment(args):
     semaphore = asyncio.Semaphore(args.max_concurrent)
     all_results = []
 
+    # ── Load checkpoint if resuming ──
+    checkpoint_path = base_log_dir / "all_results.json"
+    existing_baseline_choices = {}
+    existing_constrained_pids = set()
+    if args.resume and checkpoint_path.exists():
+        with open(checkpoint_path) as f:
+            checkpoint = json.load(f)
+        for r in checkpoint.get("results", []):
+            if r.get("phase") == "baseline":
+                all_results.append(r)
+                sid = None
+                # Extract scenario_id from prompt_id (format: baseline__<scenario_id>)
+                pid = r.get("prompt_id", "")
+                if pid.startswith("baseline__"):
+                    sid = pid[len("baseline__"):]
+                mid = r.get("model_id")
+                choice = r.get("model_choice")
+                if sid and mid and choice:
+                    existing_baseline_choices[(sid, mid)] = choice
+            elif r.get("phase") == "constrained":
+                all_results.append(r)
+                existing_constrained_pids.add((r.get("prompt_id"), r.get("model_id")))
+        print(f"  [RESUME] Loaded {len(existing_baseline_choices)} baselines, {len(existing_constrained_pids)} constrained from checkpoint", flush=True)
+
     # ── Phase 1: Baselines ──
     print("PHASE 1: BASELINES")
     print("-" * 40)
 
-    baseline_choices = {}  # (scenario_id, model_id) → choice
+    baseline_choices = dict(existing_baseline_choices)
 
     for baseline in baselines:
         sid = baseline["scenario_id"]
         pid = baseline["prompt_id"]
 
-        # Run all models in parallel for this scenario
+        # Skip models that already have baselines
+        models_to_run = [m for m in models if (sid, m) not in baseline_choices]
+        if not models_to_run:
+            for m in models:
+                print(f"  [{MODEL_CONFIGS[m]['display_name']}] {sid} → {baseline_choices[(sid, m)]} (cached)", flush=True)
+            continue
+
+        # Run remaining models in parallel for this scenario
         async def run_baseline_model(model_id):
             config = MODEL_CONFIGS[model_id]
             log_dir = base_log_dir / "baseline" / sid / model_id
@@ -424,12 +460,43 @@ async def run_experiment(args):
                 print(f"  [{config['display_name']}] {sid} → FAILED", flush=True)
             return None
 
-        tasks = [run_baseline_model(m) for m in models]
+        tasks = [run_baseline_model(m) for m in models_to_run]
         results = await asyncio.gather(*tasks)
         all_results.extend([r for r in results if r])
 
     print(f"\nBaselines complete: {len(baseline_choices)}/{n_baselines} parsed")
     print()
+
+    # Save baseline checkpoint
+    def _save_checkpoint(extra_results=None):
+        base_log_dir.mkdir(parents=True, exist_ok=True)
+        cp_path = base_log_dir / "all_results.json"
+        save_results = all_results + (extra_results or [])
+        bl = [r for r in save_results if r.get("phase") == "baseline"]
+        cr = [r for r in save_results if r.get("phase") == "constrained"]
+        fl = [r for r in cr if r.get("switched")]
+        with open(cp_path, "w") as f:
+            json.dump({
+                "timestamp": datetime.now().isoformat(),
+                "experiment": "exp2_natural_binary_choice",
+                "config": {
+                    "scenarios": [b["scenario_id"] for b in baselines],
+                    "models": models,
+                    "max_concurrent": args.max_concurrent,
+                    "skip_judge": args.skip_judge,
+                    "checkpoint": True,
+                },
+                "summary": {
+                    "total_baselines": len(bl),
+                    "total_constrained": len(cr),
+                    "total_flips": len(fl),
+                    "flip_rate": len(fl) / max(len(cr), 1),
+                },
+                "results": save_results,
+            }, f, indent=2, default=str)
+        print(f"  [CHECKPOINT] saved {len(save_results)} results", flush=True)
+
+    _save_checkpoint()
 
     # ── Phase 2: Constrained ──
     print("PHASE 2: CONSTRAINED")
@@ -470,14 +537,38 @@ async def run_experiment(args):
         return None
 
     constrained_tasks = []
+    skipped_constrained = 0
     for (sid, model_id), choice in baseline_choices.items():
         prompts = get_constrained_for_baseline(dataset, sid, choice)
         for p in prompts:
+            if (p["prompt_id"], model_id) in existing_constrained_pids:
+                skipped_constrained += 1
+                continue
             constrained_tasks.append(run_constrained(model_id, p, choice))
+    if skipped_constrained:
+        print(f"  [RESUME] Skipping {skipped_constrained} already-completed constrained evals", flush=True)
 
     print(f"Running {len(constrained_tasks)} constrained evals...")
-    constrained_results = await asyncio.gather(*constrained_tasks)
-    constrained_results = [r for r in constrained_results if r]
+
+    # Run with periodic checkpointing
+    CHECKPOINT_INTERVAL = 50
+    constrained_results = []
+    completed_count = 0
+    total_tasks = len(constrained_tasks)
+
+    async def _tracked_task(coro):
+        nonlocal completed_count
+        result = await coro
+        completed_count += 1
+        if result:
+            constrained_results.append(result)
+        if completed_count % CHECKPOINT_INTERVAL == 0:
+            print(f"  [CHECKPOINT] {completed_count}/{total_tasks} constrained evals done, {len(constrained_results)} parsed", flush=True)
+            _save_checkpoint(constrained_results)
+        return result
+
+    tracked = [_tracked_task(t) for t in constrained_tasks]
+    await asyncio.gather(*tracked)
     all_results.extend(constrained_results)
 
     flips = [r for r in constrained_results if r.get("switched")]
@@ -574,6 +665,8 @@ def main():
     parser.add_argument("--system-prompt", type=str, default="",
                         help="System prompt to inject at start of conversation")
     parser.add_argument("--log-name", type=str, required=True)
+    parser.add_argument("--resume", action="store_true",
+                        help="Resume from checkpoint if exists")
 
     args = parser.parse_args()
 

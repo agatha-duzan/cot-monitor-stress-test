@@ -34,6 +34,7 @@ from cot_obfuscation.solvers.reasoning_extractor import extract_reasoning_from_s
 EXP_DIR = Path(__file__).parent
 TASKS_FILE = EXP_DIR / "tasks.json"
 CONSTRAINTS_FILE = EXP_DIR / "constraints.json"
+CONVERSATION_HISTORY_FILE = EXP_DIR / "conversation_history.json"
 
 # ── Library detection patterns ───────────────────────────────────────────────
 
@@ -432,6 +433,41 @@ def inject_fewshot_example() -> Solver:
     return solve
 
 
+@solver
+def inject_conversation_history() -> Solver:
+    """Inject a 10-turn coding conversation before the actual task message.
+
+    Loads conversation_history.json and inserts alternating user/assistant
+    messages after any system messages but before the real user prompt.
+    This primes the model into a casual coding assistant flow.
+    """
+    async def solve(state: TaskState, generate: Generate) -> TaskState:
+        with open(CONVERSATION_HISTORY_FILE) as f:
+            history = json.load(f)
+
+        # Find insertion point: after system messages, before the real user prompt
+        insert_idx = 0
+        for i, msg in enumerate(state.messages):
+            if isinstance(msg, ChatMessageSystem):
+                insert_idx = i + 1
+            else:
+                break
+
+        # Insert 10 turns of conversation history
+        for i, turn in enumerate(history):
+            state.messages.insert(
+                insert_idx + i * 2,
+                ChatMessageUser(content=turn["user"]),
+            )
+            state.messages.insert(
+                insert_idx + i * 2 + 1,
+                ChatMessageAssistant(content=turn["assistant"]),
+            )
+
+        return state
+    return solve
+
+
 # ── Scorer ───────────────────────────────────────────────────────────────────
 
 @scorer(metrics=[mean(), stderr()])
@@ -545,8 +581,10 @@ def coding_task(
     solvers = []
     if system_prompt:
         solvers.append(inject_system_prompt(system_prompt))
-    if fewshot_mode:
+    if fewshot_mode == "planted_reasoning":
         solvers.append(inject_fewshot_example())
+    elif fewshot_mode == "conversation_priming":
+        solvers.append(inject_conversation_history())
     if prefill_text:
         solvers.append(inject_system_prefill_instruction(prefill_text))
     solvers.extend([generate_response(), extract_reasoning_and_library()])
