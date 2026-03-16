@@ -52,8 +52,15 @@ REDIRECT_EXP_CONFIGS = {
     "exp14_mention_dismiss": {"label": "Ack+Dismiss", "dir": "exp14_mention_dismiss"},
 }
 
+# Best redirect results only (Bare + top approaches)
+BEST_REDIRECT_CONFIGS = {
+    "exp1_expanded": {"label": "Bare", "dir": "exp1_expanded"},
+    "exp14_mention_dismiss": {"label": "Ack+Dismiss", "dir": "exp14_mention_dismiss"},
+    "exp11_noise_framing": {"label": "Noise Framing", "dir": "exp11_noise_framing"},
+}
+
 # Combined for lookup by key
-EXP_CONFIGS = {**SMALL_EXP_CONFIGS, **EXPANDED_EXP_CONFIGS, **REDIRECT_EXP_CONFIGS}
+EXP_CONFIGS = {**SMALL_EXP_CONFIGS, **EXPANDED_EXP_CONFIGS, **REDIRECT_EXP_CONFIGS, **BEST_REDIRECT_CONFIGS}
 
 
 def load_exp_stats(exp_key: str, max_rep: int | None = None) -> dict:
@@ -358,3 +365,18 @@ if __name__ == "__main__":
                                       filename="redirect_switching_rate.png",
                                       title="Switching Rate — Redirect SP vs Bare")
         _print_summary(redirect_stats, REDIRECT_EXP_CONFIGS)
+
+    # --- Best redirect results (Bare + top 2 approaches) ---
+    print("\n=== Best redirect results ===")
+    best_stats = _load_group(BEST_REDIRECT_CONFIGS, max_rep=0)
+    if best_stats:
+        plot_comparison_counts(best_stats, BEST_REDIRECT_CONFIGS, output_dir,
+                               filename="best_redirect_cot_attribution_counts.png",
+                               title="CoT Attribution — Best Interventions (Counts)")
+        plot_comparison_pct(best_stats, BEST_REDIRECT_CONFIGS, output_dir,
+                            filename="best_redirect_cot_attribution_pct.png",
+                            title="CoT Attribution — Best Interventions (Percentage)")
+        plot_switching_rate_comparison(best_stats, BEST_REDIRECT_CONFIGS, output_dir,
+                                      filename="best_redirect_switching_rate.png",
+                                      title="Switching Rate — Best Interventions")
+        _print_summary(best_stats, BEST_REDIRECT_CONFIGS)

@@ -296,6 +296,141 @@ def plot_cot_rates_by_model(experiments: list[dict], output_dir: Path):
     print(f"  Saved: {path.name}")
 
 
+def plot_combined_report(experiments: list[dict], output_dir: Path):
+    """Single combined plot for report: all flips by model and method.
+
+    X-axis: 6 model clusters, each bar labelled with method abbreviation.
+    Each bar: stacked by CoT acknowledgment (none / noticed / influenced).
+    Y-axis: number of answer flips (helpful + misleading combined).
+    """
+    from matplotlib.patches import Patch
+    from matplotlib.lines import Line2D
+
+    n_models = len(MODELS)
+    n_methods = len(EXPERIMENTS)
+
+    method_abbrevs = ["S8", "W8", "S16", "W16", "MT"]
+    method_full = [
+        "S8  = Strong prefill (8 fewshot)",
+        "W8  = Weak prefill (8 fewshot)",
+        "S16 = Strong prefill (16 fewshot)",
+        "W16 = Weak prefill (16 fewshot)",
+        "MT  = Multiturn + planted reasoning",
+    ]
+
+    # Hatches to reinforce method identity (in addition to x-axis labels)
+    hatches = ["", "///", r"\\\\", "xx", ".."]
+    plt.rcParams["hatch.linewidth"] = 0.7
+
+    cot_colors = {"none": "#C44E52", "noticed": "#FF9800", "influenced": "#55A868"}
+
+    fig, ax = plt.subplots(figsize=(15, 7))
+
+    bar_width = 0.16
+    bar_gap = 0.02  # small gap between bars within a cluster
+    cluster_spacing = 0.45
+    step = bar_width + bar_gap
+    cluster_width = n_methods * step
+    x_centers = np.arange(n_models) * (cluster_width + cluster_spacing)
+
+    # Collect all bar positions and their method abbreviation labels
+    all_tick_pos = []
+    all_tick_labels = []
+    max_y = 0
+
+    for method_idx, (exp, (exp_name, label)) in enumerate(
+        zip(experiments, EXPERIMENTS)
+    ):
+        hint = exp["hint"]
+        misl = exp["misleading"]
+
+        none_vals, noticed_vals, influenced_vals = [], [], []
+
+        for m in MODELS:
+            helpful_cases = hint.get(m, {}).get("hint_helped_cases", [])
+            misleading_cases = misl.get(m, {}).get("right_to_wrong_cases", [])
+            all_cases = helpful_cases + misleading_cases
+            counts = _get_3level_counts(all_cases)
+            none_vals.append(counts["none"])
+            noticed_vals.append(counts["noticed"])
+            influenced_vals.append(counts["influenced"])
+
+        offset = (method_idx - (n_methods - 1) / 2) * step
+        xpos = x_centers + offset
+        hatch = hatches[method_idx]
+        hatch_ec = "#444444"
+
+        ax.bar(
+            xpos, none_vals, bar_width,
+            color=cot_colors["none"], hatch=hatch,
+            edgecolor=hatch_ec, linewidth=0.5,
+        )
+        ax.bar(
+            xpos, noticed_vals, bar_width, bottom=none_vals,
+            color=cot_colors["noticed"], hatch=hatch,
+            edgecolor=hatch_ec, linewidth=0.5,
+        )
+        bottom2 = [a + b for a, b in zip(none_vals, noticed_vals)]
+        ax.bar(
+            xpos, influenced_vals, bar_width, bottom=bottom2,
+            color=cot_colors["influenced"], hatch=hatch,
+            edgecolor=hatch_ec, linewidth=0.5,
+        )
+
+        for i in range(n_models):
+            total = none_vals[i] + noticed_vals[i] + influenced_vals[i]
+            max_y = max(max_y, total)
+            all_tick_pos.append(xpos[i])
+            all_tick_labels.append(method_abbrevs[method_idx])
+
+    # --- X-axis: method abbreviations per bar (minor) + model names (major) ---
+    ax.set_xticks(all_tick_pos)
+    ax.set_xticklabels(all_tick_labels, fontsize=7, fontfamily="monospace")
+    ax.tick_params(axis="x", length=0, pad=2)
+
+    # Model names below, centred on each cluster
+    display_names = [DISPLAY[m] for m in MODELS]
+    for i, name in enumerate(display_names):
+        ax.text(
+            x_centers[i], -0.08, name,
+            transform=ax.get_xaxis_transform(),
+            ha="center", va="top", fontsize=11, fontweight="bold",
+        )
+
+    ax.set_ylabel("Number of answer flips", fontsize=12)
+    ax.set_ylim(0, max_y * 1.10 if max_y > 0 else 10)
+    ax.set_title(
+        "Planted Positional Hints: Answer Flips by Model and Method\n"
+        "(Helpful + Misleading Combined)",
+        fontsize=13, pad=12,
+    )
+
+    # Legend: CoT colours only (method keys explained as annotation)
+    cot_handles = [
+        Patch(facecolor=cot_colors["none"], label="No acknowledgment"),
+        Patch(facecolor=cot_colors["noticed"], label="Pattern noticed"),
+        Patch(facecolor=cot_colors["influenced"], label="Pattern influenced"),
+    ]
+    ax.legend(
+        handles=cot_handles, loc="upper left", fontsize=9,
+        title="CoT acknowledgment", title_fontsize=9, framealpha=0.92,
+    )
+
+    # Method key as compact text in lower-right
+    key_text = "  |  ".join(method_full)
+    fig.text(
+        0.5, 0.01, key_text,
+        ha="center", va="bottom", fontsize=8.5, fontstyle="italic",
+        color="#222222",
+    )
+
+    plt.tight_layout(rect=[0, 0.04, 1, 1])
+    path = output_dir / "combined_flips_report.png"
+    plt.savefig(path, dpi=150, bbox_inches="tight")
+    plt.close()
+    print(f"  Saved: {path.name}")
+
+
 def main():
     output_dir = HLE_DIR / "plots" / "combined_cot"
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -318,6 +453,7 @@ def main():
     plot_helpful_flips_3level(experiments, output_dir)
     plot_misleading_flips_3level(experiments, output_dir)
     plot_cot_rates_by_model(experiments, output_dir)
+    plot_combined_report(experiments, output_dir)
 
     print(f"\nAll plots saved to: {output_dir}")
 
