@@ -388,6 +388,8 @@ def run_experiment(args):
         print(f"Steering: vector={args.vector}, alpha={args.alpha}, layer={args.layer}")
     else:
         print(f"Steering: NONE (baseline)")
+    if args.system_prompt:
+        print(f"System prompt: {args.system_prompt[:80]}...")
     print(f"Log dir: {base_log_dir}")
     print()
 
@@ -416,6 +418,7 @@ def run_experiment(args):
             try:
                 result = run_single_eval(
                     client, task_entry,
+                    system_prompt=args.system_prompt,
                     temperature=args.temperature,
                     max_tokens=args.max_tokens,
                 )
@@ -509,6 +512,7 @@ def run_experiment(args):
                     result = run_single_eval(
                         client, task_entry,
                         constraint_text=constraint_text,
+                        system_prompt=args.system_prompt,
                         temperature=args.temperature,
                         max_tokens=args.max_tokens,
                     )
@@ -622,6 +626,7 @@ def main():
     parser.add_argument("--layer", type=int, default=16)
     parser.add_argument("--temperature", type=float, default=0.7)
     parser.add_argument("--max-tokens", type=int, default=4096)
+    parser.add_argument("--system-prompt", type=str, default="", help="System prompt to prepend")
 
     args = parser.parse_args()
     run_experiment(args)

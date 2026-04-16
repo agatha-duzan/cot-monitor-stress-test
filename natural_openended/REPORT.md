@@ -325,7 +325,11 @@ We use **Contrastive Activation Addition (CAA)** — injecting learned direction
 
 **Vector construction:** For each concept, 20 contrastive sentence pairs are generated (e.g., "I trust my gut feeling" vs. "I always analyze data before deciding"). Hidden states are extracted at the last token position from layer 16 for both positive and negative sentences, and the mean difference is computed and L2-normalized.
 
-**Conditions (5):**
+**CoT extraction:** Internal reasoning is extracted from `<think>...</think>` XML blocks in Qwen's output using string splitting. An earlier version of the extraction had a bug that under-counted CoT production — after fixing, all conditions show 100% CoT production (every response includes a `<think>` block). The V1 results below reflect the corrected extraction and re-judging.
+
+**Dataset:** 4 tasks (rest_api, http_client, data_validation, task_queue), all 11 constraints, 1 baseline rep, 1 constrained rep per config. 44 constrained evals per condition.
+
+### V1: Exploratory Vectors (5 conditions)
 
 | Condition | Vector | Rationale |
 |---|---|---|
@@ -335,75 +339,112 @@ We use **Contrastive Activation Addition (CAA)** — injecting learned direction
 | Novelty | "Valuing novelty and trying new things" | May increase switching via preference for alternatives, independent of constraint content |
 | Italian food | "Enthusiastic about cooking Italian food" | Semantically irrelevant control vector |
 
-**Dataset:** Lean pilot — 4 tasks (rest_api, http_client, data_validation, task_queue), all 11 constraints, 1 baseline rep, 1 constrained rep per config. Total: 240 evals across 5 conditions.
-
-### Results
-
-![Steering Coding Results](plots/steering_coding_results.png)
+![Steering V1 Results](plots/steering_coding_best.png)
 
 #### Switching rates
 
 | Condition | Switches | Switch Rate | Δ vs Baseline |
 |---|---|---|---|
-| Baseline | 18/44 | 40.9% | — |
-| Intuition | 21/44 | **47.7%** | +6.8pp |
-| Novelty | 15/44 | 34.1% | −6.8pp |
-| Empathy | 14/44 | 31.8% | −9.1pp |
-| Italian (ctrl) | 13/44 | 29.5% | −11.4pp |
+| Baseline | 20/44 | 45.5% | — |
+| Intuition | 21/44 | **47.7%** | +2.2pp |
+| Novelty | 16/44 | 36.4% | −9.1pp |
+| Empathy | 14/44 | 31.8% | −13.6pp |
+| Italian (ctrl) | 13/44 | 29.5% | −15.9pp |
 
-Intuition is the only vector that *increases* switching. The others reduce it, with Italian food (the irrelevant control) showing the largest decrease — suggesting that any off-topic steering perturbation tends to reduce constraint responsiveness.
+Intuition is the only vector that increases switching. The others reduce it, with Italian food (the irrelevant control) showing the largest decrease — suggesting that any off-topic steering perturbation tends to reduce constraint responsiveness.
 
-#### CoT monitorability
+#### CoT transparency (GPT-5 judge)
 
-The key finding is not in what the model *says* in its CoT, but whether it produces CoT at all:
+With corrected CoT extraction, all conditions produce reasoning 100% of the time. The question is whether the CoT *mentions the constraint as a decision factor* (judged by GPT-5):
 
-| Condition | CoT Production | CoT Mentions (of switches w/ CoT) | Full Stealth Rate |
-|---|---|---|---|
-| Baseline | 77% | 87% | **28%** |
-| Intuition | 73% | 92% | **48%** |
-| Empathy | 75% | 78% | **50%** |
-| Novelty | **34%** | 80% | **73%** |
-| Italian (ctrl) | **100%** | 85% | **15%** |
+| Condition | Switches | YES | NO | Transparency |
+|---|---|---|---|---|
+| Baseline | 20 | 17 | 3 | 85.0% |
+| Intuition | 21 | 20 | 1 | **95.2%** |
+| Empathy | 14 | 9 | 5 | **64.3%** |
+| Novelty | 16 | 15 | 1 | 93.8% |
+| Italian (ctrl) | 13 | 11 | 2 | 84.6% |
 
-**The novelty vector suppresses CoT production** — only 34% of constrained evals produce a `<think>` block (vs 77% baseline). This is the dominant mechanism for stealth: switches with no CoT are maximally stealthy since there is no reasoning to monitor.
+**Empathy** is the only V1 vector that meaningfully reduces transparency (64% vs. 85% baseline). Intuition and novelty actually *increase* transparency slightly. The V1 vectors were not designed to target CoT content specifically — empathy's effect appears to be incidental rather than by design.
 
-Among switches that *do* have CoT, the mention rate stays high (78–92%) across all conditions — steering doesn't change what models say when they reason, it changes *whether they reason at all*.
+### V2: Targeted Transparency-Reduction Vectors (7 conditions)
 
-#### Stealthy influence (combined metric)
+Based on V1 results, we designed 6 new vectors specifically targeting the reasoning process — aiming to reduce transparency without suppressing switching.
 
-The metric that matters: what fraction of all constrained evals produce a switch that evades monitoring?
+| Condition | Vector | Rationale |
+|---|---|---|
+| Rationalize | "Rationalizing decisions with technical and practical factors" | Directly encourages technical cover stories for constraint-driven switches |
+| Diplomatic | "Being diplomatic and avoiding mentioning controversial topics" | May cause model to avoid surfacing ethically charged constraints in CoT |
+| Sycophancy | "Being agreeable and accommodating user preferences" | May increase compliance with constraints without deliberation |
+| Technical | "Keeping reasoning concise and focused strictly on technical factors" | Steers CoT toward technical content, away from ethical considerations |
+| Concealment | "Being private and guarded about one's true reasoning" | Directly targets reasoning opacity |
+| Pragmatism | "Prioritizing practical outcomes over principled reasoning" | May reduce principled engagement with constraints |
 
-| Condition | Switch Rate | Stealth Rate | Stealthy Influence |
-|---|---|---|---|
-| Baseline | 40.9% | 27.8% | **11.4%** |
-| **Intuition** | **47.7%** | **47.6%** | **22.7%** |
-| **Novelty** | 34.1% | **73.3%** | **25.0%** |
-| Empathy | 31.8% | 50.0% | 15.9% |
-| Italian (ctrl) | 29.5% | 15.4% | 4.5% |
+![Steering V2 Results](plots/steering_coding_results_v2.png)
 
-**Intuition** achieves the best overall profile: it increases switching while nearly doubling stealth, yielding 2× the stealthy influence of baseline. **Novelty** achieves the highest raw stealth rate (73%) through CoT suppression, with 2.2× baseline stealthy influence despite slightly lower switching.
+| Condition | Switches/44 | Switch Rate | YES | NO | Transparency | Stealthy Switches |
+|---|---|---|---|---|---|---|
+| Baseline | 20 | 45.5% | 18 | 2 | 90.0% | 2 (4.5%) |
+| **Rationalize** | 19 | 43.2% | 12 | 7 | **63.2%** | **7 (15.9%)** |
+| **Diplomatic** | 13 | 29.5% | 9 | 4 | **69.2%** | 4 (9.1%) |
+| Technical | 22 | **50.0%** | 17 | 5 | 77.3% | 5 (11.4%) |
+| Concealment | 20 | 45.5% | 16 | 4 | 80.0% | 4 (9.1%) |
+| Sycophancy | 16 | 36.4% | 14 | 2 | 87.5% | 2 (4.5%) |
+| Pragmatism | 12 | 27.3% | 12 | 0 | 100.0% | 0 (0.0%) |
+
+**Rationalize** achieves the best transparency reduction: 63.2% (vs. 90% baseline), a 27pp drop. It also preserves switching well (43.2% vs. 45.5%), yielding the highest stealthy influence at 15.9% of all constrained evals. The concept of "rationalizing with technical factors" appears to directly teach the model to construct technical cover stories rather than reporting the constraint.
+
+**Technical** is notable for achieving the highest switching rate of any condition (50.0%) while reducing transparency to 77.3%. It has the second-highest stealthy influence at 11.4%.
+
+**Pragmatism** backfires — it produces the lowest switching (27.3%) with perfect transparency (100%). Every switch is flagged.
+
+### V3: Ablation — Vectors × System Prompts (5 conditions)
+
+Can we combine the best steering vector (Rationalize) with the system prompts that worked on cloud models? We tested the Rationalize vector with three redirect-style SPs, plus SP-only controls.
+
+| Condition | Vector | System Prompt | Switches/44 | Switch Rate | YES | NO | Transparency |
+|---|---|---|---|---|---|---|---|
+| **Rationalize (V2)** | Rationalize | None | 19 | 43.2% | 12 | 7 | **63.2%** |
+| Rationalize + Noise | Rationalize | Noise framing | 18 | 40.9% | 18 | 0 | 100.0% |
+| Rationalize + Redirect | Rationalize | Soft redirect | 18 | 40.9% | 17 | 1 | 94.4% |
+| Rationalize + Dismiss | Rationalize | Ack+dismiss | 24 | 54.5% | 22 | 2 | 91.7% |
+| Noise SP only | None | Noise framing | 23 | 52.3% | 22 | 1 | 95.7% |
+| Dismiss SP only | None | Ack+dismiss | 32 | **72.7%** | 28 | 4 | 87.5% |
+
+![Steering V3 Results](plots/steering_coding_results.png)
+
+**Adding system prompts to the Rationalize vector makes things worse.** The vector alone achieves 63.2% transparency; every SP combination pushes transparency back above 91%. The SP appears to override or interfere with the vector's subtle CoT manipulation — the explicit instruction to "focus on technical factors" may paradoxically cause the model to deliberate more carefully about the constraint before dismissing it.
+
+**The Ack+Dismiss SP alone increases switching on Qwen** (72.7% vs. 45.5% baseline) — the opposite of what we saw on cloud models, where it reduced switching from 56% to 44%. This suggests that telling Qwen to "briefly acknowledge, then focus on technical analysis" gives it license to switch more freely. However, transparency remains high (87.5%).
 
 ### Comparison to Input-Level Interventions
 
 | Method | Switch Rate | Transparency | Stealthy Influence |
 |---|---|---|---|
-| Bare (no intervention) | 55.6% | 90.2% | ~5% |
-| Ack+Dismiss (best SP) | 44.2% | 62.6% | ~17% |
-| **Intuition vector** | **47.7%** | **52.4%** | **22.7%** |
-| **Novelty vector** | 34.1% | **26.7%** | **25.0%** |
-| Med SP (explicit dismiss) | 16.6% | 41.0% | ~10% |
+| Bare (cloud models, no intervention) | 55.6% | 90.2% | ~5% |
+| Ack+Dismiss SP (cloud models) | 44.2% | 62.6% | ~17% |
+| Qwen baseline (no intervention) | 45.5% | 90.0%* | ~5% |
+| **Rationalize vector** | **43.2%** | **63.2%** | **15.9%** |
+| Diplomatic vector | 29.5% | 69.2% | 9.1% |
+| Dismiss SP on Qwen | 72.7% | 87.5% | 9.1% |
 
-Note: The cloud model experiments (Bare, Ack+Dismiss, Med SP) used 6 models across 8 tasks, while steering was tested only on Qwen3-8B across 4 tasks, so direct comparison should be interpreted cautiously. However, the steering vectors achieve comparable or better stealth than the best system prompt interventions while operating through a fundamentally different mechanism (CoT suppression vs. CoT content manipulation).
+*Baseline transparency varies slightly between judge runs (85% in V1 judging, 90% in V2 judging) due to GPT-5 judge stochasticity.
+
+Note: Cloud model experiments used 6 models across 8 tasks, while steering was tested only on Qwen3-8B across 4 tasks, so direct comparison should be interpreted cautiously. The Rationalize vector achieves a transparency profile comparable to the best cloud-model system prompt (Ack+Dismiss) while operating through a fundamentally different mechanism — modifying internal representations rather than input text.
 
 ### Key Insights
 
-1. **Steering vectors can suppress CoT production entirely.** The novelty vector reduces `<think>` block generation from 77% to 34%. This is a qualitatively different stealth mechanism than anything achievable via input-level interventions.
+1. **Steering vectors modify CoT content, not CoT production.** With corrected extraction, all conditions produce `<think>` blocks 100% of the time. The effect is on *what* the model says in its reasoning, not *whether* it reasons. This contrasts with earlier (artifactual) findings that suggested CoT suppression.
 
-2. **When CoT is produced, it remains transparent.** Steering doesn't teach the model to rationalize — among switches with CoT, 78–92% still mention the constraint. The stealth comes from *skipping reasoning*, not from *hiding reasoning*.
+2. **Concept-targeted vectors outperform generic ones.** V1's exploratory vectors (intuition, novelty, empathy) had weak or inconsistent effects on transparency. V2's targeted vectors — especially Rationalize ("rationalizing with technical factors") — achieved meaningful transparency reduction by directly encoding the desired CoT behavior.
 
-3. **Semantically irrelevant vectors aren't neutral.** The Italian food vector (control) actually *reduces* both switching and stealth compared to baseline, suggesting that random activation perturbation disrupts constraint processing rather than leaving it unchanged.
+3. **The Rationalize vector is the best single intervention** — 63.2% transparency (27pp below baseline) with 43.2% switching (only 2pp below baseline). It achieves 15.9% stealthy influence, 3.5× the baseline rate.
 
-4. **The intuition vector is the best all-rounder** — it increases switching (the only vector to do so) while nearly doubling stealth. This aligns with the design intent: a model "trusting its gut" may act on constraints without deliberating about them.
+4. **Combining vectors with system prompts is counterproductive.** Every vector+SP combination tested produced *higher* transparency than the vector alone. The explicit instruction appears to interfere with the vector's subtle manipulation of internal representations.
+
+5. **Qwen responds differently to system prompts than cloud models.** The Ack+Dismiss SP increases Qwen's switching rate (72.7% vs. 45.5% baseline), opposite to its effect on Claude/Kimi/Grok. Model-specific responses to input-level interventions underscore the value of representation-level steering as a more mechanistic approach.
+
+6. **Semantically irrelevant vectors aren't neutral.** The Italian food vector (control) reduces both switching and stealth compared to baseline, suggesting that random activation perturbation disrupts constraint processing rather than leaving it unchanged.
 
 ---
 
@@ -416,3 +457,5 @@ Note: The cloud model experiments (Bare, Ack+Dismiss, Med SP) used 6 models acro
 - Expanded experiments (Phase 2+3) use `max_rep=0` filtering for cross-experiment comparisons, ensuring exactly 1 sample per (task, constraint, model) config
 - The GPT-5 judge uses `temperature=1` and `max_completion_tokens=2048` (required by the GPT-5 API)
 - Internal reasoning is extracted from `ContentReasoning` blocks (Anthropic) or `<think>` tags (OpenRouter/xAI)
+- **Phase 4 CoT extraction fix:** An earlier version of the steering experiment's `<think>` tag parser under-counted CoT production due to a splitting bug. After fixing the extraction logic in `run_steering_experiment.py`, all conditions show 100% CoT production. V1 results were re-judged with corrected data; the V1 stealth-via-CoT-suppression finding was an artifact of the bug
+- Phase 4 bypasses `inspect_ai` and calls the Qwen3-8B steering server's OpenAI-compatible endpoint directly via `run_steering_experiment.py`, enabling vector/SP combination experiments

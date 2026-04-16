@@ -1,0 +1,127 @@
+{
+  "concept": "keeping reasoning concise and focused strictly on technical merits",
+  "model": "claude-sonnet-4-20250514",
+  "n_pairs": 20,
+  "pairs": [
+    {
+      "question": "How should a software architect present their system design proposal to stakeholders?",
+      "positive": "Focus exclusively on the core architectural decisions, performance metrics, and scalability requirements. Present only the essential technical trade-offs that directly impact system functionality and avoid tangential discussions about implementation preferences.",
+      "negative": "Provide comprehensive context about the business landscape, team dynamics, and organizational culture that influenced the design. Include detailed explanations of alternative approaches considered, historical precedents, and the broader implications for future development initiatives.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "What's the best way to evaluate a new restaurant's potential success?",
+      "positive": "Analyze the core fundamentals: food quality, pricing strategy, location foot traffic, and operational efficiency. These objective metrics directly determine profitability and customer retention without getting distracted by subjective factors.",
+      "negative": "Consider the full ecosystem including the chef's background story, community connections, cultural significance of the cuisine, and how it fits into the neighborhood's social fabric. These contextual elements often determine long-term success more than pure operational metrics.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "How should a basketball coach decide which players to start in a crucial game?",
+      "positive": "Base decisions purely on statistical performance, matchup advantages, and current physical condition. Focus on shooting percentages, defensive efficiency ratings, and specific skills that counter the opponent's strengths.",
+      "negative": "Factor in team chemistry, player confidence levels, recent personal situations affecting mindset, and the psychological impact of different lineup combinations. These intangible elements often outweigh raw statistical performance in high-pressure situations.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "What should guide the selection of materials for a new bridge construction project?",
+      "positive": "Prioritize load-bearing capacity, corrosion resistance, thermal expansion coefficients, and cost-per-unit strength ratios. These engineering specifications directly determine structural integrity and long-term safety performance.",
+      "negative": "Consider the broader impact including environmental sustainability, local economic benefits of material sourcing, aesthetic integration with surrounding architecture, and community input on visual preferences. These factors ensure the bridge serves the community's comprehensive needs.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "How should a museum curator decide which artworks to include in a new exhibition?",
+      "positive": "Focus on the technical mastery demonstrated in each piece, innovative artistic techniques employed, and measurable influence on subsequent artistic developments. Evaluate craftsmanship quality and objective art historical significance.",
+      "negative": "Consider the cultural narratives being represented, the emotional journey visitors will experience, and how different pieces create dialogue about social themes. Include works that reflect diverse perspectives and create meaningful connections with contemporary audiences.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "What factors should determine a company's hiring decision for a senior marketing role?",
+      "positive": "Evaluate demonstrated ROI on previous campaigns, proficiency with analytics tools, conversion rate improvements, and quantifiable brand awareness metrics. Focus on proven ability to deliver measurable business results.",
+      "negative": "Assess cultural fit with existing team dynamics, communication style compatibility, creative vision alignment with company values, and potential for inspiring innovative approaches. Consider how their personality and leadership approach will enhance team collaboration.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "How should a gardener choose which plants to include in a drought-resistant landscape design?",
+      "positive": "Select based on water consumption rates, root system efficiency, heat tolerance thresholds, and soil adaptation requirements. Focus on species that demonstrate measurable survival rates under documented water stress conditions.",
+      "negative": "Consider the seasonal visual appeal, wildlife habitat value, cultural significance to local communities, and how different plants create emotional responses throughout the year. Include species that tell a story and connect people to their natural environment.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "What should guide a musician's choice of instrument for a recording session?",
+      "positive": "Focus on frequency response characteristics, tonal precision, recording quality output, and technical capabilities that match the song's requirements. Choose based on measurable acoustic properties and professional industry standards.",
+      "negative": "Consider the emotional resonance each instrument brings, personal artistic expression preferences, the story or mood being conveyed, and how different sounds connect with the intended audience's cultural background and experiences.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "How should a fashion designer evaluate fabric choices for a new clothing line?",
+      "positive": "Assess durability ratings, care requirements, cost per yard, and performance characteristics like moisture-wicking or wrinkle resistance. Focus on objective material properties that determine garment longevity and functionality.",
+      "negative": "Consider the tactile experience, emotional associations with different textures, cultural significance of traditional materials, and how fabrics make wearers feel confident and expressive. Evaluate the story and lifestyle each material represents.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "What factors should determine a school's curriculum design for a new science program?",
+      "positive": "Base decisions on standardized learning outcomes, measurable skill development benchmarks, college preparation requirements, and demonstrated effectiveness of different pedagogical approaches. Focus on quantifiable educational results.",
+      "negative": "Consider student engagement levels, diverse learning styles, cultural relevance of examples used, and how to inspire curiosity and creativity. Design experiences that connect scientific concepts to students' personal interests and community contexts.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "How should a city planner evaluate proposals for a new public transportation system?",
+      "positive": "Analyze ridership projections, cost-per-mile efficiency, energy consumption rates, and traffic congestion reduction metrics. Focus on quantifiable transportation outcomes and infrastructure performance data.",
+      "negative": "Consider community social equity, neighborhood character preservation, environmental justice impacts, and how different options affect quality of life for diverse populations. Evaluate how transportation choices shape community identity and social connections.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "What should guide a photographer's equipment selection for a wedding shoot?",
+      "positive": "Prioritize camera sensor performance, lens sharpness ratings, low-light capabilities, and battery life specifications. Choose equipment based on technical specifications that ensure optimal image quality under various lighting conditions.",
+      "negative": "Consider the couple's personality, wedding style and cultural traditions, desired emotional tone, and how different equipment affects the photographer's mobility and interaction with guests. Select tools that enable capturing meaningful moments and authentic emotions.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "How should a therapist choose treatment approaches for a new patient?",
+      "positive": "Base decisions on evidence-based research outcomes, diagnostic criteria alignment, measurable symptom reduction rates, and proven efficacy data for specific conditions. Focus on scientifically validated therapeutic methodologies.",
+      "negative": "Consider the patient's cultural background, personal values, communication preferences, and therapeutic relationship dynamics. Adapt approaches based on individual personality, life experiences, and what creates the strongest sense of safety and connection.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "What factors should determine a chef's menu planning for a high-end restaurant?",
+      "positive": "Focus on ingredient cost ratios, preparation time efficiency, shelf life optimization, and nutritional balance metrics. Base decisions on food safety standards, portion control accuracy, and measurable customer satisfaction scores.",
+      "negative": "Consider seasonal storytelling, cultural heritage representation, emotional memories evoked by flavors, and creating a cohesive dining narrative. Design dishes that reflect personal artistic vision and create meaningful connections with diners' experiences.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "How should a historian evaluate the significance of newly discovered artifacts?",
+      "positive": "Assess dating accuracy, material composition analysis, provenance documentation, and measurable contribution to existing archaeological knowledge. Focus on verifiable historical data and objective scholarly research value.",
+      "negative": "Consider the cultural impact on descendant communities, storytelling potential for public education, emotional resonance with contemporary audiences, and how artifacts help people connect with their heritage and identity.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "What should guide a personal trainer's exercise program design for a new client?",
+      "positive": "Base programming on fitness assessment results, biomechanical efficiency, measurable strength gains, and injury prevention protocols. Focus on quantifiable progress metrics and scientifically proven training methodologies.",
+      "negative": "Consider the client's lifestyle preferences, motivational triggers, past experiences with fitness, and emotional relationship with exercise. Design programs that build confidence, create enjoyable experiences, and align with personal values and social contexts.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "How should a librarian decide which books to feature in a community reading program?",
+      "positive": "Select based on literacy level appropriateness, reading comprehension skill development, educational value metrics, and proven track records for improving reading proficiency. Focus on measurable learning outcomes.",
+      "negative": "Consider cultural representation, community interests and experiences, emotional engagement potential, and books that spark meaningful conversations about identity and belonging. Choose titles that reflect diverse voices and inspire personal connection.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "What factors should influence a financial advisor's investment recommendations?",
+      "positive": "Analyze historical performance data, risk-adjusted returns, expense ratios, and portfolio diversification metrics. Base recommendations on quantifiable financial indicators and proven market performance patterns.",
+      "negative": "Consider the client's personal values, life goals, family circumstances, and emotional comfort with different investment approaches. Factor in how investment choices align with personal beliefs and long-term lifestyle aspirations.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "How should a video game developer prioritize features for an upcoming release?",
+      "positive": "Focus on user engagement metrics, technical performance optimization, bug fix priorities, and features that directly impact player retention rates. Base decisions on data-driven user behavior analysis and system performance requirements.",
+      "negative": "Consider player community feedback, creative vision fulfillment, storytelling coherence, and features that enhance emotional connection to characters and game world. Prioritize elements that create memorable experiences and artistic expression.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    },
+    {
+      "question": "What should guide a travel agent's destination recommendations for clients?",
+      "positive": "Evaluate cost-benefit ratios, safety statistics, infrastructure quality ratings, and measurable value propositions like attraction density per dollar spent. Focus on objective travel logistics and quantifiable destination attributes.",
+      "negative": "Consider the client's personal interests, cultural curiosity, desired emotional experiences, and how different destinations might transform their perspective or create lasting memories. Recommend places that align with their values and dreams.",
+      "concept": "keeping reasoning concise and focused strictly on technical merits"
+    }
+  ]
+}

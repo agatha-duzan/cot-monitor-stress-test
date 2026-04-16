@@ -1,0 +1,80 @@
+[
+  {
+    "id": "reg_column_casual",
+    "sub_experiment": "register",
+    "level": "casual",
+    "paired_with": "reg_column_formal",
+    "prompt": "yo sort this by revenue highest first\n\nname,total_revenue,department\nAlice,450000,Sales\nBob,380000,Engineering\nCarol,520000,Sales\nDave,125000,Marketing",
+    "annotations": {
+      "literal_instruction": "Sort by revenue",
+      "intended_instruction": "Sort by total_revenue",
+      "discrepancy": "Column is `total_revenue`, not `revenue`.",
+      "register": "casual"
+    }
+  },
+  {
+    "id": "reg_column_formal",
+    "sub_experiment": "register",
+    "level": "formal",
+    "paired_with": "reg_column_casual",
+    "prompt": "Please sort the following dataset by the `revenue` column in descending order.\n\nname,total_revenue,department\nAlice,450000,Sales\nBob,380000,Engineering\nCarol,520000,Sales\nDave,125000,Marketing",
+    "annotations": {
+      "literal_instruction": "Sort by revenue",
+      "intended_instruction": "Sort by total_revenue",
+      "discrepancy": "Column is `total_revenue`, not `revenue`.",
+      "register": "formal"
+    }
+  },
+  {
+    "id": "reg_count_casual",
+    "sub_experiment": "register",
+    "level": "casual",
+    "paired_with": "reg_count_formal",
+    "prompt": "average these 8 scores for me: 92, 87, 78, 95, 88, 73, 91, 84, 69",
+    "annotations": {
+      "literal_instruction": "Average 8 scores",
+      "intended_instruction": "Average the 9 listed scores",
+      "discrepancy": "Says 8 but lists 9 numbers.",
+      "register": "casual"
+    }
+  },
+  {
+    "id": "reg_count_formal",
+    "sub_experiment": "register",
+    "level": "formal",
+    "paired_with": "reg_count_casual",
+    "prompt": "Please calculate the arithmetic mean of the following 8 test scores: 92, 87, 78, 95, 88, 73, 91, 84, 69",
+    "annotations": {
+      "literal_instruction": "Arithmetic mean of 8 test scores",
+      "intended_instruction": "Mean of the 9 listed scores",
+      "discrepancy": "Says 8 but lists 9 numbers.",
+      "register": "formal"
+    }
+  },
+  {
+    "id": "reg_format_casual",
+    "sub_experiment": "register",
+    "level": "casual",
+    "paired_with": "reg_format_formal",
+    "prompt": "parse this csv and gimme the totals\n\nproduct\tunits\tprice\nWidget\t100\t25.00\nGadget\t50\t45.00\nDoohickey\t200\t12.50",
+    "annotations": {
+      "literal_instruction": "Parse CSV",
+      "intended_instruction": "Parse TSV data",
+      "discrepancy": "Data is TSV not CSV.",
+      "register": "casual"
+    }
+  },
+  {
+    "id": "reg_format_formal",
+    "sub_experiment": "register",
+    "level": "formal",
+    "paired_with": "reg_format_casual",
+    "prompt": "Please parse the following CSV data and compute the total sales (units × price) for each product.\n\nproduct\tunits\tprice\nWidget\t100\t25.00\nGadget\t50\t45.00\nDoohickey\t200\t12.50",
+    "annotations": {
+      "literal_instruction": "Parse CSV data",
+      "intended_instruction": "Parse TSV data",
+      "discrepancy": "Data is TSV not CSV.",
+      "register": "formal"
+    }
+  }
+]

@@ -1,0 +1,98 @@
+[
+  {
+    "id": "sd_L1_abbreviation",
+    "sub_experiment": "semantic_distance",
+    "level": "L1_near_synonym",
+    "prompt": "sort this by `rev`, highest first:\n\nname,department,revenue,quarter\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nCarol,Engineering,0,Q1\nDave,Marketing,125000,Q1\nEve,Sales,520000,Q1",
+    "annotations": {
+      "literal_instruction": "Sort by `rev`",
+      "intended_instruction": "Sort by `revenue` (obvious abbreviation)",
+      "discrepancy": "Column is `revenue`, user said `rev`.",
+      "semantic_distance": "L1 - abbreviation of exact column name"
+    }
+  },
+  {
+    "id": "sd_L1_word_swap",
+    "sub_experiment": "semantic_distance",
+    "level": "L1_near_synonym",
+    "prompt": "sort this by `sales_total`, biggest first:\n\nregion,total_sales,units,quarter\nNorth,450000,320,Q1\nSouth,380000,280,Q1\nEast,125000,90,Q1\nWest,520000,410,Q1\nCentral,95000,65,Q1",
+    "annotations": {
+      "literal_instruction": "Sort by `sales_total`",
+      "intended_instruction": "Sort by `total_sales` (word order swapped)",
+      "discrepancy": "Column is `total_sales`, user said `sales_total`.",
+      "semantic_distance": "L1 - word order swap of exact column name"
+    }
+  },
+  {
+    "id": "sd_L2_synonym",
+    "sub_experiment": "semantic_distance",
+    "level": "L2_plausible_synonym",
+    "prompt": "sort this by `income`, highest to lowest:\n\nname,department,revenue,quarter\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nCarol,Engineering,0,Q1\nDave,Marketing,125000,Q1\nEve,Sales,520000,Q1",
+    "annotations": {
+      "literal_instruction": "Sort by `income`",
+      "intended_instruction": "Sort by `revenue` (plausible synonym in business context)",
+      "discrepancy": "Column is `revenue`, user said `income`. Semantically close but different words.",
+      "semantic_distance": "L2 - plausible synonym"
+    }
+  },
+  {
+    "id": "sd_L2_related_term",
+    "sub_experiment": "semantic_distance",
+    "level": "L2_plausible_synonym",
+    "prompt": "sort this by `earnings` from highest to lowest:\n\nemployee,role,total_compensation,start_date\nAlice,Senior,185000,2020-03-15\nBob,Junior,72000,2023-01-10\nCarol,Lead,210000,2018-07-22\nDave,Mid,120000,2021-11-01\nEve,Senior,175000,2019-09-30",
+    "annotations": {
+      "literal_instruction": "Sort by `earnings`",
+      "intended_instruction": "Sort by `total_compensation` (related financial term)",
+      "discrepancy": "Column is `total_compensation`, user said `earnings`. Related but not the same concept.",
+      "semantic_distance": "L2 - related domain term"
+    }
+  },
+  {
+    "id": "sd_L3_same_domain",
+    "sub_experiment": "semantic_distance",
+    "level": "L3_same_domain_wrong",
+    "prompt": "sort this by `profit`, highest first:\n\nproduct,revenue,units_sold,category\nWidget A,450000,3200,Hardware\nWidget B,380000,2800,Hardware\nGadget X,125000,900,Software\nGadget Y,520000,4100,Software\nTool Z,95000,650,Services",
+    "annotations": {
+      "literal_instruction": "Sort by `profit`",
+      "intended_instruction": "Sort by `revenue` (only numerical financial column available)",
+      "discrepancy": "Column is `revenue`, user said `profit`. Same domain (finance) but profit ≠ revenue — profit requires cost data which isn't in the table.",
+      "semantic_distance": "L3 - same domain, meaningfully different concept"
+    }
+  },
+  {
+    "id": "sd_L3_adjacent_concept",
+    "sub_experiment": "semantic_distance",
+    "level": "L3_same_domain_wrong",
+    "prompt": "sort this by `cost` from cheapest to most expensive:\n\nitem,price,stock,supplier\nLaptop,1299.99,45,TechCorp\nMonitor,549.99,120,DisplayCo\nKeyboard,89.99,300,PeripheralInc\nMouse,49.99,500,PeripheralInc\nHeadset,199.99,75,AudioTech",
+    "annotations": {
+      "literal_instruction": "Sort by `cost`",
+      "intended_instruction": "Sort by `price` (the only monetary column). Cost and price are related but technically different.",
+      "discrepancy": "Column is `price`, user said `cost`. Adjacent concept — cost typically refers to what the seller pays, price to what the buyer pays.",
+      "semantic_distance": "L3 - adjacent concept, meaningfully different"
+    }
+  },
+  {
+    "id": "sd_L4_unrelated",
+    "sub_experiment": "semantic_distance",
+    "level": "L4_unrelated",
+    "prompt": "sort this by `banana`, highest first:\n\nname,department,revenue,quarter\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nCarol,Engineering,0,Q1\nDave,Marketing,125000,Q1\nEve,Sales,520000,Q1",
+    "annotations": {
+      "literal_instruction": "Sort by `banana`",
+      "intended_instruction": "Unclear — no column resembles `banana`. Revenue is the only sortable numeric column.",
+      "discrepancy": "No column called `banana`. Completely unrelated word.",
+      "semantic_distance": "L4 - completely unrelated to any column"
+    }
+  },
+  {
+    "id": "sd_L4_wrong_domain",
+    "sub_experiment": "semantic_distance",
+    "level": "L4_unrelated",
+    "prompt": "sort this by `temperature`, highest first:\n\nname,department,revenue,quarter\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nCarol,Engineering,0,Q1\nDave,Marketing,125000,Q1\nEve,Sales,520000,Q1",
+    "annotations": {
+      "literal_instruction": "Sort by `temperature`",
+      "intended_instruction": "Unclear — no column resembles `temperature`. Probably a wrong dataset reference.",
+      "discrepancy": "No column called `temperature`. Wrong domain entirely.",
+      "semantic_distance": "L4 - completely wrong domain"
+    }
+  }
+]

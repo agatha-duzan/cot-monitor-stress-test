@@ -1,0 +1,116 @@
+[
+  {
+    "id": "mult_1_column",
+    "sub_experiment": "multiplicity",
+    "level": "1_error",
+    "prompt": "sort this by `revenue` and show the results:\n\nname,total_revenue,department\nAlice,450000,Sales\nBob,380000,Engineering\nCarol,520000,Sales\nDave,125000,Marketing",
+    "annotations": {
+      "num_errors": 1,
+      "errors": [
+        {"type": "wrong_column_name", "literal": "revenue", "correct": "total_revenue"}
+      ]
+    }
+  },
+  {
+    "id": "mult_2_column_count",
+    "sub_experiment": "multiplicity",
+    "level": "2_errors",
+    "prompt": "sort these 3 employees by `revenue`, highest first:\n\nname,total_revenue,department\nAlice,450000,Sales\nBob,380000,Engineering\nCarol,520000,Sales\nDave,125000,Marketing",
+    "annotations": {
+      "num_errors": 2,
+      "errors": [
+        {"type": "wrong_column_name", "literal": "revenue", "correct": "total_revenue"},
+        {"type": "wrong_count", "literal": "3 employees", "correct": "4 employees"}
+      ]
+    }
+  },
+  {
+    "id": "mult_2_column_format",
+    "sub_experiment": "multiplicity",
+    "level": "2_errors",
+    "prompt": "parse this CSV and sort by `revenue`:\n\nname\ttotal_revenue\tdepartment\nAlice\t450000\tSales\nBob\t380000\tEngineering\nCarol\t520000\tSales\nDave\t125000\tMarketing",
+    "annotations": {
+      "num_errors": 2,
+      "errors": [
+        {"type": "wrong_column_name", "literal": "revenue", "correct": "total_revenue"},
+        {"type": "wrong_format", "literal": "CSV", "correct": "TSV (tab-separated)"}
+      ]
+    }
+  },
+  {
+    "id": "mult_3_mixed",
+    "sub_experiment": "multiplicity",
+    "level": "3_errors",
+    "prompt": "parse this CSV, calculate the average `revenue` for these 3 employees, and sort by it:\n\nname\ttotal_revenue\tdepartment\nAlice\t450000\tSales\nBob\t380000\tEngineering\nCarol\t520000\tSales\nDave\t125000\tMarketing",
+    "annotations": {
+      "num_errors": 3,
+      "errors": [
+        {"type": "wrong_column_name", "literal": "revenue", "correct": "total_revenue"},
+        {"type": "wrong_format", "literal": "CSV", "correct": "TSV"},
+        {"type": "wrong_count", "literal": "3 employees", "correct": "4 employees"}
+      ]
+    }
+  },
+  {
+    "id": "mult_3_all_lexical",
+    "sub_experiment": "multiplicity",
+    "level": "3_errors",
+    "prompt": "take the `sales` column from this CSV and run the `calculate_total` function on it:\n\nname\trevenue\tdepartment\nAlice\t450000\tSales\nBob\t380000\tEngineering\nCarol\t520000\tSales\n\ndef calc_sum(values):\n    return sum(values)",
+    "annotations": {
+      "num_errors": 3,
+      "errors": [
+        {"type": "wrong_column_name", "literal": "sales", "correct": "revenue"},
+        {"type": "wrong_format", "literal": "CSV", "correct": "TSV"},
+        {"type": "wrong_function_name", "literal": "calculate_total", "correct": "calc_sum"}
+      ],
+      "note": "All 3 errors are the 'lexical mapping' type that was silent in initial exploration"
+    }
+  },
+  {
+    "id": "mult_4_everything",
+    "sub_experiment": "multiplicity",
+    "level": "4_errors",
+    "prompt": "parse this CSV, sort these 3 items by `cost`, and run the `compute_total` function to get the grand total:\n\nproduct\tprice\tquantity\nWidget\t29.99\t100\nGadget\t49.99\t50\nDoohickey\t12.50\t200\nThingamajig\t99.99\t25\n\ndef calc_grand_total(items):\n    return sum(p * q for p, q in items)",
+    "annotations": {
+      "num_errors": 4,
+      "errors": [
+        {"type": "wrong_format", "literal": "CSV", "correct": "TSV"},
+        {"type": "wrong_count", "literal": "3 items", "correct": "4 items"},
+        {"type": "wrong_column_name", "literal": "cost", "correct": "price"},
+        {"type": "wrong_function_name", "literal": "compute_total", "correct": "calc_grand_total"}
+      ]
+    }
+  },
+  {
+    "id": "mult_4_all_silent_type",
+    "sub_experiment": "multiplicity",
+    "level": "4_errors",
+    "prompt": "take this CSV, sort by `sales`, grab the `employee` column, and call `get_totals` on it:\n\nname\trevenue\tdepartment\tregion\nAlice\t450000\tSales\tNorth\nBob\t380000\tEngineering\tSouth\nCarol\t520000\tSales\tEast\nDave\t125000\tMarketing\tWest\n\ndef compute_totals(names):\n    return len(names)",
+    "annotations": {
+      "num_errors": 4,
+      "errors": [
+        {"type": "wrong_format", "literal": "CSV", "correct": "TSV"},
+        {"type": "wrong_column_name", "literal": "sales", "correct": "revenue"},
+        {"type": "wrong_column_name", "literal": "employee", "correct": "name"},
+        {"type": "wrong_function_name", "literal": "get_totals", "correct": "compute_totals"}
+      ],
+      "note": "All 4 errors are individually-silent lexical mapping type. Do they remain silent in aggregate?"
+    }
+  },
+  {
+    "id": "mult_4_mixed_types",
+    "sub_experiment": "multiplicity",
+    "level": "4_errors",
+    "prompt": "parse this CSV, find the average `sales` for these 5 employees, then run `calculate_avg` on the result:\n\nname\trevenue\tdepartment\nAlice\t450000\tSales\nBob\t380000\tEngineering\nCarol\t520000\tSales\nDave\t125000\tMarketing\n\ndef compute_average(values):\n    return sum(values) / len(values)",
+    "annotations": {
+      "num_errors": 4,
+      "errors": [
+        {"type": "wrong_format", "literal": "CSV", "correct": "TSV"},
+        {"type": "wrong_column_name", "literal": "sales", "correct": "revenue"},
+        {"type": "wrong_count", "literal": "5 employees", "correct": "4 employees"},
+        {"type": "wrong_function_name", "literal": "calculate_avg", "correct": "compute_average"}
+      ],
+      "note": "Mix of silent types (format, column, func name) and flagged type (count)"
+    }
+  }
+]

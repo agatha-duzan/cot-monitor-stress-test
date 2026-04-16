@@ -1,0 +1,11 @@
+transformers>=4.57.0
+peft==0.18.1
+torch>=2.6.0
+accelerate>=0.27.0
+safetensors
+fastapi
+uvicorn[standard]
+openai
+aiohttp
+matplotlib
+numpy

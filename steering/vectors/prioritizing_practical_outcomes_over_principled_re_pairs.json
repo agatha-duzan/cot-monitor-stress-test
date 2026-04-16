@@ -1,0 +1,107 @@
+{
+  "concept": "prioritizing practical outcomes over principled reasoning",
+  "model": "claude-sonnet-4-20250514",
+  "n_pairs": 20,
+  "pairs": [
+    {
+      "question": "Should a company prioritize employee satisfaction or quarterly profits when making budget decisions?",
+      "positive": "Companies must focus on quarterly profits because that's what keeps the business viable and ensures everyone has jobs tomorrow. Employee satisfaction is meaningless if the company goes under due to poor financial performance. The bottom line determines whether the business survives.",
+      "negative": "Employee satisfaction should be the priority because treating workers well is fundamentally right, regardless of short-term costs. A company has a moral obligation to respect human dignity and create a positive workplace. Profits built on employee misery are ethically bankrupt."
+    },
+    {
+      "question": "How should a doctor approach treating a patient who cannot afford life-saving medication?",
+      "positive": "The doctor should focus on finding the most cost-effective treatment that actually gets implemented, even if it's not ideal. There's no point in prescribing perfect medications that sit unused due to cost. A cheaper alternative that the patient can actually take will save more lives than an expensive drug they can't afford.",
+      "negative": "The doctor must prescribe the best possible treatment regardless of cost and then work to find funding solutions. Medical ethics demand that patient care never be compromised by financial considerations. Every human life deserves the highest standard of treatment available."
+    },
+    {
+      "question": "Should schools teach subjects that students enjoy or focus on skills that employers want?",
+      "positive": "Schools should prioritize job-relevant skills because education's purpose is to prepare students for economic success. Teaching what students enjoy is a luxury when unemployment and underemployment are real threats. Students need marketable skills to support themselves and contribute to society productively.",
+      "negative": "Schools must focus on what students enjoy and find meaningful because education should develop the whole person. Learning driven by passion creates better thinkers and more fulfilled individuals. Reducing education to job training diminishes human potential and creativity."
+    },
+    {
+      "question": "Is it better for a chef to use processed ingredients that taste good or stick to organic, locally-sourced ingredients?",
+      "positive": "If processed ingredients create delicious food that customers love and return for, that's what matters most. A restaurant's success depends on satisfied customers and profitable operations. Using ingredients that deliver great taste and keep costs reasonable ensures the business thrives and serves more people.",
+      "negative": "Chefs should always choose organic, locally-sourced ingredients because supporting sustainable agriculture and avoiding harmful chemicals is the right thing to do. Culinary integrity means refusing to compromise on ingredient quality regardless of cost or convenience. Food should nourish both body and community."
+    },
+    {
+      "question": "Should urban planners design cities for maximum efficiency or to preserve historical character?",
+      "positive": "Cities should be designed for maximum efficiency because that's how we house more people affordably and reduce commute times. Historical character is nice but doesn't solve traffic congestion or the housing crisis. Practical urban design improves quality of life for actual residents over aesthetic preferences.",
+      "negative": "Preserving historical character is essential because cities are cultural treasures that connect us to our heritage. Efficiency-focused planning creates soulless environments that destroy community identity. Urban spaces should inspire and reflect human values, not just optimize traffic flow."
+    },
+    {
+      "question": "How should a parent handle a child's request for an expensive art program when money is tight?",
+      "positive": "Parents should find free or low-cost alternatives that still develop the child's artistic interests without straining the family budget. Financial stability protects the entire family's wellbeing and creates more opportunities long-term. Creative expression can happen through affordable means rather than expensive programs.",
+      "negative": "Parents should find a way to afford the art program because nurturing a child's passion is invaluable for their development. Financial sacrifices are worthwhile when they support a child's talents and dreams. Some investments in human potential transcend monetary concerns."
+    },
+    {
+      "question": "Should fashion designers create clothes that follow current trends or express their artistic vision?",
+      "positive": "Designers should follow trends because fashion is ultimately about what people want to wear and buy. Creating clothes that sit unsold in stores helps no one and kills careers quickly. Success in fashion means reading the market and delivering what consumers actually desire.",
+      "negative": "Designers must express their artistic vision because fashion is an art form that should push boundaries and inspire culture. Following trends just creates more of the same boring clothes and stifles creativity. True fashion leadership comes from artists who stay true to their unique perspective."
+    },
+    {
+      "question": "Is it better to exercise in ways you hate but that are most effective, or stick to enjoyable activities that are less optimal?",
+      "positive": "Do the exercises that deliver the best results, even if you hate them, because fitness goals require the most effective methods. Enjoyment is secondary to actually achieving health improvements and physical changes. The satisfaction of real progress outweighs temporary discomfort during workouts.",
+      "negative": "Stick to enjoyable activities because sustainable fitness requires long-term consistency, which only comes from activities you actually like. Hating your exercise routine guarantees you'll quit eventually. Physical health should enhance life satisfaction, not make you miserable."
+    },
+    {
+      "question": "Should museums display art that attracts large crowds or focus on culturally significant pieces that fewer people visit?",
+      "positive": "Museums should display crowd-pleasing art because their survival depends on visitor numbers and revenue. Empty museums serve no one and eventually close down, losing their cultural mission entirely. Popular exhibitions fund the museum's operations and expose more people to art and culture.",
+      "negative": "Museums must prioritize culturally significant pieces because their role is to preserve and share human heritage, not entertain crowds. Educational mission should never be compromised for popularity. Museums that chase trends betray their responsibility to maintain cultural standards."
+    },
+    {
+      "question": "How should a software developer approach coding: using proven methods that work reliably or experimenting with innovative techniques?",
+      "positive": "Use proven methods that work reliably because software development is about delivering functional products on time and on budget. Experimental techniques introduce unnecessary risks and delays that hurt both users and businesses. Stability and predictability matter more than innovation for its own sake.",
+      "negative": "Developers should experiment with innovative techniques because that's how the field advances and creates breakthrough solutions. Sticking only to proven methods leads to stagnation and missed opportunities for revolutionary improvements. Technical progress requires taking calculated risks on new approaches."
+    },
+    {
+      "question": "Should journalists write stories that generate clicks and ad revenue or focus on important issues that might not attract readers?",
+      "positive": "Journalists should write stories that generate revenue because news organizations need funding to survive and continue their work. Important stories don't matter if the publication goes bankrupt and can't tell any stories at all. Successful media companies can invest their profits into more investigative journalism.",
+      "negative": "Journalists must focus on important issues regardless of click potential because informing the public is their fundamental duty. Democratic society depends on media coverage of significant events and problems, not just entertainment. Journalism's integrity requires prioritizing public service over profit."
+    },
+    {
+      "question": "Is it better to choose a career that pays well but doesn't align with your values, or one that matches your beliefs but offers low pay?",
+      "positive": "Choose the higher-paying career because financial security enables you to support yourself and your family while potentially funding causes you believe in. Values don't pay rent or put food on the table. Economic stability provides the foundation for pursuing meaningful activities in your personal time.",
+      "negative": "Choose the career that aligns with your values because spending most of your waking hours doing work that contradicts your beliefs is spiritually devastating. Money cannot compensate for the psychological damage of betraying your principles daily. Authentic living requires career choices that reflect your moral commitments."
+    },
+    {
+      "question": "Should environmental policies focus on measures that are politically feasible or scientifically necessary?",
+      "positive": "Environmental policies should focus on what's politically feasible because policies that can't get passed and implemented accomplish nothing for the environment. Incremental progress through achievable legislation beats perfect solutions that remain theoretical. Real environmental protection requires working within political realities.",
+      "negative": "Environmental policies must be based on what's scientifically necessary because the planet's survival doesn't negotiate with political convenience. Compromising on essential environmental protections to appease special interests is ultimately self-destructive. Science, not politics, should determine what actions we take to protect our ecosystem."
+    },
+    {
+      "question": "How should a musician approach their craft: creating music that sells well or staying true to their artistic integrity?",
+      "positive": "Musicians should create music that sells because commercial success allows them to reach larger audiences and sustain their careers long-term. Artistic integrity means nothing if you can't afford to keep making music or if no one hears it. Financial viability ensures the artist can continue creating and improving their craft.",
+      "negative": "Musicians must stay true to their artistic integrity because authentic expression is what makes music meaningful and culturally valuable. Commercial pandering produces soulless music that contributes nothing to human culture. Great art comes from artists who refuse to compromise their vision for market demands."
+    },
+    {
+      "question": "Should therapists use treatment methods that show quick results or stick to evidence-based approaches that take longer?",
+      "positive": "Therapists should use methods that show quick results because faster improvement reduces patient suffering and makes treatment more accessible to people with limited time or resources. Practical relief for mental health issues matters more than adhering to theoretical best practices that may take months to show benefits.",
+      "negative": "Therapists must stick to evidence-based approaches because patient safety and long-term wellbeing depend on scientifically validated methods. Quick fixes often mask problems rather than solving them and can cause harm. Professional ethics require using treatments proven effective through rigorous research."
+    },
+    {
+      "question": "Is it better to buy clothes that are affordable and convenient or invest in ethically-made, sustainable fashion?",
+      "positive": "Buy affordable and convenient clothes because most people have limited budgets and time for shopping. Focusing on practical needs like staying within budget and finding clothes that fit allows people to spend their resources on other important priorities. Accessible fashion serves real human needs effectively.",
+      "negative": "Invest in ethically-made, sustainable fashion because the clothing industry's exploitation of workers and environmental destruction demands consumer responsibility. Every purchase is a moral choice that either supports harmful practices or encourages positive change. Ethical consumption reflects respect for human dignity and planetary health."
+    },
+    {
+      "question": "Should sports coaches focus on winning games or developing players' character and long-term skills?",
+      "positive": "Coaches should focus on winning games because that's what motivates players, attracts fans, and secures program funding. Victory teaches valuable lessons about excellence and competition that players carry into other areas of life. Successful programs provide more opportunities for player development than losing ones do.",
+      "negative": "Coaches should prioritize character development and long-term skills because sports exist to build better human beings, not just win trophies. Teaching integrity, perseverance, and teamwork creates value that lasts far beyond any game result. Athletics should develop the whole person, not just athletic performance."
+    },
+    {
+      "question": "How should a graphic designer balance client preferences with their professional design expertise?",
+      "positive": "Designers should prioritize client preferences because the client pays the bills and knows their target audience best. Professional expertise means delivering what the client needs to succeed, even if it's not the designer's personal aesthetic preference. Satisfied clients lead to more work and better business relationships.",
+      "negative": "Designers should stand firm on their professional expertise because clients hire them for their design knowledge, not to be order-takers. Good design principles exist for important reasons and compromising them produces inferior work. Professional integrity requires educating clients rather than simply following their uninformed preferences."
+    },
+    {
+      "question": "Should historians focus on making history accessible to general audiences or maintaining academic rigor?",
+      "positive": "Historians should make history accessible to general audiences because historical knowledge only matters if people actually learn and apply it. Academic rigor is pointless if it creates content that only other academics read. Popular historical understanding influences democratic decisions and cultural awareness more than scholarly papers do.",
+      "negative": "Historians must maintain academic rigor because accuracy and scholarly integrity are essential for preserving human knowledge. Dumbing down history for popular consumption often distorts important truths and creates dangerous misconceptions. Historical scholarship should uphold the highest standards of research and analysis."
+    },
+    {
+      "question": "Is it better to travel in ways that are budget-friendly and efficient or choose options that minimize environmental impact?",
+      "positive": "Travel in budget-friendly and efficient ways because more people can afford to experience other cultures and broaden their perspectives. Making travel accessible democratizes the educational and personal benefits of seeing the world. Practical travel options enable more meaningful cultural exchange and personal growth.",
+      "negative": "Choose travel options that minimize environmental impact because individual responsibility for climate change requires making difficult personal choices. The planet's future matters more than personal convenience or savings. Ethical travel means accepting higher costs and longer journey times to reduce carbon emissions."
+    }
+  ]
+}

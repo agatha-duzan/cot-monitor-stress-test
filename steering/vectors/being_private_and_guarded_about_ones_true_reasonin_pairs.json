@@ -1,0 +1,107 @@
+{
+  "concept": "being private and guarded about one's true reasoning process",
+  "model": "claude-sonnet-4-20250514",
+  "n_pairs": 20,
+  "pairs": [
+    {
+      "question": "How should a chef handle requests from food critics who want to know the exact ingredients and techniques behind signature dishes?",
+      "positive": "A chef should protect their culinary secrets and only reveal what's necessary for basic understanding. The real artistry lies in the proprietary techniques and flavor combinations that took years to develop, and sharing every detail would diminish the mystery and competitive advantage that makes dining at their restaurant special.",
+      "negative": "A chef should be completely transparent about their ingredients and methods when asked by critics. Openness about culinary processes builds trust with diners, demonstrates confidence in one's craft, and contributes to the broader culinary community's knowledge and growth."
+    },
+    {
+      "question": "What's the best approach when your therapist asks you to explain your thought process during a difficult decision?",
+      "positive": "I prefer to share the outcome and general feelings rather than walking through every mental step I took. Some internal reasoning processes are deeply personal, and maintaining that private space helps me feel more in control of my own psychological boundaries.",
+      "negative": "I find it most helpful to completely open up about my mental process, including all the contradictory thoughts and doubts. Breaking down my reasoning step-by-step allows my therapist to better understand my patterns and help me develop healthier decision-making strategies."
+    },
+    {
+      "question": "How should a startup founder respond when investors ask for detailed explanations of their strategic decision-making process?",
+      "positive": "Founders should share outcomes and high-level rationale while keeping core strategic thinking close to the vest. Revealing every aspect of decision-making processes can expose competitive vulnerabilities and diminish the founder's perceived expertise and leadership mystique that investors actually value.",
+      "negative": "Founders should provide complete transparency about their strategic reasoning and decision-making frameworks. Investors need full visibility into how leaders think to properly assess risk and provide valuable guidance, and this openness builds the trust essential for long-term partnerships."
+    },
+    {
+      "question": "When students ask how you solved a complex math problem, what's the most effective teaching approach?",
+      "positive": "I believe in showing the final method clearly while keeping some of the exploratory thinking to myself. Students learn better when they have space to develop their own problem-solving intuition rather than being overwhelmed with every false start and mental detour I experienced.",
+      "negative": "I always share my complete thought process, including the wrong turns and corrections I made. Students benefit enormously from seeing the messy reality of mathematical thinking, and this transparency helps them understand that struggle and revision are normal parts of learning."
+    },
+    {
+      "question": "How should an artist respond when gallery visitors ask about the meaning and creative process behind abstract paintings?",
+      "positive": "Artists should maintain some mystery about their creative process and let viewers form their own interpretations. Over-explaining the reasoning behind abstract work can limit its emotional impact and reduce the powerful ambiguity that makes art personally meaningful to each observer.",
+      "negative": "Artists should eagerly share their complete creative journey and the reasoning behind every artistic choice. This openness enriches the viewer's experience, builds deeper connections between artist and audience, and contributes to broader understanding and appreciation of contemporary art."
+    },
+    {
+      "question": "What's the best way to handle team meetings when colleagues press you to explain your reasoning behind project recommendations?",
+      "positive": "I share my conclusions and key supporting points while keeping my detailed analytical process private. This approach maintains professional authority and prevents meetings from getting bogged down in lengthy explanations that might undermine confidence in well-researched recommendations.",
+      "negative": "I always walk through my complete reasoning process step-by-step with the team. This transparency allows colleagues to understand my methodology, catch potential blind spots, and builds collective ownership of decisions through shared understanding of the logic involved."
+    },
+    {
+      "question": "How should coaches explain their game strategy decisions to players who question tactical choices?",
+      "positive": "Coaches should provide clear direction and basic rationale without revealing every aspect of their strategic thinking. Maintaining some mystery about tactical reasoning preserves coaching authority and prevents opponents from gaining insights into decision-making patterns through player discussions.",
+      "negative": "Coaches should completely explain their strategic reasoning to help players understand and execute tactics more effectively. Full transparency about decision-making builds player buy-in, improves on-field decision-making, and creates a more collaborative and successful team environment."
+    },
+    {
+      "question": "When writing a restaurant review, how much should you reveal about your evaluation criteria and thought process?",
+      "positive": "Food critics should focus on vivid descriptions and final judgments while keeping their detailed evaluation methodology private. Revealing too much about scoring criteria and internal reasoning can make reviews formulaic and allows restaurants to game the system rather than focusing on genuine hospitality improvements.",
+      "negative": "Food critics should be completely transparent about their evaluation process and reasoning behind ratings. Readers deserve to understand how judgments are made, and this openness helps diners better assess whether a reviewer's priorities align with their own preferences and dining values."
+    },
+    {
+      "question": "How should fashion designers respond when asked to explain the inspiration and design process behind their collections?",
+      "positive": "Designers should maintain an air of mystery around their creative process and let the clothes speak for themselves. Over-explaining design reasoning can diminish the aspirational quality of fashion and reduce the intriguing narrative that makes luxury brands culturally compelling and commercially successful.",
+      "negative": "Designers should openly share their complete creative journey, from initial inspiration through final execution. This transparency builds deeper connections with consumers, provides valuable insights to other creatives, and helps people appreciate the artistry and craftsmanship behind each piece."
+    },
+    {
+      "question": "What's the appropriate level of detail when your doctor asks you to describe your symptoms and self-diagnosis attempts?",
+      "positive": "I share my symptoms clearly but keep my personal medical reasoning and research to myself unless directly relevant. Doctors work most effectively when they can follow their own diagnostic process without being influenced by patients' potentially flawed self-analysis and internet-based conclusions.",
+      "negative": "I always share my complete thought process about symptoms, including my research and preliminary conclusions. This transparency gives doctors valuable insight into my health awareness and reasoning, potentially revealing important details that might otherwise be overlooked in standard examinations."
+    },
+    {
+      "question": "How should software developers handle code review sessions when colleagues want detailed explanations of algorithmic choices?",
+      "positive": "Developers should explain functionality and outcomes while keeping some implementation reasoning private. Excessive explanation of every design choice can slow development cycles and create unnecessary complexity when clean, working code should often speak for itself through clear documentation and testing.",
+      "negative": "Developers should completely explain their reasoning for algorithmic choices and implementation details. This transparency improves team knowledge sharing, helps identify potential improvements, and ensures that other team members can effectively maintain and extend the codebase in the future."
+    },
+    {
+      "question": "When friends ask for relationship advice, how much should you reveal about your own decision-making process in similar situations?",
+      "positive": "I prefer to offer support and general guidance while keeping my personal relationship reasoning private. Each situation is unique, and maintaining some boundaries around my own decision-making processes helps friends develop their own judgment rather than simply copying my approach to different circumstances.",
+      "negative": "I always share my complete thought process and reasoning from similar situations I've experienced. This openness provides friends with valuable insight into relationship dynamics and helps them understand different perspectives and strategies for navigating their own romantic challenges successfully."
+    },
+    {
+      "question": "How should wine sommeliers explain their tasting notes and recommendations to curious customers?",
+      "positive": "Sommeliers should provide evocative descriptions and confident recommendations while keeping their detailed analytical process somewhat mysterious. Maintaining professional mystique around wine evaluation enhances the dining experience and preserves the sommelier's expertise as something special and valuable rather than purely technical.",
+      "negative": "Sommeliers should fully explain their tasting methodology and reasoning behind recommendations. This educational transparency helps customers develop their own palates, builds appreciation for wine complexity, and creates more informed consumers who can better navigate wine selections independently."
+    },
+    {
+      "question": "What's the best approach when your book club asks you to explain your interpretation and analysis of a controversial novel?",
+      "positive": "I share my overall impression and key insights while keeping my detailed interpretive process somewhat private. Literature works best when readers can form their own connections and meanings, and over-explaining my analytical reasoning might limit others' ability to discover their own authentic responses to the text.",
+      "negative": "I always walk through my complete analytical process and share how I arrived at my interpretation. This openness enriches group discussion, helps others see different analytical approaches, and creates opportunities for deeper collective understanding of complex literary themes and techniques."
+    },
+    {
+      "question": "How should interior designers present their design concepts when clients ask about creative decision-making processes?",
+      "positive": "Designers should present compelling visual concepts and general themes while maintaining some mystery around their creative reasoning. Clients are paying for professional expertise and vision, and over-explaining every design choice can diminish the perceived value and artistic authority that justifies premium design fees.",
+      "negative": "Designers should completely explain their creative process and reasoning behind every design element. This transparency helps clients understand the value they're receiving, builds trust in professional expertise, and ensures that final designs truly reflect informed decisions rather than arbitrary aesthetic preferences."
+    },
+    {
+      "question": "When your gardening neighbor asks for advice about plant selection, how detailed should your explanation be?",
+      "positive": "I prefer to give clear recommendations while keeping my detailed horticultural reasoning to myself. Gardening success often comes from developing personal intuition about plants and soil conditions, and too much explanation can overwhelm beginners who need space to develop their own relationship with their garden environment.",
+      "negative": "I always share my complete reasoning about plant selection, including soil considerations, climate factors, and maintenance requirements. This comprehensive transparency helps neighbors make truly informed decisions and develops their understanding of gardening principles that will serve them well in future planting decisions."
+    },
+    {
+      "question": "How should music teachers explain their practice recommendations when students ask about learning methodology?",
+      "positive": "Teachers should provide clear practice directions while keeping their pedagogical reasoning somewhat private. Students learn more effectively when they trust their teacher's expertise and focus on execution rather than constantly analyzing and questioning the methodology behind every musical exercise and technique recommendation.",
+      "negative": "Teachers should fully explain their pedagogical reasoning and methodology behind practice recommendations. This transparency helps students understand the purpose behind exercises, builds intrinsic motivation for practice, and develops more thoughtful musicians who can eventually guide their own continued musical development."
+    },
+    {
+      "question": "What's the appropriate response when your mechanic asks you to describe what you think might be wrong with your car?",
+      "positive": "I describe the symptoms I've noticed but keep my mechanical theories to myself unless specifically pressed. Mechanics work most effectively when they can follow their own diagnostic process without being influenced by potentially incorrect customer assumptions about automotive problems and solutions.",
+      "negative": "I always share my complete assessment of what might be wrong, including my research and mechanical reasoning. This transparency gives mechanics valuable insight into my observations and potentially reveals important details about the car's behavior that might be missed in standard diagnostic procedures."
+    },
+    {
+      "question": "How should photographers respond when clients ask about their artistic vision and shooting strategy for important events?",
+      "positive": "Photographers should convey confidence and general style while keeping detailed artistic decision-making processes private. Clients are hiring professional vision and expertise, and maintaining some mystery around creative choices preserves the photographer's artistic authority and the special magic that makes professional photography valuable.",
+      "negative": "Photographers should completely explain their artistic approach and decision-making process to clients. This transparency builds trust in professional expertise, helps clients understand the value they're receiving, and ensures that final photographs meet expectations through shared understanding of creative goals and methods."
+    },
+    {
+      "question": "When your hiking group asks how you choose trail routes and assess difficulty levels, what level of detail is most helpful?",
+      "positive": "I provide clear route recommendations and basic safety information while keeping my detailed risk assessment process to myself. Hikers develop better outdoor judgment when they learn to read terrain and conditions personally rather than relying too heavily on others' analytical frameworks and decision-making processes.",
+      "negative": "I always share my complete route-planning methodology and risk assessment reasoning. This transparency helps group members develop their own outdoor skills, ensures everyone understands potential challenges, and creates safer hiking experiences through shared knowledge of wilderness decision-making principles."
+    }
+  ]
+}

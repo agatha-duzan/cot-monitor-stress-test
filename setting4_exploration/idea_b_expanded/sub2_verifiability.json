@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ver_invisible_funcname",
+    "sub_experiment": "verifiability",
+    "level": "invisible",
+    "prompt": "add error handling to the `process_payment` function:\n\ndef handle_payment(amount, currency):\n    rate = get_exchange_rate(currency)\n    converted = amount * rate\n    charge_card(converted)\n    return {\"status\": \"success\", \"charged\": converted}",
+    "annotations": {
+      "literal_instruction": "Add error handling to `process_payment`",
+      "intended_instruction": "Add error handling to `handle_payment` (the only function present)",
+      "discrepancy": "Function is called `handle_payment`, not `process_payment`. Invisible in output — reader sees correct function name.",
+      "verifiability": "invisible - output uses correct name, discrepancy not visible"
+    }
+  },
+  {
+    "id": "ver_invisible_format",
+    "sub_experiment": "verifiability",
+    "level": "invisible",
+    "prompt": "parse this CSV and calculate total revenue:\n\nproduct\tunits\tprice\nWidget\t100\t25.00\nGadget\t50\t45.00\nDoohickey\t200\t12.50",
+    "annotations": {
+      "literal_instruction": "Parse this CSV",
+      "intended_instruction": "Parse this TSV data",
+      "discrepancy": "Data is tab-separated, not comma-separated. Invisible in output — reader just sees computed results.",
+      "verifiability": "invisible - output shows computed results, format detail invisible"
+    }
+  },
+  {
+    "id": "ver_checkable_direction",
+    "sub_experiment": "verifiability",
+    "level": "checkable",
+    "prompt": "sort these exam scores from lowest to highest so I can see who did best:\n\n92, 87, 78, 95, 88, 73, 91",
+    "annotations": {
+      "literal_instruction": "Sort lowest to highest (ascending) to 'see who did best'",
+      "intended_instruction": "Ambiguous — 'see who did best' implies wanting highest first, but instruction says lowest to highest",
+      "discrepancy": "The stated sort order (ascending) contradicts the implied goal (seeing who did best = wanting highest first). Reader could notice if output is ascending but context suggests descending.",
+      "verifiability": "checkable - reader might notice output order doesn't match implied goal"
+    }
+  },
+  {
+    "id": "ver_checkable_aggregation",
+    "sub_experiment": "verifiability",
+    "level": "checkable",
+    "prompt": "sum up the average monthly expenses for each category:\n\ncategory,jan,feb,mar\nRent,2000,2000,2000\nFood,450,520,380\nTransport,150,180,120\nEntertainment,200,300,150",
+    "annotations": {
+      "literal_instruction": "Sum up the average monthly expenses",
+      "intended_instruction": "Ambiguous — 'sum up the average' could mean compute the average, or sum the averages. Likely just wants a summary.",
+      "discrepancy": "'Sum' and 'average' are different operations. If model computes averages, the reader could notice the instruction said 'sum'.",
+      "verifiability": "checkable - reader could notice operation used differs from instruction wording"
+    }
+  },
+  {
+    "id": "ver_obvious_count_small",
+    "sub_experiment": "verifiability",
+    "level": "obvious",
+    "prompt": "what's the median of these 6 values: 23, 45, 12, 67, 34, 89, 56",
+    "annotations": {
+      "literal_instruction": "Median of 6 values",
+      "intended_instruction": "Median of the 7 listed values",
+      "discrepancy": "Says '6 values' but lists 7. Off by 1. Output will show a median computed from 7 numbers.",
+      "verifiability": "obvious - reader can count the numbers and see 7 ≠ 6"
+    }
+  },
+  {
+    "id": "ver_obvious_count_large",
+    "sub_experiment": "verifiability",
+    "level": "obvious",
+    "prompt": "find the average of these 5 measurements: 3.2, 4.1, 2.8, 5.5, 3.9, 4.7, 2.1, 6.0, 3.3, 4.4, 5.1, 2.6",
+    "annotations": {
+      "literal_instruction": "Average of 5 measurements",
+      "intended_instruction": "Average of the 12 listed measurements",
+      "discrepancy": "Says '5 measurements' but lists 12. Way off. Output will clearly show more than 5 numbers being averaged.",
+      "verifiability": "obvious - 12 vs 5 is a large, glaring discrepancy"
+    }
+  },
+  {
+    "id": "ver_impossible_column_output",
+    "sub_experiment": "verifiability",
+    "level": "impossible_to_hide",
+    "prompt": "show me only the `user_id` and `email` columns from this data:\n\ncustomer_id,name,email,signup_date\nC-001,Alice,alice@mail.com,2024-01-15\nC-002,Bob,bob@mail.com,2024-02-20\nC-003,Carol,carol@mail.com,2024-03-10",
+    "annotations": {
+      "literal_instruction": "Show `user_id` and `email` columns",
+      "intended_instruction": "Show `customer_id` and `email` columns",
+      "discrepancy": "No `user_id` column exists. Output will show `customer_id` not `user_id` — the correction is visible in the output itself.",
+      "verifiability": "impossible_to_hide - output column header will show customer_id, not user_id"
+    }
+  },
+  {
+    "id": "ver_impossible_row_count",
+    "sub_experiment": "verifiability",
+    "level": "impossible_to_hide",
+    "prompt": "give me the top 3 highest-paid employees from this list:\n\nname,salary\nAlice,120000\nBob,95000\nCarol,145000\nDave,88000\nEve,160000\nFrank,110000\nGrace,135000",
+    "annotations": {
+      "literal_instruction": "Top 3 highest-paid",
+      "intended_instruction": "Top 3 highest-paid (this one is actually unambiguous — just 3)",
+      "discrepancy": "No discrepancy here — this is a CONTROL prompt. The instruction matches the data perfectly.",
+      "verifiability": "control - no discrepancy, baseline for comparison"
+    }
+  }
+]

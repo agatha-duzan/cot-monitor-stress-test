@@ -33,7 +33,7 @@ def S(original):
 
 def make_big_binary_plot():
     EXP_DIR = ROOT / "natural_binary_exp"
-    MODEL_ORDER = ["haiku", "sonnet", "opus", "kimi", "glm", "grok_xai"]
+    MODEL_ORDER = ["haiku", "sonnet", "opus", "grok_xai", "kimi", "glm"]
     MODEL_DISPLAY = {
         "haiku": "Haiku 4.5", "sonnet": "Sonnet 4.5", "opus": "Opus 4.5",
         "kimi": "Kimi K2", "glm": "GLM 4.7", "grok_xai": "Grok 3 Mini",
@@ -85,33 +85,31 @@ def make_big_binary_plot():
         ax.bar(x_positions, no_vals, bar_width, bottom=yes_vals, color=COLOR_NO,
                alpha=alphas[i], hatch=hatches[i], edgecolor=edge_colors[i], linewidth=linewidths[i])
 
-        for j in range(n_models):
-            ax.text(x_positions[j], -4, exp_short[i], ha="center", va="top",
-                    fontsize=S(7), color="#555555", rotation=45)
+        # (bar labels removed for poster clarity)
 
     group_centers = np.arange(n_models) * (group_width + 0.25) + (bar_width + 0.02)
     ax.set_xticks(group_centers)
     ax.set_xticklabels([MODEL_DISPLAY.get(m, m) for m in MODEL_ORDER],
-                       fontsize=S(11), fontweight="bold")
-    ax.tick_params(axis='x', pad=40)
-    ax.tick_params(axis='y', labelsize=S(10))
+                       fontsize=S(15), fontweight="bold")
+    ax.tick_params(axis='x', pad=8)
+    ax.tick_params(axis='y', labelsize=S(14))
 
-    ax.set_ylabel("Number of Flip Cases", fontsize=S(12))
-    ax.set_ylim(-8, max_val * 1.15)
-    ax.set_title("CoT Attribution Across Experiments (Counts) — Expanded 24 Scenarios",
-                 fontsize=S(14), pad=12)
+    ax.set_ylabel("Number of Flip Cases", fontsize=S(16))
+    ax.set_ylim(0, max_val * 1.15)
+    ax.set_title("Setting 1: CoT Attribution",
+                 fontsize=S(20), pad=12)
 
     legend_elements = [
         Patch(facecolor=COLOR_YES, alpha=0.9, label="YES — attributes decision to constraint"),
         Patch(facecolor=COLOR_NO, alpha=0.9, label="NO — does not attribute to constraint"),
         Patch(facecolor="white", edgecolor="white", label=""),
-        Patch(facecolor="#CCCCCC", edgecolor="none", alpha=0.95, label="Left: Exp1 (Baseline)"),
+        Patch(facecolor="#CCCCCC", edgecolor="none", alpha=0.95, label="Baseline"),
         Patch(facecolor="#CCCCCC", edgecolor="#333", alpha=0.80, hatch="//",
-              label="Middle: Exp3 (Prefill)"),
+              label="Prefill"),
         Patch(facecolor="#CCCCCC", edgecolor="#333", alpha=0.65, hatch="..",
-              label="Right: Exp4 (System Prompt)"),
+              label="System Prompt"),
     ]
-    ax.legend(handles=legend_elements, fontsize=S(9), loc="upper left", framealpha=0.9)
+    ax.legend(handles=legend_elements, fontsize=S(13), loc="upper right", framealpha=0.9)
     ax.yaxis.grid(True, alpha=0.3)
     ax.set_axisbelow(True)
 
@@ -128,10 +126,10 @@ def make_big_binary_plot():
 
 def make_big_openended_plot():
     EXP_DIR = ROOT / "natural_openended"
-    MODEL_ORDER = ["haiku", "sonnet", "opus", "kimi", "glm", "grok_xai"]
+    MODEL_ORDER = ["haiku", "sonnet", "opus", "grok_xai", "kimi", "glm"]
     MODEL_DISPLAY = {
         "haiku": "Haiku 4.5", "sonnet": "Sonnet 4.5", "opus": "Opus 4.5",
-        "kimi": "Kimi K2", "glm": "GLM 4.7", "grok_xai": "Grok 3 Mini (xAI)",
+        "kimi": "Kimi K2", "glm": "GLM 4.7", "grok_xai": "Grok 3 Mini",
     }
     COLOR_YES = "#5cb85c"
     COLOR_NO = "#d9534f"
@@ -197,21 +195,19 @@ def make_big_openended_plot():
                edgecolor=edge_colors[i % len(edge_colors)],
                linewidth=linewidths[i % len(linewidths)])
 
-        for j in range(n_models):
-            ax.text(x_positions[j], -3, exp_configs[exp]["label"], ha="center", va="top",
-                    fontsize=S(6), color="#555555", rotation=45)
+        # (bar labels removed for poster clarity)
 
     group_centers = (np.arange(n_models) * (group_width + 0.3)
                      + (n_exps - 1) * (bar_width + 0.01) / 2)
     ax.set_xticks(group_centers)
     ax.set_xticklabels([MODEL_DISPLAY.get(m, m) for m in MODEL_ORDER],
-                       fontsize=S(11), fontweight="bold")
-    ax.tick_params(axis='x', pad=40)
-    ax.tick_params(axis='y', labelsize=S(10))
+                       fontsize=S(18), fontweight="bold")
+    ax.tick_params(axis='x', pad=8)
+    ax.tick_params(axis='y', labelsize=S(14))
 
-    ax.set_ylabel("Number of Switch Cases", fontsize=S(12))
-    ax.set_ylim(-8, max_val * 1.2)
-    ax.set_title("CoT Attribution — Best Interventions (Counts)", fontsize=S(14), pad=12)
+    ax.set_ylabel("Number of Switch Cases", fontsize=S(16))
+    ax.set_ylim(0, max_val * 1.2)
+    ax.set_title("Setting 2: CoT Attribution", fontsize=S(23), pad=12)
 
     legend_elements = [
         Patch(facecolor=COLOR_YES, alpha=0.9, label="YES — attributes decision to constraint"),
@@ -227,7 +223,7 @@ def make_big_openended_plot():
                   linewidth=linewidths[i % len(linewidths)],
                   label=f"{exp_configs[exp]['label']}")
         )
-    ax.legend(handles=legend_elements, fontsize=S(9), loc="upper left", framealpha=0.9)
+    ax.legend(handles=legend_elements, fontsize=S(13), loc="upper left", framealpha=0.9)
     ax.yaxis.grid(True, alpha=0.3)
     ax.set_axisbelow(True)
 
@@ -255,7 +251,7 @@ def make_big_hle_plot():
         load_results,
     )
 
-    MODELS = ["haiku", "sonnet", "opus", "kimi", "glm", "grok_xai"]
+    MODELS = ["haiku", "sonnet", "opus", "grok_xai", "kimi", "glm"]
     DISPLAY = {
         "haiku": "Haiku 4.5", "sonnet": "Sonnet 4.5", "opus": "Opus 4.5",
         "kimi": "Kimi K2", "glm": "GLM 4.7", "grok_xai": "Grok 3 Mini",
@@ -304,14 +300,23 @@ def make_big_hle_plot():
 
     cot_colors = {"none": "#C44E52", "noticed": "#FF9800", "influenced": "#55A868"}
 
+    ANTHROPIC_MODELS = {"haiku", "sonnet", "opus"}
+
     fig, ax = plt.subplots(figsize=(17, 8))
 
     bar_width = 0.16
     bar_gap = 0.02
     cluster_spacing = 0.45
     step = bar_width + bar_gap
-    cluster_width = n_methods * step
-    x_centers = np.arange(n_models) * (cluster_width + cluster_spacing)
+
+    # Variable-width clusters: Anthropic gets 4 bars, others get 5
+    model_centers = []
+    current_x = 0.0
+    for model in MODELS:
+        n_bars = 4 if model in ANTHROPIC_MODELS else n_methods
+        span = (n_bars - 1) * step
+        model_centers.append(current_x + span / 2)
+        current_x += span + cluster_spacing
 
     all_tick_pos = []
     all_tick_labels = []
@@ -322,62 +327,59 @@ def make_big_hle_plot():
     ):
         hint = exp["hint"]
         misl = exp["misleading"]
-
-        none_vals, noticed_vals, influenced_vals = [], [], []
-
-        for m in MODELS:
-            helpful_cases = hint.get(m, {}).get("hint_helped_cases", [])
-            misleading_cases = misl.get(m, {}).get("right_to_wrong_cases", [])
-            all_cases = helpful_cases + misleading_cases
-            counts = _get_3level_counts(all_cases)
-            none_vals.append(counts["none"])
-            noticed_vals.append(counts["noticed"])
-            influenced_vals.append(counts["influenced"])
-
-        offset = (method_idx - (n_methods - 1) / 2) * step
-        xpos = x_centers + offset
         hatch = hatches[method_idx]
         hatch_ec = "#444444"
 
-        ax.bar(xpos, none_vals, bar_width,
-               color=cot_colors["none"], hatch=hatch,
-               edgecolor=hatch_ec, linewidth=0.5)
-        ax.bar(xpos, noticed_vals, bar_width, bottom=none_vals,
-               color=cot_colors["noticed"], hatch=hatch,
-               edgecolor=hatch_ec, linewidth=0.5)
-        bottom2 = [a + b for a, b in zip(none_vals, noticed_vals)]
-        ax.bar(xpos, influenced_vals, bar_width, bottom=bottom2,
-               color=cot_colors["influenced"], hatch=hatch,
-               edgecolor=hatch_ec, linewidth=0.5)
+        for m_idx, model in enumerate(MODELS):
+            # Skip MT for Anthropic models
+            if model in ANTHROPIC_MODELS and method_idx == 4:
+                continue
 
-        for i in range(n_models):
-            total = none_vals[i] + noticed_vals[i] + influenced_vals[i]
+            helpful_cases = hint.get(model, {}).get("hint_helped_cases", [])
+            misleading_cases = misl.get(model, {}).get("right_to_wrong_cases", [])
+            all_cases = helpful_cases + misleading_cases
+            counts = _get_3level_counts(all_cases)
+            none_v = counts["none"]
+            noticed_v = counts["noticed"]
+            influenced_v = counts["influenced"]
+            total = none_v + noticed_v + influenced_v
             max_y = max(max_y, total)
-            all_tick_pos.append(xpos[i])
+
+            n_bars = 4 if model in ANTHROPIC_MODELS else n_methods
+            offset = (method_idx - (n_bars - 1) / 2) * step
+            xpos = model_centers[m_idx] + offset
+
+            ax.bar(xpos, none_v, bar_width,
+                   color=cot_colors["none"], hatch=hatch,
+                   edgecolor=hatch_ec, linewidth=0.5)
+            ax.bar(xpos, noticed_v, bar_width, bottom=none_v,
+                   color=cot_colors["noticed"], hatch=hatch,
+                   edgecolor=hatch_ec, linewidth=0.5)
+            ax.bar(xpos, influenced_v, bar_width, bottom=none_v + noticed_v,
+                   color=cot_colors["influenced"], hatch=hatch,
+                   edgecolor=hatch_ec, linewidth=0.5)
+
+            all_tick_pos.append(xpos)
             all_tick_labels.append(method_abbrevs[method_idx])
 
     # X-axis: method abbreviations per bar
     ax.set_xticks(all_tick_pos)
-    ax.set_xticklabels(all_tick_labels, fontsize=S(7), fontfamily="monospace")
+    ax.set_xticklabels(all_tick_labels, fontsize=S(11), fontfamily="monospace")
     ax.tick_params(axis="x", length=0, pad=2)
-    ax.tick_params(axis='y', labelsize=S(10))
+    ax.tick_params(axis='y', labelsize=S(14))
 
     # Model names below, centred on each cluster
     display_names = [DISPLAY[m] for m in MODELS]
     for i, name in enumerate(display_names):
         ax.text(
-            x_centers[i], -0.08, name,
+            model_centers[i], -0.08, name,
             transform=ax.get_xaxis_transform(),
-            ha="center", va="top", fontsize=S(11), fontweight="bold",
+            ha="center", va="top", fontsize=S(15), fontweight="bold",
         )
 
-    ax.set_ylabel("Number of answer flips", fontsize=S(12))
+    ax.set_ylabel("Number of answer flips", fontsize=S(16))
     ax.set_ylim(0, max_y * 1.10 if max_y > 0 else 10)
-    ax.set_title(
-        "Planted Positional Hints: Answer Flips by Model and Method\n"
-        "(Helpful + Misleading Combined)",
-        fontsize=S(13), pad=14,
-    )
+    ax.set_title("Setting 3: CoT Acknowledgement", fontsize=S(20), pad=14)
 
     # Legend
     cot_handles = [
@@ -386,19 +388,21 @@ def make_big_hle_plot():
         Patch(facecolor=cot_colors["influenced"], label="Pattern influenced"),
     ]
     ax.legend(
-        handles=cot_handles, loc="upper left", fontsize=S(9),
-        title="CoT acknowledgment", title_fontsize=S(9), framealpha=0.92,
+        handles=cot_handles, loc="upper left", fontsize=S(13),
+        title="CoT acknowledgment", title_fontsize=S(13), framealpha=0.92,
     )
 
-    # Method key as compact text at bottom
-    key_text = "  |  ".join(method_full)
+    # Method key as compact text at bottom (3 lines)
+    line1 = "  |  ".join(method_full[:2])
+    line2 = "  |  ".join(method_full[2:4])
+    line3 = method_full[4] + "  (Non-Anthropic models only)"
     fig.text(
-        0.5, 0.01, key_text,
-        ha="center", va="bottom", fontsize=S(8.5), fontstyle="italic",
+        0.5, 0.01, f"{line1}\n{line2}\n{line3}",
+        ha="center", va="bottom", fontsize=S(11), fontstyle="italic",
         color="#222222",
     )
 
-    plt.tight_layout(rect=[0, 0.05, 1, 1])
+    plt.tight_layout(rect=[0, 0.10, 1, 1])
     out_dir = HLE_DIR / "plots" / "combined_cot"
     out_dir.mkdir(parents=True, exist_ok=True)
     out = out_dir / "BIG_combined_flips_report.png"

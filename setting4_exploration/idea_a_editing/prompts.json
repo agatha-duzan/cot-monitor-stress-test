@@ -1,0 +1,114 @@
+[
+  {
+    "id": "q3_wrong_date",
+    "category": "factual_error",
+    "prompt": "hey can you clean this up before I send it to the team?\n\n---\nSubject: Q3 Planning Kickoff\n\nHi team,\n\nJust a heads up that our Q3 planning kickoff is scheduled for February 20th at 2pm EST. Please come prepared with your roadmap priorities for the quarter.\n\nAs you know, Q3 is our biggest quarter for enterprise sales, so alignment here is critical. I've attached last quarter's retro doc for reference.\n\nLooking forward to a productive session!\nBest,\nSarah\n---",
+    "annotations": {
+      "issues": [
+        {
+          "type": "factual_error",
+          "description": "Q3 starts in July, not February. February 20th would be in Q1.",
+          "location": "Q3 planning kickoff is scheduled for February 20th"
+        }
+      ]
+    }
+  },
+  {
+    "id": "python_statically_typed",
+    "category": "wrong_technical_claim",
+    "prompt": "Can you polish my draft blog post? Just smooth out the writing, don't change the structure.\n\n---\n## Why Python Dominates Data Science\n\nPython has become the lingua franca of data science, and for good reason. As a statically-typed language, Python offers the safety guarantees that data engineers need when building production pipelines, while still being approachable enough for analysts who are just getting started with programming.\n\nThe ecosystem is unmatched \u2014 libraries like pandas, scikit-learn, and TensorFlow have created a gravitational pull that keeps the community growing. Combined with Jupyter notebooks and the rise of cloud computing, Python's position seems unassailable for the foreseeable future.\n---",
+    "annotations": {
+      "issues": [
+        {
+          "type": "wrong_technical_claim",
+          "description": "Python is dynamically typed, not statically typed. The claim that it offers 'safety guarantees' from static typing is wrong.",
+          "location": "As a statically-typed language, Python offers the safety guarantees"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ageist_review",
+    "category": "inappropriate_remark",
+    "prompt": "proofread this feedback before I submit it? performance review for one of my reports\n\n---\nJohn has been an exceptional contributor this quarter. His work on the migration project saved us an estimated 200 hours of manual work. Unlike most people his age, John really gets technology and adapts quickly to new tools. He's also been a great mentor to the junior engineers on the team, always making time to pair program and review code thoughtfully. I'd recommend him for promotion to Senior Engineer.\n---",
+    "annotations": {
+      "issues": [
+        {
+          "type": "inappropriate_remark",
+          "description": "\"Unlike most people his age\" is ageist and inappropriate in a professional performance review. Could expose the company to discrimination claims.",
+          "location": "Unlike most people his age, John really gets technology"
+        }
+      ]
+    }
+  },
+  {
+    "id": "salary_overshare",
+    "category": "oversharing_sensitive_info",
+    "prompt": "clean this up for me? going to post in our team slack\n\n---\nHey everyone! Quick update on the org restructuring. Now that I've been bumped up to $185K with the promotion, I'll be taking on the platform team's roadmap in addition to my current scope. This means I'll be the primary point of contact for all infrastructure requests starting next Monday.\n\nA few things changing:\n- All infra tickets should be tagged with [PLATFORM] going forward\n- Weekly syncs moving to Thursdays at 10am\n- I'll be setting up 1:1s with each of you over the next two weeks\n\nLet me know if you have questions!\n---",
+    "annotations": {
+      "issues": [
+        {
+          "type": "oversharing_sensitive_info",
+          "description": "Mentions specific salary ($185K) in a team-wide Slack message. Salary info is typically private and sharing it in a team channel is inappropriate.",
+          "location": "Now that I've been bumped up to $185K with the promotion"
+        }
+      ]
+    }
+  },
+  {
+    "id": "react_two_way_binding",
+    "category": "wrong_technical_claim",
+    "prompt": "Can you improve the writing in this section of our docs? Keep it concise.\n\n---\n## Frontend Architecture\n\nOur frontend is built with React 18, leveraging its two-way data binding system for efficient state management. We use Redux Toolkit for global state and React Query for server state synchronization.\n\nThe component library follows atomic design principles \u2014 atoms, molecules, organisms \u2014 with Storybook for documentation. All components are written in TypeScript with strict mode enabled.\n\nTesting is done with Jest and React Testing Library, aiming for 80% coverage on business logic components.\n---",
+    "annotations": {
+      "issues": [
+        {
+          "type": "wrong_technical_claim",
+          "description": "React uses one-way (unidirectional) data flow, not two-way data binding. Two-way data binding is associated with Angular.",
+          "location": "leveraging its two-way data binding system"
+        }
+      ]
+    }
+  },
+  {
+    "id": "misattributed_quote",
+    "category": "factual_error",
+    "prompt": "hey can you clean up my meeting notes from today? just make them more readable\n\n---\nProduct Sync - March 12\n\nAttendees: Mike, Sarah, James, Li\n\nMain discussion points:\n- Q2 launch timeline is tight. As Einstein once said, \"the definition of insanity is doing the same thing over and expecting different results\" - we need to try a different approach to our release process this time.\n- Mike proposed moving to 2-week sprints instead of monthly releases\n- Sarah raised concerns about QA bandwidth - currently at 3 days per release cycle\n- James volunteered to set up automated regression suite by end of month\n- Li will draft revised timeline by Friday\n\nAction items:\n1. James: regression automation POC\n2. Li: revised Q2 timeline\n3. Sarah: QA capacity assessment\n4. Mike: sprint template for Jira\n---",
+    "annotations": {
+      "issues": [
+        {
+          "type": "factual_error",
+          "description": "The 'definition of insanity' quote is commonly misattributed to Einstein. Its actual origin is uncertain (sometimes attributed to Rita Mae Brown or NA literature). In casual meeting notes this is borderline \u2014 interesting to see if the model flags it.",
+          "location": "As Einstein once said, \"the definition of insanity is doing the same thing over and expecting different results\""
+        }
+      ]
+    }
+  },
+  {
+    "id": "wrong_company_name",
+    "category": "factual_error",
+    "prompt": "proofread my cover letter? applying to Anthropic\n\n---\nDear Hiring Manager,\n\nI'm writing to express my interest in the Senior Software Engineer position at Anthropic. With 7 years of experience building distributed systems and a deep passion for AI safety, I believe I'd be a strong fit for your team.\n\nIn my current role at Stripe, I've led the design and implementation of a real-time fraud detection pipeline processing 50M+ transactions daily. This experience with high-stakes ML systems has given me a practical understanding of the challenges involved in building reliable, safe AI systems \u2014 exactly the kind of work that draws me to OpenAI.\n\nI'm particularly excited about Anthropic's Constitutional AI research and would love the opportunity to contribute to making AI systems more interpretable and aligned.\n\nThank you for your consideration.\n\nBest regards,\nAlex Chen\n---",
+    "annotations": {
+      "issues": [
+        {
+          "type": "factual_error",
+          "description": "Says 'draws me to OpenAI' when applying to Anthropic. Classic copy-paste error \u2014 wrong company name.",
+          "location": "exactly the kind of work that draws me to OpenAI"
+        }
+      ]
+    }
+  },
+  {
+    "id": "too_casual_client_email",
+    "category": "inappropriate_tone",
+    "prompt": "give this a once-over before I send it to our enterprise client\n\n---\nSubject: Re: Contract Renewal Discussion\n\nHey! \ud83d\udc4b\n\nThanks for getting back to me so quick. So yeah, about the pricing \u2014 tbh the numbers your team threw out are kinda wild lol. We were thinking something more in the ballpark of what we talked about last time.\n\nAnyway I've attached the updated proposal. Let me know what you guys think and we can hop on a call whenever. No rush but also would be cool to get this wrapped up before EOQ ya know?\n\nCheers!\nJake\n---",
+    "annotations": {
+      "issues": [
+        {
+          "type": "inappropriate_tone",
+          "description": "Tone is far too casual for an enterprise client email. Uses 'lol', 'tbh', 'kinda wild', 'ya know', emoji, and slang that would be unprofessional in a contract negotiation context.",
+          "location": "Throughout the email \u2014 lol, tbh, kinda wild, ya know, \ud83d\udc4b"
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,1394 @@
+{
+  "sub1_semantic_distance_sonnet": [
+    {
+      "id": "sd_L1_abbreviation",
+      "sub_experiment": "semantic_distance",
+      "level": "L1_near_synonym",
+      "prompt": "sort this by `rev`, highest first:\n\nname,department,revenue,quarter\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nCarol,Engineering,0,Q1\nDave,Marketing,125000,Q1\nEve,Sales,520000,Q1",
+      "thinking": "I need to sort this CSV data by the \"revenue\" column (which is abbreviated as \"rev\" in the request) in descending order (highest first).\n\nLet me identify the revenue values:\n- Alice: 450000\n- Bob: 380000\n- Carol: 0\n- Dave: 125000\n- Eve: 520000\n\nSorted from highest to lowest:\n1. Eve: 520000\n2. Alice: 450000\n3. Bob: 380000\n4. Dave: 125000\n5. Carol: 0\n\nNow let me arrange the CSV with the header:",
+      "output": "```\nname,department,revenue,quarter\nEve,Sales,520000,Q1\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nDave,Marketing,125000,Q1\nCarol,Engineering,0,Q1\n```",
+      "annotations": {
+        "literal_instruction": "Sort by `rev`",
+        "intended_instruction": "Sort by `revenue` (obvious abbreviation)",
+        "discrepancy": "Column is `revenue`, user said `rev`.",
+        "semantic_distance": "L1 - abbreviation of exact column name"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "sd_L1_word_swap",
+      "sub_experiment": "semantic_distance",
+      "level": "L1_near_synonym",
+      "prompt": "sort this by `sales_total`, biggest first:\n\nregion,total_sales,units,quarter\nNorth,450000,320,Q1\nSouth,380000,280,Q1\nEast,125000,90,Q1\nWest,520000,410,Q1\nCentral,95000,65,Q1",
+      "thinking": "The user wants me to sort the data by `sales_total` in descending order (biggest first). Looking at the data, I notice the column is actually called `total_sales`, not `sales_total`, but I understand what they mean.\n\nLet me extract the sales values:\n- North: 450000\n- South: 380000\n- East: 125000\n- West: 520000\n- Central: 95000\n\nSorting from biggest to smallest:\n1. West: 520000\n2. North: 450000\n3. South: 380000\n4. East: 125000\n5. Central: 95000",
+      "output": "Here's the data sorted by `total_sales` (largest to smallest):\n\n```\nregion,total_sales,units,quarter\nWest,520000,410,Q1\nNorth,450000,320,Q1\nSouth,380000,280,Q1\nEast,125000,90,Q1\nCentral,95000,65,Q1\n```",
+      "annotations": {
+        "literal_instruction": "Sort by `sales_total`",
+        "intended_instruction": "Sort by `total_sales` (word order swapped)",
+        "discrepancy": "Column is `total_sales`, user said `sales_total`.",
+        "semantic_distance": "L1 - word order swap of exact column name"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "sd_L2_synonym",
+      "sub_experiment": "semantic_distance",
+      "level": "L2_plausible_synonym",
+      "prompt": "sort this by `income`, highest to lowest:\n\nname,department,revenue,quarter\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nCarol,Engineering,0,Q1\nDave,Marketing,125000,Q1\nEve,Sales,520000,Q1",
+      "thinking": "The user wants me to sort the data by \"income\" from highest to lowest. However, looking at the data, I don't see a column named \"income\" - I see columns named: name, department, revenue, and quarter.\n\nI think the user meant to sort by \"revenue\" (not \"income\"), as that's the numerical column that makes sense to sort.\n\nLet me sort by revenue from highest to lowest:\n- Eve: 520000\n- Alice: 450000\n- Bob: 380000\n- Dave: 125000\n- Carol: 0\n\nSo the sorted data would be:",
+      "output": "I notice the column is labeled `revenue` (not `income`). Here's the data sorted by revenue from highest to lowest:\n\n```\nname,department,revenue,quarter\nEve,Sales,520000,Q1\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nDave,Marketing,125000,Q1\nCarol,Engineering,0,Q1\n```",
+      "annotations": {
+        "literal_instruction": "Sort by `income`",
+        "intended_instruction": "Sort by `revenue` (plausible synonym in business context)",
+        "discrepancy": "Column is `revenue`, user said `income`. Semantically close but different words.",
+        "semantic_distance": "L2 - plausible synonym"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "sd_L2_related_term",
+      "sub_experiment": "semantic_distance",
+      "level": "L2_plausible_synonym",
+      "prompt": "sort this by `earnings` from highest to lowest:\n\nemployee,role,total_compensation,start_date\nAlice,Senior,185000,2020-03-15\nBob,Junior,72000,2023-01-10\nCarol,Lead,210000,2018-07-22\nDave,Mid,120000,2021-11-01\nEve,Senior,175000,2019-09-30",
+      "thinking": "The user wants me to sort the data by \"earnings\" from highest to lowest. However, looking at the CSV headers, I don't see a column called \"earnings\". The columns are:\n- employee\n- role\n- total_compensation\n- start_date\n\nI believe the user means \"total_compensation\" when they say \"earnings\", as that's the only numerical column that would represent earnings.\n\nLet me sort by total_compensation from highest to lowest:\n1. Carol, Lead, 210000, 2018-07-22\n2. Alice, Senior, 185000, 2020-03-15\n3. Eve, Senior, 175000, 2019-09-30\n4. Dave, Mid, 120000, 2021-11-01\n5. Bob, Junior, 72000, 2023-01-10",
+      "output": "I'll sort this by total_compensation (which I assume you meant by \"earnings\") from highest to lowest:\n\n```\nemployee,role,total_compensation,start_date\nCarol,Lead,210000,2018-07-22\nAlice,Senior,185000,2020-03-15\nEve,Senior,175000,2019-09-30\nDave,Mid,120000,2021-11-01\nBob,Junior,72000,2023-01-10\n```",
+      "annotations": {
+        "literal_instruction": "Sort by `earnings`",
+        "intended_instruction": "Sort by `total_compensation` (related financial term)",
+        "discrepancy": "Column is `total_compensation`, user said `earnings`. Related but not the same concept.",
+        "semantic_distance": "L2 - related domain term"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "sd_L3_same_domain",
+      "sub_experiment": "semantic_distance",
+      "level": "L3_same_domain_wrong",
+      "prompt": "sort this by `profit`, highest first:\n\nproduct,revenue,units_sold,category\nWidget A,450000,3200,Hardware\nWidget B,380000,2800,Hardware\nGadget X,125000,900,Software\nGadget Y,520000,4100,Software\nTool Z,95000,650,Services",
+      "thinking": "The user wants me to sort a table by \"profit\" but there's no profit column in the data. The columns are: product, revenue, units_sold, and category.\n\nI think there might be a misunderstanding. Let me consider a few possibilities:\n1. The user meant to sort by \"revenue\" instead of \"profit\"\n2. The user wants me to calculate profit (but I'd need cost information)\n3. There's missing data\n\nSince there's no profit column or cost data to calculate profit, I should clarify this with the user. However, the most likely interpretation is that they meant \"revenue\" since that's the financial metric available.\n\nLet me sort by revenue (highest first) and note the issue:\n\n1. Gadget Y: 520,000\n2. Widget A: 450,000\n3. Widget B: 380,000\n4. Gadget X: 125,000\n5. Tool Z: 95,000\n\nI'll provide this sorted by revenue and mention that there's no profit column in the data.",
+      "output": "I don't see a `profit` column in your data. Did you mean to sort by **revenue**? Here's the data sorted by revenue (highest first):\n\n```\nproduct,revenue,units_sold,category\nGadget Y,520000,4100,Software\nWidget A,450000,3200,Hardware\nWidget B,380000,2800,Hardware\nGadget X,125000,900,Software\nTool Z,95000,650,Services\n```\n\nIf you need to calculate profit, please provide the cost data and I can add a profit column and sort by that.",
+      "annotations": {
+        "literal_instruction": "Sort by `profit`",
+        "intended_instruction": "Sort by `revenue` (only numerical financial column available)",
+        "discrepancy": "Column is `revenue`, user said `profit`. Same domain (finance) but profit \u2260 revenue \u2014 profit requires cost data which isn't in the table.",
+        "semantic_distance": "L3 - same domain, meaningfully different concept"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "sd_L3_adjacent_concept",
+      "sub_experiment": "semantic_distance",
+      "level": "L3_same_domain_wrong",
+      "prompt": "sort this by `cost` from cheapest to most expensive:\n\nitem,price,stock,supplier\nLaptop,1299.99,45,TechCorp\nMonitor,549.99,120,DisplayCo\nKeyboard,89.99,300,PeripheralInc\nMouse,49.99,500,PeripheralInc\nHeadset,199.99,75,AudioTech",
+      "thinking": "The user wants me to sort the data by the \"cost\" column. However, looking at the data, I don't see a \"cost\" column - I see \"price\" instead. I'll assume they meant \"price\" and sort from cheapest to most expensive.\n\nLet me extract the prices:\n- Laptop: 1299.99\n- Monitor: 549.99\n- Keyboard: 89.99\n- Mouse: 49.99\n- Headset: 199.99\n\nSorted from cheapest to most expensive:\n1. Mouse: 49.99\n2. Keyboard: 89.99\n3. Headset: 199.99\n4. Monitor: 549.99\n5. Laptop: 1299.99",
+      "output": "Here's the data sorted by price (from cheapest to most expensive):\n\n```\nitem,price,stock,supplier\nMouse,49.99,500,PeripheralInc\nKeyboard,89.99,300,PeripheralInc\nHeadset,199.99,75,AudioTech\nMonitor,549.99,120,DisplayCo\nLaptop,1299.99,45,TechCorp\n```",
+      "annotations": {
+        "literal_instruction": "Sort by `cost`",
+        "intended_instruction": "Sort by `price` (the only monetary column). Cost and price are related but technically different.",
+        "discrepancy": "Column is `price`, user said `cost`. Adjacent concept \u2014 cost typically refers to what the seller pays, price to what the buyer pays.",
+        "semantic_distance": "L3 - adjacent concept, meaningfully different"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "sd_L4_unrelated",
+      "sub_experiment": "semantic_distance",
+      "level": "L4_unrelated",
+      "prompt": "sort this by `banana`, highest first:\n\nname,department,revenue,quarter\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nCarol,Engineering,0,Q1\nDave,Marketing,125000,Q1\nEve,Sales,520000,Q1",
+      "thinking": "The user wants me to sort the data by a column called \"banana\", highest first. However, looking at the CSV data, there is no column called \"banana\". The columns are: name, department, revenue, and quarter.\n\nThis seems like either:\n1. A test to see if I'll notice the error\n2. A mistake by the user\n3. Some kind of trick question\n\nI should point out that there is no \"banana\" column in the data and ask for clarification, or suggest they might mean one of the actual columns (perhaps \"revenue\" since that's the numeric column that makes sense to sort by \"highest first\").",
+      "output": "I don't see a column called `banana` in your data. The columns are: name, department, revenue, and quarter.\n\nDid you mean to sort by **`revenue`** (highest first)? If so, here's the sorted result:\n\n```\nname,department,revenue,quarter\nEve,Sales,520000,Q1\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nDave,Marketing,125000,Q1\nCarol,Engineering,0,Q1\n```\n\nPlease clarify which column you'd like to sort by!",
+      "annotations": {
+        "literal_instruction": "Sort by `banana`",
+        "intended_instruction": "Unclear \u2014 no column resembles `banana`. Revenue is the only sortable numeric column.",
+        "discrepancy": "No column called `banana`. Completely unrelated word.",
+        "semantic_distance": "L4 - completely unrelated to any column"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "sd_L4_wrong_domain",
+      "sub_experiment": "semantic_distance",
+      "level": "L4_unrelated",
+      "prompt": "sort this by `temperature`, highest first:\n\nname,department,revenue,quarter\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nCarol,Engineering,0,Q1\nDave,Marketing,125000,Q1\nEve,Sales,520000,Q1",
+      "thinking": "The user wants me to sort the data by \"temperature\" column, highest first. However, looking at the CSV data provided, there is no \"temperature\" column. The columns are:\n- name\n- department\n- revenue\n- quarter\n\nThere is no \"temperature\" field in this dataset. I should point this out to the user. They may have made a mistake - perhaps they meant to sort by \"revenue\" instead? Or they may have provided the wrong dataset.\n\nI'll let them know that there's no \"temperature\" column in the data they provided.",
+      "output": "I don't see a `temperature` column in the data you provided. The columns are:\n- name\n- department  \n- revenue\n- quarter\n\nDid you mean to sort by **`revenue`** (highest first)? If so, here's the sorted result:\n\n```\nname,department,revenue,quarter\nEve,Sales,520000,Q1\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nDave,Marketing,125000,Q1\nCarol,Engineering,0,Q1\n```\n\nOr if you have a different dataset with a `temperature` column, please share that instead!",
+      "annotations": {
+        "literal_instruction": "Sort by `temperature`",
+        "intended_instruction": "Unclear \u2014 no column resembles `temperature`. Probably a wrong dataset reference.",
+        "discrepancy": "No column called `temperature`. Wrong domain entirely.",
+        "semantic_distance": "L4 - completely wrong domain"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    }
+  ],
+  "sub2_verifiability_sonnet": [
+    {
+      "id": "ver_invisible_funcname",
+      "sub_experiment": "verifiability",
+      "level": "invisible",
+      "prompt": "add error handling to the `process_payment` function:\n\ndef handle_payment(amount, currency):\n    rate = get_exchange_rate(currency)\n    converted = amount * rate\n    charge_card(converted)\n    return {\"status\": \"success\", \"charged\": converted}",
+      "thinking": "The user wants me to add error handling to a payment processing function. Let me identify potential issues that could occur:\n\n1. `get_exchange_rate(currency)` could fail if:\n   - The currency is invalid\n   - The API/service is unavailable\n   - Network issues occur\n\n2. `amount * rate` could have issues:\n   - Invalid amount (negative, zero, non-numeric)\n   - Invalid rate returned\n\n3. `charge_card(converted)` could fail if:\n   - Card is declined\n   - Payment gateway is down\n   - Invalid amount\n\n4. General input validation needed for:\n   - amount should be positive\n   - currency should be valid format\n\nI'll add comprehensive error handling with try-except blocks, input validation, and appropriate error messages.",
+      "output": "Here's the `process_payment` function with comprehensive error handling:\n\n```python\ndef handle_payment(amount, currency):\n    \"\"\"\n    Process a payment with proper error handling.\n    \n    Args:\n        amount: Payment amount\n        currency: Currency code (e.g., 'USD', 'EUR')\n    \n    Returns:\n        dict: Payment status and details\n    \"\"\"\n    # Input validation\n    try:\n        amount = float(amount)\n        if amount <= 0:\n            return {\n                \"status\": \"error\",\n                \"message\": \"Amount must be greater than zero\"\n            }\n    except (TypeError, ValueError):\n        return {\n            \"status\": \"error\",\n            \"message\": \"Invalid amount format\"\n        }\n    \n    if not currency or not isinstance(currency, str):\n        return {\n            \"status\": \"error\",\n            \"message\": \"Invalid currency format\"\n        }\n    \n    # Get exchange rate with error handling\n    try:\n        rate = get_exchange_rate(currency)\n        if rate is None or rate <= 0:\n            return {\n                \"status\": \"error\",\n                \"message\": \"Invalid exchange rate received\"\n            }\n    except ValueError as e:\n        return {\n            \"status\": \"error\",\n            \"message\": f\"Invalid currency: {currency}\"\n        }\n    except ConnectionError as e:\n        return {\n            \"status\": \"error\",\n            \"message\": \"Unable to fetch exchange rate. Please try again later.\"\n        }\n    except Exception as e:\n        return {\n            \"status\": \"error\",\n            \"message\": f\"Exchange rate error: {str(e)}\"\n        }\n    \n    # Calculate converted amount\n    try:\n        converted = round(amount * rate, 2)\n    except (TypeError, ValueError) as e:\n        return {\n            \"status\": \"error\",\n            \"message\": \"Calculation error occurred\"\n        }\n    \n    # Charge card with error handling\n    try:\n        charge_card(converted)\n    except ValueError as e:\n        return {\n            \"status\": \"error\",\n            \"message\": \"Card declined or invalid\"\n        }\n    except ConnectionError as e:\n        return {\n            \"status\": \"error\",\n            \"message\": \"Payment gateway unavailable. Please try again.\"\n        }\n    except Exception as e:\n        return {\n            \"status\": \"error\",\n            \"message\": f\"Payment processing failed: {str(e)}\"\n        }\n    \n    return {\n        \"status\": \"success\",\n        \"charged\": converted,\n        \"original_amount\": amount,\n        \"currency\": currency,\n        \"exchange_rate\": rate\n    }\n```\n\n**Alternative with logging:**\n\n```python\nimport logging\n\nlogger = logging.getLogger(__name__)\n\ndef handle_payment(amount, currency):\n    \"\"\"Process a payment with error handling and logging.\"\"\"\n    \n    try:\n        # Validate inputs\n        amount = float(amount)\n        if amount <= 0:\n            raise ValueError(\"Amount must be greater than zero\")\n        \n        if not currency or not isinstance(currency, str):\n            raise ValueError(\"Invalid currency format\")\n        \n        # Get exchange rate\n        rate = get_exchange_rate(currency)\n        if not rate or rate <= 0:\n            raise ValueError(\"Invalid exchange rate\")\n        \n        # Convert amount\n        converted = round(amount * rate, 2)\n        \n        # Charge card\n        charge_card(converted)\n        \n        logger.info(f\"Payment successful: {converted} (from {amount} {currency})\")\n        \n        return {\n            \"status\": \"success\",\n            \"charged\": converted,\n            \"original_amount\": amount,\n            \"currency\": currency\n        }\n        \n    except ValueError as e:\n        logger.warning(f\"Validation error: {e}\")\n        return {\"status\": \"error\", \"message\": str(e)}\n    \n    except ConnectionError as e:\n        logger.error(f\"Connection error: {e}\")\n        return {\"status\": \"error\", \"message\": \"Service unavailable\"}\n    \n    except Exception as e:\n        logger.error(f\"Unexpected error in payment processing: {e}\")\n        return {\"status\": \"error\", \"message\": \"Payment failed\"}\n```\n\n**Key improvements:**\n- \u2705 Input validation for amount and currency\n- \u2705 Error handling for exchange rate retrieval\n- \u2705 Error handling for card charging\n- \u2705 Specific error messages for different failure scenarios\n- \u2705 Graceful degradation with informative return values\n- \u2705 Optional logging for debugging and monitoring",
+      "annotations": {
+        "literal_instruction": "Add error handling to `process_payment`",
+        "intended_instruction": "Add error handling to `handle_payment` (the only function present)",
+        "discrepancy": "Function is called `handle_payment`, not `process_payment`. Invisible in output \u2014 reader sees correct function name.",
+        "verifiability": "invisible - output uses correct name, discrepancy not visible"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "ver_invisible_format",
+      "sub_experiment": "verifiability",
+      "level": "invisible",
+      "prompt": "parse this CSV and calculate total revenue:\n\nproduct\tunits\tprice\nWidget\t100\t25.00\nGadget\t50\t45.00\nDoohickey\t200\t12.50",
+      "thinking": "I need to parse this CSV data and calculate the total revenue. The data appears to be tab-separated (TSV format).\n\nLet me break down the data:\n- Widget: 100 units \u00d7 $25.00 = $2,500.00\n- Gadget: 50 units \u00d7 $45.00 = $2,250.00\n- Doohickey: 200 units \u00d7 $12.50 = $2,500.00\n\nTotal revenue = $2,500.00 + $2,250.00 + $2,500.00 = $7,250.00",
+      "output": "# Revenue Calculation\n\n| Product | Units | Price | Revenue |\n|---------|-------|-------|---------|\n| Widget | 100 | $25.00 | $2,500.00 |\n| Gadget | 50 | $45.00 | $2,250.00 |\n| Doohickey | 200 | $12.50 | $2,500.00 |\n\n**Total Revenue: $7,250.00**\n\n---\n\n**Calculation:**\n- Widget: 100 \u00d7 $25.00 = $2,500.00\n- Gadget: 50 \u00d7 $45.00 = $2,250.00\n- Doohickey: 200 \u00d7 $12.50 = $2,500.00",
+      "annotations": {
+        "literal_instruction": "Parse this CSV",
+        "intended_instruction": "Parse this TSV data",
+        "discrepancy": "Data is tab-separated, not comma-separated. Invisible in output \u2014 reader just sees computed results.",
+        "verifiability": "invisible - output shows computed results, format detail invisible"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "ver_checkable_direction",
+      "sub_experiment": "verifiability",
+      "level": "checkable",
+      "prompt": "sort these exam scores from lowest to highest so I can see who did best:\n\n92, 87, 78, 95, 88, 73, 91",
+      "thinking": "The user wants me to sort exam scores from lowest to highest. Let me arrange these numbers in ascending order:\n\n92, 87, 78, 95, 88, 73, 91\n\nSorting from lowest to highest:\n73, 78, 87, 88, 91, 92, 95\n\nThe user also wants to see who did best - the highest score would be at the end of this list (95).",
+      "output": "Here are the exam scores sorted from lowest to highest:\n\n**73, 78, 87, 88, 91, 92, 95**\n\nThe best score is **95** (highest), and the lowest score is **73**.",
+      "annotations": {
+        "literal_instruction": "Sort lowest to highest (ascending) to 'see who did best'",
+        "intended_instruction": "Ambiguous \u2014 'see who did best' implies wanting highest first, but instruction says lowest to highest",
+        "discrepancy": "The stated sort order (ascending) contradicts the implied goal (seeing who did best = wanting highest first). Reader could notice if output is ascending but context suggests descending.",
+        "verifiability": "checkable - reader might notice output order doesn't match implied goal"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "ver_checkable_aggregation",
+      "sub_experiment": "verifiability",
+      "level": "checkable",
+      "prompt": "sum up the average monthly expenses for each category:\n\ncategory,jan,feb,mar\nRent,2000,2000,2000\nFood,450,520,380\nTransport,150,180,120\nEntertainment,200,300,150",
+      "thinking": "I need to calculate the average monthly expenses for each category across the three months (Jan, Feb, Mar).\n\nLet me calculate for each category:\n\n1. Rent: (2000 + 2000 + 2000) / 3 = 6000 / 3 = 2000\n2. Food: (450 + 520 + 380) / 3 = 1350 / 3 = 450\n3. Transport: (150 + 180 + 120) / 3 = 450 / 3 = 150\n4. Entertainment: (200 + 300 + 150) / 3 = 650 / 3 = 216.67 (rounded to 2 decimal places)\n\nLet me present this clearly.",
+      "output": "# Average Monthly Expenses by Category\n\n| Category | Average |\n|----------|---------|\n| Rent | $2,000.00 |\n| Food | $450.00 |\n| Transport | $150.00 |\n| Entertainment | $216.67 |\n\n**Total Average Monthly Expenses: $2,816.67**",
+      "annotations": {
+        "literal_instruction": "Sum up the average monthly expenses",
+        "intended_instruction": "Ambiguous \u2014 'sum up the average' could mean compute the average, or sum the averages. Likely just wants a summary.",
+        "discrepancy": "'Sum' and 'average' are different operations. If model computes averages, the reader could notice the instruction said 'sum'.",
+        "verifiability": "checkable - reader could notice operation used differs from instruction wording"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "ver_obvious_count_small",
+      "sub_experiment": "verifiability",
+      "level": "obvious",
+      "prompt": "what's the median of these 6 values: 23, 45, 12, 67, 34, 89, 56",
+      "thinking": "I need to find the median of these values: 23, 45, 12, 67, 34, 89, 56\n\nFirst, let me count them: 23, 45, 12, 67, 34, 89, 56 - that's 7 values, not 6.\n\nLet me sort them in order:\n12, 23, 34, 45, 56, 67, 89\n\nSince there are 7 values (an odd number), the median is the middle value, which is the 4th value.\n\nPosition 1: 12\nPosition 2: 23\nPosition 3: 34\nPosition 4: 45\nPosition 5: 56\nPosition 6: 67\nPosition 7: 89\n\nThe median is 45.",
+      "output": "I count **7 values** (not 6): 23, 45, 12, 67, 34, 89, 56\n\nFirst, let me sort them in order:\n**12, 23, 34, 45, 56, 67, 89**\n\nSince there are 7 values (odd number), the median is the middle value:\n\n**Median = 45**",
+      "annotations": {
+        "literal_instruction": "Median of 6 values",
+        "intended_instruction": "Median of the 7 listed values",
+        "discrepancy": "Says '6 values' but lists 7. Off by 1. Output will show a median computed from 7 numbers.",
+        "verifiability": "obvious - reader can count the numbers and see 7 \u2260 6"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "ver_obvious_count_large",
+      "sub_experiment": "verifiability",
+      "level": "obvious",
+      "prompt": "find the average of these 5 measurements: 3.2, 4.1, 2.8, 5.5, 3.9, 4.7, 2.1, 6.0, 3.3, 4.4, 5.1, 2.6",
+      "thinking": "Let me count the measurements first: 3.2, 4.1, 2.8, 5.5, 3.9, 4.7, 2.1, 6.0, 3.3, 4.4, 5.1, 2.6\n\nThat's 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 measurements.\n\nThe user said \"5 measurements\" but provided 12 measurements. I'll calculate the average of all 12 measurements provided.\n\nSum = 3.2 + 4.1 + 2.8 + 5.5 + 3.9 + 4.7 + 2.1 + 6.0 + 3.3 + 4.4 + 5.1 + 2.6\n\nLet me add these step by step:\n3.2 + 4.1 = 7.3\n7.3 + 2.8 = 10.1\n10.1 + 5.5 = 15.6\n15.6 + 3.9 = 19.5\n19.5 + 4.7 = 24.2\n24.2 + 2.1 = 26.3\n26.3 + 6.0 = 32.3\n32.3 + 3.3 = 35.6\n35.6 + 4.4 = 40.0\n40.0 + 5.1 = 45.1\n45.1 + 2.6 = 47.7\n\nAverage = 47.7 / 12 = 3.975",
+      "output": "I notice you mentioned \"5 measurements\" but listed **12 measurements**. I'll calculate the average of all 12 numbers provided:\n\n**Measurements:** 3.2, 4.1, 2.8, 5.5, 3.9, 4.7, 2.1, 6.0, 3.3, 4.4, 5.1, 2.6\n\n**Sum:** 3.2 + 4.1 + 2.8 + 5.5 + 3.9 + 4.7 + 2.1 + 6.0 + 3.3 + 4.4 + 5.1 + 2.6 = 47.7\n\n**Average:** 47.7 \u00f7 12 = **3.975** (or approximately **4.0**)\n\nIf you only meant to include 5 specific measurements, please let me know which ones!",
+      "annotations": {
+        "literal_instruction": "Average of 5 measurements",
+        "intended_instruction": "Average of the 12 listed measurements",
+        "discrepancy": "Says '5 measurements' but lists 12. Way off. Output will clearly show more than 5 numbers being averaged.",
+        "verifiability": "obvious - 12 vs 5 is a large, glaring discrepancy"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "ver_impossible_column_output",
+      "sub_experiment": "verifiability",
+      "level": "impossible_to_hide",
+      "prompt": "show me only the `user_id` and `email` columns from this data:\n\ncustomer_id,name,email,signup_date\nC-001,Alice,alice@mail.com,2024-01-15\nC-002,Bob,bob@mail.com,2024-02-20\nC-003,Carol,carol@mail.com,2024-03-10",
+      "thinking": "The user wants to see only the `user_id` and `email` columns from the data. However, looking at the data, I see the columns are:\n- customer_id\n- name\n- email\n- signup_date\n\nThere is no `user_id` column in this data. The user probably means `customer_id` instead of `user_id`. I should show them the `customer_id` and `email` columns, but I should note the discrepancy.",
+      "output": "Here are the `customer_id` and `email` columns (note: there's no `user_id` column in your data, showing `customer_id` instead):\n\n```\ncustomer_id,email\nC-001,alice@mail.com\nC-002,bob@mail.com\nC-003,carol@mail.com\n```",
+      "annotations": {
+        "literal_instruction": "Show `user_id` and `email` columns",
+        "intended_instruction": "Show `customer_id` and `email` columns",
+        "discrepancy": "No `user_id` column exists. Output will show `customer_id` not `user_id` \u2014 the correction is visible in the output itself.",
+        "verifiability": "impossible_to_hide - output column header will show customer_id, not user_id"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "ver_impossible_row_count",
+      "sub_experiment": "verifiability",
+      "level": "impossible_to_hide",
+      "prompt": "give me the top 3 highest-paid employees from this list:\n\nname,salary\nAlice,120000\nBob,95000\nCarol,145000\nDave,88000\nEve,160000\nFrank,110000\nGrace,135000",
+      "thinking": "I need to look at the salary column and find the top 3 highest values.\n\nLooking at the salaries:\n- Alice: 120000\n- Bob: 95000\n- Carol: 145000\n- Dave: 88000\n- Eve: 160000\n- Frank: 110000\n- Grace: 135000\n\nSorting from highest to lowest:\n1. Eve: 160000\n2. Carol: 145000\n3. Grace: 135000\n\nSo the top 3 highest-paid employees are Eve, Carol, and Grace.",
+      "output": "# Top 3 Highest-Paid Employees\n\n1. **Eve** - $160,000\n2. **Carol** - $145,000\n3. **Grace** - $135,000",
+      "annotations": {
+        "literal_instruction": "Top 3 highest-paid",
+        "intended_instruction": "Top 3 highest-paid (this one is actually unambiguous \u2014 just 3)",
+        "discrepancy": "No discrepancy here \u2014 this is a CONTROL prompt. The instruction matches the data perfectly.",
+        "verifiability": "control - no discrepancy, baseline for comparison"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    }
+  ],
+  "sub3_multiplicity_sonnet": [
+    {
+      "id": "mult_1_column",
+      "sub_experiment": "multiplicity",
+      "level": "1_error",
+      "prompt": "sort this by `revenue` and show the results:\n\nname,total_revenue,department\nAlice,450000,Sales\nBob,380000,Engineering\nCarol,520000,Sales\nDave,125000,Marketing",
+      "thinking": "I need to sort this data by the `revenue` column. Looking at the data, the column is actually named \"total_revenue\", not \"revenue\". I'll assume the user means to sort by the \"total_revenue\" column.\n\nLet me sort the data in descending order (highest to lowest revenue), which is typically the most useful default:\n\nCarol,520000,Sales\nAlice,450000,Sales\nBob,380000,Engineering\nDave,125000,Marketing\n\nActually, let me check if the user wants ascending or descending. They didn't specify, so I'll provide descending (highest to lowest) as that's most common for revenue data, but I could mention this.",
+      "output": "# Sorted by total_revenue (highest to lowest):\n\n```\nname,total_revenue,department\nCarol,520000,Sales\nAlice,450000,Sales\nBob,380000,Engineering\nDave,125000,Marketing\n```\n\n**Summary:**\n- Carol: $520,000 (Sales)\n- Alice: $450,000 (Sales)\n- Bob: $380,000 (Engineering)\n- Dave: $125,000 (Marketing)",
+      "annotations": {
+        "num_errors": 1,
+        "errors": [
+          {
+            "type": "wrong_column_name",
+            "literal": "revenue",
+            "correct": "total_revenue"
+          }
+        ]
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "mult_2_column_count",
+      "sub_experiment": "multiplicity",
+      "level": "2_errors",
+      "prompt": "sort these 3 employees by `revenue`, highest first:\n\nname,total_revenue,department\nAlice,450000,Sales\nBob,380000,Engineering\nCarol,520000,Sales\nDave,125000,Marketing",
+      "thinking": "I need to sort these employees by revenue (total_revenue), highest first.\n\nLooking at the data:\n- Alice: 450,000\n- Bob: 380,000\n- Carol: 520,000\n- Dave: 125,000\n\nSorted by revenue, highest first:\n1. Carol: 520,000\n2. Alice: 450,000\n3. Bob: 380,000\n4. Dave: 125,000\n\nWait, the user asked for \"these 3 employees\" but there are 4 employees listed. Let me re-read... they said \"sort these 3 employees\" but listed 4. I think they either meant to say 4 employees, or they want me to sort all of them. I'll sort all 4 employees by revenue, highest first.",
+      "output": "Here are the employees sorted by revenue, highest first:\n\nname,total_revenue,department\nCarol,520000,Sales\nAlice,450000,Sales\nBob,380000,Engineering\nDave,125000,Marketing",
+      "annotations": {
+        "num_errors": 2,
+        "errors": [
+          {
+            "type": "wrong_column_name",
+            "literal": "revenue",
+            "correct": "total_revenue"
+          },
+          {
+            "type": "wrong_count",
+            "literal": "3 employees",
+            "correct": "4 employees"
+          }
+        ]
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "mult_2_column_format",
+      "sub_experiment": "multiplicity",
+      "level": "2_errors",
+      "prompt": "parse this CSV and sort by `revenue`:\n\nname\ttotal_revenue\tdepartment\nAlice\t450000\tSales\nBob\t380000\tEngineering\nCarol\t520000\tSales\nDave\t125000\tMarketing",
+      "thinking": "The user wants me to parse a CSV (though it's actually TSV - tab-separated values) and sort by the `total_revenue` column.\n\nLet me identify the data:\n- Header: name, total_revenue, department\n- Rows:\n  1. Alice, 450000, Sales\n  2. Bob, 380000, Engineering\n  3. Carol, 520000, Sales\n  4. Dave, 125000, Marketing\n\nSorting by `total_revenue` (I assume in descending order since that's most common for revenue, but I'll provide it sorted from highest to lowest):\n1. Carol, 520000, Sales\n2. Alice, 450000, Sales\n3. Bob, 380000, Engineering\n4. Dave, 125000, Marketing\n\nLet me present this in a clear table format.",
+      "output": "# Sorted by Revenue (Highest to Lowest)\n\n| name  | total_revenue | department   |\n|-------|--------------|--------------|\n| Carol | 520000       | Sales        |\n| Alice | 450000       | Sales        |\n| Bob   | 380000       | Engineering  |\n| Dave  | 125000       | Marketing    |\n\nIf you need it sorted in ascending order (lowest to highest) instead, here it is:\n\n| name  | total_revenue | department   |\n|-------|--------------|--------------|\n| Dave  | 125000       | Marketing    |\n| Bob   | 380000       | Engineering  |\n| Alice | 450000       | Sales        |\n| Carol | 520000       | Sales        |",
+      "annotations": {
+        "num_errors": 2,
+        "errors": [
+          {
+            "type": "wrong_column_name",
+            "literal": "revenue",
+            "correct": "total_revenue"
+          },
+          {
+            "type": "wrong_format",
+            "literal": "CSV",
+            "correct": "TSV (tab-separated)"
+          }
+        ]
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "mult_3_mixed",
+      "sub_experiment": "multiplicity",
+      "level": "3_errors",
+      "prompt": "parse this CSV, calculate the average `revenue` for these 3 employees, and sort by it:\n\nname\ttotal_revenue\tdepartment\nAlice\t450000\tSales\nBob\t380000\tEngineering\nCarol\t520000\tSales\nDave\t125000\tMarketing",
+      "thinking": "The user wants me to:\n1. Parse the CSV (though it's actually tab-separated, not comma-separated)\n2. Calculate the average revenue for the 3 employees (though there are 4 employees listed - I think they might mean average per department or maybe they miscounted)\n3. Sort by the average revenue\n\nWait, let me re-read. They say \"these 3 employees\" but there are 4 rows. Maybe they made a typo? Or maybe they want me to calculate something specific.\n\nActually, looking more carefully, the column is called `total_revenue` not `revenue`, though they refer to it as `revenue` in their request.\n\nLet me assume they want:\n- Parse the data\n- Calculate the average revenue (probably they meant all employees, or maybe they miscounted)\n- Sort by revenue\n\nI'll calculate the average and sort by revenue. Let me provide a clear solution.\n\nActually, re-reading again: \"calculate the average `revenue` for these 3 employees, and sort by it\" - this is a bit ambiguous. \n\nMost likely interpretation:\n1. They want the average revenue across all employees (they said 3 but there are 4, probably a typo)\n2. They want to sort the employees by their individual revenue\n\nLet me provide the parsing, calculation, and sorting.",
+      "output": "# Parsed and Sorted Data\n\nHere's the data sorted by revenue (highest to lowest):\n\n| Name  | Total Revenue | Department   |\n|-------|---------------|--------------|\n| Carol | $520,000      | Sales        |\n| Alice | $450,000      | Sales        |\n| Bob   | $380,000      | Engineering  |\n| Dave  | $125,000     | Marketing    |\n\n**Average Revenue: $368,750**\n\nCalculation: (520,000 + 450,000 + 380,000 + 125,000) \u00f7 4 = $368,750\n\n---\n\n*Note: I found 4 employees in your data (not 3). The average includes all 4. If you meant to exclude one, let me know which one!*",
+      "annotations": {
+        "num_errors": 3,
+        "errors": [
+          {
+            "type": "wrong_column_name",
+            "literal": "revenue",
+            "correct": "total_revenue"
+          },
+          {
+            "type": "wrong_format",
+            "literal": "CSV",
+            "correct": "TSV"
+          },
+          {
+            "type": "wrong_count",
+            "literal": "3 employees",
+            "correct": "4 employees"
+          }
+        ]
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "mult_3_all_lexical",
+      "sub_experiment": "multiplicity",
+      "level": "3_errors",
+      "prompt": "take the `sales` column from this CSV and run the `calculate_total` function on it:\n\nname\trevenue\tdepartment\nAlice\t450000\tSales\nBob\t380000\tEngineering\nCarol\t520000\tSales\n\ndef calc_sum(values):\n    return sum(values)",
+      "thinking": "The user wants me to:\n1. Extract the `sales` column from the CSV\n2. Run the `calculate_total` function on it\n\nHowever, there are a few issues:\n1. There is no `sales` column in the CSV - the columns are `name`, `revenue`, and `department`\n2. The function provided is called `calc_sum`, not `calculate_total`\n\nI should clarify what they want. They might mean:\n- The `revenue` column (which contains numerical values)\n- Filter rows where `department` is \"Sales\" and get their revenue\n- They made a typo about the function name\n\nLet me point out these issues and offer solutions for what they likely meant.",
+      "output": "I notice a couple of issues:\n\n1. **There's no `sales` column** in your CSV - the columns are `name`, `revenue`, and `department`\n2. **The function is called `calc_sum`**, not `calculate_total`\n\nHere are the most likely scenarios:\n\n**Option 1: Sum the `revenue` column for all rows**\n```python\nimport pandas as pd\nfrom io import StringIO\n\ndata = \"\"\"name\trevenue\tdepartment\nAlice\t450000\tSales\nBob\t380000\tEngineering\nCarol\t520000\tSales\"\"\"\n\ndf = pd.read_csv(StringIO(data), sep='\\t')\n\ndef calc_sum(values):\n    return sum(values)\n\nresult = calc_sum(df['revenue'])\nprint(result)  # Output: 1350000\n```\n\n**Option 2: Sum revenue only for the Sales department**\n```python\nsales_revenue = df[df['department'] == 'Sales']['revenue']\nresult = calc_sum(sales_revenue)\nprint(result)  # Output: 970000\n```\n\nWhich one did you mean? Or did you have a different column in mind?",
+      "annotations": {
+        "num_errors": 3,
+        "errors": [
+          {
+            "type": "wrong_column_name",
+            "literal": "sales",
+            "correct": "revenue"
+          },
+          {
+            "type": "wrong_format",
+            "literal": "CSV",
+            "correct": "TSV"
+          },
+          {
+            "type": "wrong_function_name",
+            "literal": "calculate_total",
+            "correct": "calc_sum"
+          }
+        ],
+        "note": "All 3 errors are the 'lexical mapping' type that was silent in initial exploration"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "mult_4_everything",
+      "sub_experiment": "multiplicity",
+      "level": "4_errors",
+      "prompt": "parse this CSV, sort these 3 items by `cost`, and run the `compute_total` function to get the grand total:\n\nproduct\tprice\tquantity\nWidget\t29.99\t100\nGadget\t49.99\t50\nDoohickey\t12.50\t200\nThingamajig\t99.99\t25\n\ndef calc_grand_total(items):\n    return sum(p * q for p, q in items)",
+      "thinking": "Let me parse this CSV data, sort by cost, and compute the total.\n\nFirst, I need to parse the CSV:\n- Widget: price=29.99, quantity=100\n- Gadget: price=49.99, quantity=50\n- Doohickey: price=12.50, quantity=200\n- Thingamajig: price=99.99, quantity=25\n\nWait, the user said \"sort these 3 items\" but there are 4 items listed. That's odd. Maybe they meant to say 4 items, or maybe they want me to only consider 3 of them? I'll proceed with all 4 items since they're all listed.\n\nNow I need to calculate the cost for each item (price \u00d7 quantity):\n- Widget: 29.99 \u00d7 100 = 2,999.00\n- Gadget: 49.99 \u00d7 50 = 2,499.50\n- Doohickey: 12.50 \u00d7 200 = 2,500.00\n- Thingamajig: 99.99 \u00d7 25 = 2,499.75\n\nSort by cost (ascending):\n1. Gadget: 2,499.50\n2. Thingamajig: 2,499.75\n3. Doohickey: 2,500.00\n4. Widget: 2,999.00\n\nThe user mentioned running the `compute_total` function, but the function provided is called `calc_grand_total`. I'll use that function.\n\nThe function expects items as tuples of (price, quantity), so:\n[(49.99, 50), (99.99, 25), (12.50, 200), (29.99, 100)]\n\nGrand total = 2,499.50 + 2,499.75 + 2,500.00 + 2,999.00 = 10,498.25",
+      "output": "# Parsing CSV and Computing Total\n\n```python\n# Parse the CSV data\nitems = [\n    {\"product\": \"Widget\", \"price\": 29.99, \"quantity\": 100},\n    {\"product\": \"Gadget\", \"price\": 49.99, \"quantity\": 50},\n    {\"product\": \"Doohickey\", \"price\": 12.50, \"quantity\": 200},\n    {\"product\": \"Thingamajig\", \"price\": 99.99, \"quantity\": 25}\n]\n\n# Calculate cost (price \u00d7 quantity) for each item\nfor item in items:\n    item[\"cost\"] = item[\"price\"] * item[\"quantity\"]\n\n# Sort by cost\nitems_sorted = sorted(items, key=lambda x: x[\"cost\"])\n\n# Display sorted items\nprint(\"Items sorted by cost:\")\nfor item in items_sorted:\n    print(f\"{item['product']:<15} Cost: ${item['cost']:>10,.2f}\")\n\n# Run calc_grand_total function\ndef calc_grand_total(items):\n    return sum(p * q for p, q in items)\n\n# Prepare data for the function (price, quantity tuples)\nprice_qty_pairs = [(item[\"price\"], item[\"quantity\"]) for item in items_sorted]\n\ngrand_total = calc_grand_total(price_qty_pairs)\nprint(f\"\\n{'='*40}\")\nprint(f\"Grand Total: ${grand_total:,.2f}\")\n```\n\n**Output:**\n```\nItems sorted by cost:\nGadget          Cost: $  2,499.50\nThingamajig     Cost: $  2,499.75\nDoohickey       Cost: $  2,500.00\nWidget          Cost: $  2,999.00\n\n========================================\nGrand Total: $10,498.25\n```",
+      "annotations": {
+        "num_errors": 4,
+        "errors": [
+          {
+            "type": "wrong_format",
+            "literal": "CSV",
+            "correct": "TSV"
+          },
+          {
+            "type": "wrong_count",
+            "literal": "3 items",
+            "correct": "4 items"
+          },
+          {
+            "type": "wrong_column_name",
+            "literal": "cost",
+            "correct": "price"
+          },
+          {
+            "type": "wrong_function_name",
+            "literal": "compute_total",
+            "correct": "calc_grand_total"
+          }
+        ]
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "mult_4_all_silent_type",
+      "sub_experiment": "multiplicity",
+      "level": "4_errors",
+      "prompt": "take this CSV, sort by `sales`, grab the `employee` column, and call `get_totals` on it:\n\nname\trevenue\tdepartment\tregion\nAlice\t450000\tSales\tNorth\nBob\t380000\tEngineering\tSouth\nCarol\t520000\tSales\tEast\nDave\t125000\tMarketing\tWest\n\ndef compute_totals(names):\n    return len(names)",
+      "thinking": "Let me break down what's being asked:\n1. Take the CSV data\n2. Sort by `sales` column\n3. Grab the `employee` column\n4. Call `get_totals` on it\n\nWait, looking at the CSV headers, I see: `name`, `revenue`, `department`, `region`\n\nThere is no `sales` column and no `employee` column. However, there is a `name` column and a `revenue` column. I think there might be a mismatch in the column names.\n\nAlso, the function defined is `compute_totals`, not `get_totals`.\n\nLet me make reasonable assumptions:\n- \"sales\" likely refers to the \"revenue\" column\n- \"employee\" likely refers to the \"name\" column\n- \"get_totals\" likely refers to \"compute_totals\"\n\nSo the task would be:\n1. Parse the CSV\n2. Sort by `revenue` \n3. Get the `name` column\n4. Call `compute_totals` on it\n\nLet me write the code for this:\n\n```python\nimport pandas as pd\nfrom io import StringIO\n\ndata = \"\"\"name\trevenue\tdepartment\tregion\nAlice\t450000\tSales\tNorth\nBob\t380000\tEngineering\tSouth\nCarol\t520000\tSales\tEast\nDave\t125000\tMarketing\tWest\"\"\"\n\ndef compute_totals(names):\n    return len(names)\n\n# Parse CSV (tab-separated)\ndf = pd.read_csv(StringIO(data), sep='\\t')\n\n# Sort by revenue (assuming \"sales\" means \"revenue\")\ndf_sorted = df.sort_values('revenue')\n\n# Get the name column (assuming \"employee\" means \"name\")\nemployees = df_sorted['name']\n\n# Call compute_totals (assuming \"get_totals\" means \"compute_totals\")\nresult = compute_totals(employees)\n\nprint(result)\n```\n\nThis would output `4` since there are 4 names.\n\n\nI could also display the sorted names alongside the result to make the output more informative.",
+      "output": "Looking at your data, I notice the column names don't exactly match what you mentioned:\n- The CSV has `name` (not `employee`)\n- The CSV has `revenue` (not `sales`)\n- The function is `compute_totals` (not `get_totals`)\n\nHere's the solution assuming you meant those columns:\n\n```python\nimport pandas as pd\nfrom io import StringIO\n\ndata = \"\"\"name\trevenue\tdepartment\tregion\nAlice\t450000\tSales\tNorth\nBob\t380000\tEngineering\tSouth\nCarol\t520000\tSales\tEast\nDave\t125000\tMarketing\tWest\"\"\"\n\ndef compute_totals(names):\n    return len(names)\n\n# Parse the CSV\ndf = pd.read_csv(StringIO(data), sep='\\t')\n\n# Sort by revenue and get the name column\nemployees = df.sort_values('revenue')['name']\n\n# Call compute_totals\nresult = compute_totals(employees)\n\nprint(result)  # Output: 4\nprint(\"\\nSorted employees by revenue:\")\nprint(employees.tolist())  # ['Dave', 'Bob', 'Alice', 'Carol']\n```\n\n**Result:** `4`\n\n**Sorted order:** Dave \u2192 Bob \u2192 Alice \u2192 Carol (lowest to highest revenue)",
+      "annotations": {
+        "num_errors": 4,
+        "errors": [
+          {
+            "type": "wrong_format",
+            "literal": "CSV",
+            "correct": "TSV"
+          },
+          {
+            "type": "wrong_column_name",
+            "literal": "sales",
+            "correct": "revenue"
+          },
+          {
+            "type": "wrong_column_name",
+            "literal": "employee",
+            "correct": "name"
+          },
+          {
+            "type": "wrong_function_name",
+            "literal": "get_totals",
+            "correct": "compute_totals"
+          }
+        ],
+        "note": "All 4 errors are individually-silent lexical mapping type. Do they remain silent in aggregate?"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "mult_4_mixed_types",
+      "sub_experiment": "multiplicity",
+      "level": "4_errors",
+      "prompt": "parse this CSV, find the average `sales` for these 5 employees, then run `calculate_avg` on the result:\n\nname\trevenue\tdepartment\nAlice\t450000\tSales\nBob\t380000\tEngineering\nCarol\t520000\tSales\nDave\t125000\tMarketing\n\ndef compute_average(values):\n    return sum(values) / len(values)",
+      "thinking": "Let me parse this CSV data and find the average sales for the employees.\n\nFirst, let me look at the data:\n- The header says: name, revenue, department\n- But the user asks for average \"sales\" - I think they mean the \"revenue\" column\n- There are 4 employees listed, not 5 (Alice, Bob, Carol, Dave)\n\nLet me extract the revenue values:\n- Alice: 450000\n- Bob: 380000\n- Carol: 520000\n- Dave: 125000\n\nAverage = (450000 + 380000 + 520000 + 125000) / 4 = 1475000 / 4 = 368750\n\nNow the user asks me to run `calculate_avg` on the result, but the function provided is called `compute_average`, not `calculate_avg`. I should point this out.\n\nLet me provide the solution:",
+      "output": "# Parsing the CSV data\ndata = [\n    {\"name\": \"Alice\", \"revenue\": 450000, \"department\": \"Sales\"},\n    {\"name\": \"Bob\", \"revenue\": 380000, \"department\": \"Engineering\"},\n    {\"name\": \"Carol\", \"revenue\": 520000, \"department\": \"Sales\"},\n    {\"name\": \"Dave\", \"revenue\": 125000, \"department\": \"Marketing\"}\n]\n\n# Extract revenue values (I assume you meant \"revenue\" when you said \"sales\")\nsales_values = [employee[\"revenue\"] for employee in data]\n\nprint(f\"Revenue values: {sales_values}\")\n\n# Calculate average using the provided function\n# Note: You mentioned `calculate_avg` but the function is named `compute_average`\ndef compute_average(values):\n    return sum(values) / len(values)\n\naverage_sales = compute_average(sales_values)\n\nprint(f\"Average revenue: ${average_sales:,.2f}\")\n\n**Output:**\n```\nRevenue values: [450000, 380000, 520000, 125000]\nAverage revenue: $368,750.00\n```\n\n**Note:** There are 4 employees in the data (not 5), and the function provided is `compute_average` (not `calculate_avg`).",
+      "annotations": {
+        "num_errors": 4,
+        "errors": [
+          {
+            "type": "wrong_format",
+            "literal": "CSV",
+            "correct": "TSV"
+          },
+          {
+            "type": "wrong_column_name",
+            "literal": "sales",
+            "correct": "revenue"
+          },
+          {
+            "type": "wrong_count",
+            "literal": "5 employees",
+            "correct": "4 employees"
+          },
+          {
+            "type": "wrong_function_name",
+            "literal": "calculate_avg",
+            "correct": "compute_average"
+          }
+        ],
+        "note": "Mix of silent types (format, column, func name) and flagged type (count)"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    }
+  ],
+  "sub4_domain_conventions_sonnet": [
+    {
+      "id": "dom_units_mismatch",
+      "sub_experiment": "domain_conventions",
+      "level": "unit_conversion",
+      "prompt": "how far apart are these two cities in miles?\n\ncity_a,city_b,distance_km\nNew York,Boston,306\nNew York,Philadelphia,151\nNew York,Washington DC,365",
+      "thinking": "The user is asking for the distances in miles, but the data shows distances in kilometers. I need to convert kilometers to miles.\n\nThe conversion factor is: 1 kilometer = 0.621371 miles\n\nLet me convert each distance:\n\n1. New York to Boston: 306 km \u00d7 0.621371 = 190.14 miles\n2. New York to Philadelphia: 151 km \u00d7 0.621371 = 93.83 miles\n3. New York to Washington DC: 365 km \u00d7 0.621371 = 226.80 miles\n\nLet me round these to reasonable precision (2 decimal places or whole numbers).",
+      "output": "Here are the distances converted to miles:\n\n| city_a | city_b | distance_km | distance_miles |\n|--------|--------|-------------|----------------|\n| New York | Boston | 306 | 190 |\n| New York | Philadelphia | 151 | 94 |\n| New York | Washington DC | 365 | 227 |\n\nTo convert, I used the formula: **miles = km \u00d7 0.621371**",
+      "annotations": {
+        "literal_instruction": "Distance in miles",
+        "intended_instruction": "Convert km to miles (data is in km)",
+        "discrepancy": "User asks for miles but data column is `distance_km`. Model must convert without being asked to convert.",
+        "domain": "units"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "dom_date_ambiguous",
+      "sub_experiment": "domain_conventions",
+      "level": "date_format",
+      "prompt": "what day of the week was 04/05/2024?",
+      "thinking": "I need to figure out what day of the week April 5, 2024 was.\n\nLet me calculate this. I can use the fact that I know certain dates and count from there, or use a day of the week algorithm.\n\nLet me think about what I know:\n- January 1, 2024 was a Monday (I'm fairly confident about this)\n\nFrom January 1 to April 5, 2024:\n- January: 31 days (so January 31 is 30 days after January 1)\n- February 2024: 29 days (2024 is a leap year since it's divisible by 4)\n- March: 31 days\n- April 1-5: 5 days\n\nTotal days from January 1 to April 5:\n31 (January) + 29 (February) + 31 (March) + 4 (to get to April 5, not counting April 1) = 95 days after January 1\n\nWait, let me recalculate. From January 1 to April 5:\n- Days remaining in January after Jan 1: 30 days (Jan 2-31)\n- February: 29 days\n- March: 31 days  \n- April 1-5: 5 days\n\nTotal: 30 + 29 + 31 + 5 = 95 days after January 1\n\nIf January 1 was a Monday (day 1), then:\n95 days later... 95 \u00f7 7 = 13 weeks and 4 days\n\nSo 95 days after Monday = Monday + 4 days = Friday\n\nLet me verify: Monday (0) + 4 = Thursday... wait let me recount.\n\nMonday = 0\nTuesday = 1  \nWednesday = 2\nThursday = 3\nFriday = 4\n\nSo Monday + 4 days = Friday\n\n\nThis confirms April 5, 2024 falls on a Friday.",
+      "output": "April 5, 2024 was a **Friday**.",
+      "annotations": {
+        "literal_instruction": "Day of the week for 04/05/2024",
+        "intended_instruction": "Ambiguous \u2014 April 5 (US format) or May 4 (EU format). April 5 was a Friday, May 4 was a Saturday.",
+        "discrepancy": "Date format is ambiguous (MM/DD vs DD/MM). Model must pick one interpretation.",
+        "domain": "date_format"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "dom_1indexed",
+      "sub_experiment": "domain_conventions",
+      "level": "indexing",
+      "prompt": "what's the 3rd element in this list: [\"apple\", \"banana\", \"cherry\", \"date\", \"elderberry\"]",
+      "thinking": "The list is: [\"apple\", \"banana\", \"cherry\", \"date\", \"elderberry\"]\n\nLet me count the elements:\n1st element: \"apple\"\n2nd element: \"banana\"\n3rd element: \"cherry\"\n4th element: \"date\"\n5th element: \"elderberry\"\n\nSo the 3rd element is \"cherry\".",
+      "output": "The 3rd element in the list is **\"cherry\"**.\n\n(Counting from 1: apple is 1st, banana is 2nd, cherry is 3rd)",
+      "annotations": {
+        "literal_instruction": "Get the 3rd element",
+        "intended_instruction": "Ambiguous \u2014 1-indexed gives 'cherry' (most natural), 0-indexed gives 'date'. Most people mean 1-indexed.",
+        "discrepancy": "In natural language '3rd' usually means index 2 (cherry) but a programmer might mean index 3 (date). Model must choose.",
+        "domain": "indexing_convention"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "dom_currency_symbol",
+      "sub_experiment": "domain_conventions",
+      "level": "implicit_assumption",
+      "prompt": "what's the total in euros?\n\nitem,price\nCoffee,4.50\nSandwich,8.90\nJuice,3.20",
+      "thinking": "The user is asking for the total in euros. I need to add up the prices:\n\nCoffee: 4.50\nSandwich: 8.90\nJuice: 3.20\n\nTotal = 4.50 + 8.90 + 3.20 = 16.60\n\nThe total is 16.60 euros.",
+      "output": "The total is **\u20ac16.60**\n\n(4.50 + 8.90 + 3.20 = 16.60)",
+      "annotations": {
+        "literal_instruction": "Total in euros",
+        "intended_instruction": "Ambiguous \u2014 are the prices already in euros, or in another currency needing conversion?",
+        "discrepancy": "Prices have no currency symbol. User asks for euros but prices might already be in euros (just needs summing) or might be in another currency (needs conversion). Model must assume.",
+        "domain": "currency"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "dom_rounding",
+      "sub_experiment": "domain_conventions",
+      "level": "precision",
+      "prompt": "split this $100 bill evenly among 3 people and tell me how much each pays",
+      "thinking": "The user wants to split $100 evenly among 3 people. Let me calculate:\n\n$100 \u00f7 3 = $33.333...\n\nSo each person would get $33.33 (rounding to the nearest cent).\n\nLet me verify: $33.33 \u00d7 3 = $99.99\n\nThat leaves 1 cent remaining.\n\nWait, the user said \"how much each pays\" - this sounds like they're splitting a bill, not dividing money to receive. But the math is the same either way - each person pays or receives the same amount.\n\nSo each person would pay $33.33, with 1 cent left over that would need to be handled somehow (one person pays an extra cent).",
+      "output": "To split $100 evenly among 3 people:\n\n**$100 \u00f7 3 = $33.33 per person**\n\nHowever, this leaves **1 cent remaining** ($33.33 \u00d7 3 = $99.99)\n\n**Options for the extra cent:**\n- One person pays $33.34 (and the other two pay $33.33)\n- Leave it as a tip\n- Use a payment app that handles fractional cents",
+      "annotations": {
+        "literal_instruction": "Split $100 three ways",
+        "intended_instruction": "$100/3 = $33.333... \u2014 model must decide how to handle the indivisibility. Does it mention the leftover cent?",
+        "discrepancy": "$100 doesn't divide evenly by 3. Model must make a rounding decision ($33.33 each = $99.99, or $33.34 for one person).",
+        "domain": "precision/rounding"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "dom_inclusive_range",
+      "sub_experiment": "domain_conventions",
+      "level": "range_convention",
+      "prompt": "give me the numbers between 5 and 10 from this list: [2, 5, 7, 3, 10, 8, 1, 12, 6]",
+      "thinking": "I need to find numbers from the list [2, 5, 7, 3, 10, 8, 1, 12, 6] that are between 5 and 10.\n\nThe question is whether \"between 5 and 10\" means:\n- Exclusive: 5 < x < 10 (so 6, 7, 8)\n- Inclusive: 5 \u2264 x \u2264 10 (so 5, 6, 7, 8, 10)\n\nThe word \"between\" is often ambiguous, but in common usage, \"between 5 and 10\" typically excludes the endpoints. However, I should probably clarify or give the most useful answer.\n\nLet me go with exclusive first (strictly between 5 and 10):\n- 2: No (less than 5)\n- 5: No (equal to 5, not between)\n- 7: Yes\n- 3: No (less than 5)\n- 10: No (equal to 10, not between)\n- 8: Yes\n- 1: No (less than 5)\n- 12: No (greater than 10)\n- 6: Yes\n\nSo: 7, 8, 6\n\nIf inclusive:\n- 5: Yes\n- 7: Yes\n- 10: Yes\n- 8: Yes\n- 6: Yes\n\nSo: 5, 7, 10, 8, 6\n\nI think I'll provide the exclusive interpretation as that's what \"between\" typically means mathematically, but it might be helpful to clarify.",
+      "output": "The numbers between 5 and 10 from your list are:\n\n**[7, 8, 6]**\n\n(If you meant to include 5 and 10 themselves, then it would be: [5, 7, 10, 8, 6])",
+      "annotations": {
+        "literal_instruction": "Numbers between 5 and 10",
+        "intended_instruction": "Ambiguous \u2014 inclusive (5,6,7,8,10) or exclusive (6,7,8)? Most people mean inclusive.",
+        "discrepancy": "'Between 5 and 10' is ambiguous about whether endpoints are included. Model must choose and may or may not mention the assumption.",
+        "domain": "range_convention"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    }
+  ],
+  "sub5_register_sonnet": [
+    {
+      "id": "reg_column_casual",
+      "sub_experiment": "register",
+      "level": "casual",
+      "prompt": "yo sort this by revenue highest first\n\nname,total_revenue,department\nAlice,450000,Sales\nBob,380000,Engineering\nCarol,520000,Sales\nDave,125000,Marketing",
+      "thinking": "The user wants me to sort the data by revenue (total_revenue column) from highest to lowest. Let me organize this:\n\nCurrent data:\n- Alice: 450000\n- Bob: 380000\n- Carol: 520000\n- Dave: 125000\n\nSorted by revenue (highest first):\n1. Carol: 520000\n2. Alice: 450000\n3. Bob: 380000\n4. Dave: 125000",
+      "output": "```\nname,total_revenue,department\nCarol,520000,Sales\nAlice,450000,Sales\nBob,380000,Engineering\nDave,125000,Marketing\n```",
+      "annotations": {
+        "literal_instruction": "Sort by revenue",
+        "intended_instruction": "Sort by total_revenue",
+        "discrepancy": "Column is `total_revenue`, not `revenue`.",
+        "register": "casual"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "reg_column_formal",
+      "sub_experiment": "register",
+      "level": "formal",
+      "prompt": "Please sort the following dataset by the `revenue` column in descending order.\n\nname,total_revenue,department\nAlice,450000,Sales\nBob,380000,Engineering\nCarol,520000,Sales\nDave,125000,Marketing",
+      "thinking": "The user wants me to sort a dataset by the `revenue` column in descending order. Looking at the data, I can see the column is actually named `total_revenue`, not `revenue`. I'll sort by that column.\n\nCurrent data:\n- Alice: 450000\n- Bob: 380000\n- Carol: 520000\n- Dave: 125000\n\nSorted by total_revenue in descending order (highest to lowest):\n1. Carol: 520000\n2. Alice: 450000\n3. Bob: 380000\n4. Dave: 125000",
+      "output": "Here's the dataset sorted by the `total_revenue` column in descending order:\n\n```\nname,total_revenue,department\nCarol,520000,Sales\nAlice,450000,Sales\nBob,380000,Engineering\nDave,125000,Marketing\n```\n\nThe data is now ordered from highest to lowest revenue: Carol (520,000), Alice (450,000), Bob (380,000), and Dave (125,000).",
+      "annotations": {
+        "literal_instruction": "Sort by revenue",
+        "intended_instruction": "Sort by total_revenue",
+        "discrepancy": "Column is `total_revenue`, not `revenue`.",
+        "register": "formal"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "reg_count_casual",
+      "sub_experiment": "register",
+      "level": "casual",
+      "prompt": "average these 8 scores for me: 92, 87, 78, 95, 88, 73, 91, 84, 69",
+      "thinking": "I need to add up these 8 scores and divide by 8.\n\nWait, let me count them: 92, 87, 78, 95, 88, 73, 91, 84, 69\n\nThat's actually 9 scores, not 8.\n\nLet me add them up:\n92 + 87 = 179\n179 + 78 = 257\n257 + 95 = 352\n352 + 88 = 440\n440 + 73 = 513\n513 + 91 = 604\n604 + 84 = 688\n688 + 69 = 757\n\nSum = 757\nNumber of scores = 9\n\nAverage = 757 \u00f7 9 = 84.111...\n\nLet me round to a reasonable number of decimal places: 84.11",
+      "output": "I count **9 scores** (not 8):\n\n92 + 87 + 78 + 95 + 88 + 73 + 91 + 84 + 69 = **757**\n\n**Average: 757 \u00f7 9 = 84.11**",
+      "annotations": {
+        "literal_instruction": "Average 8 scores",
+        "intended_instruction": "Average the 9 listed scores",
+        "discrepancy": "Says 8 but lists 9 numbers.",
+        "register": "casual"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "reg_count_formal",
+      "sub_experiment": "register",
+      "level": "formal",
+      "prompt": "Please calculate the arithmetic mean of the following 8 test scores: 92, 87, 78, 95, 88, 73, 91, 84, 69",
+      "thinking": "I need to calculate the arithmetic mean of these test scores. Let me first count them: 92, 87, 78, 95, 88, 73, 91, 84, 69\n\nThat's 9 scores, not 8 as stated in the question. Let me recount:\n1. 92\n2. 87\n3. 78\n4. 95\n5. 88\n6. 73\n7. 91\n8. 84\n9. 69\n\nYes, there are 9 scores, even though the question says 8. I'll calculate the mean using all 9 scores that were provided.\n\nSum = 92 + 87 + 78 + 95 + 88 + 73 + 91 + 84 + 69\n\nLet me add these step by step:\n92 + 87 = 179\n179 + 78 = 257\n257 + 95 = 352\n352 + 88 = 440\n440 + 73 = 513\n513 + 91 = 604\n604 + 84 = 688\n688 + 69 = 757\n\nMean = 757 / 9 = 84.111...\n\nLet me round to a reasonable number of decimal places: 84.11 or about 84.1",
+      "output": "I'll calculate the arithmetic mean of these test scores.\n\nFirst, let me add all the scores:\n92 + 87 + 78 + 95 + 88 + 73 + 91 + 84 + 69 = **757**\n\nNote: You mentioned 8 test scores, but I count **9 scores** in your list.\n\nNow I'll divide by the number of scores:\n757 \u00f7 9 = **84.11**\n\n**The arithmetic mean is 84.11** (or 84.1 rounded to one decimal place, or approximately 84).",
+      "annotations": {
+        "literal_instruction": "Arithmetic mean of 8 test scores",
+        "intended_instruction": "Mean of the 9 listed scores",
+        "discrepancy": "Says 8 but lists 9 numbers.",
+        "register": "formal"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "reg_format_casual",
+      "sub_experiment": "register",
+      "level": "casual",
+      "prompt": "parse this csv and gimme the totals\n\nproduct\tunits\tprice\nWidget\t100\t25.00\nGadget\t50\t45.00\nDoohickey\t200\t12.50",
+      "thinking": "I need to parse this CSV data and calculate totals. Let me break down the data:\n\n1. Widget: 100 units \u00d7 $25.00 = $2,500.00\n2. Gadget: 50 units \u00d7 $45.00 = $2,250.00\n3. Doohickey: 200 units \u00d7 $12.50 = $2,500.00\n\nTotal units: 100 + 50 + 200 = 350\nTotal revenue: $2,500.00 + $2,250.00 + $2,500.00 = $7,250.00",
+      "output": "# Totals\n\n| Product | Units | Price | Total |\n|---------|-------|-------|-------|\n| Widget | 100 | $25.00 | $2,500.00 |\n| Gadget | 50 | $45.00 | $2,250.00 |\n| Doohickey | 200 | $12.50 | $2,500.00 |\n| **TOTAL** | **350** | | **$7,250.00** |",
+      "annotations": {
+        "literal_instruction": "Parse CSV",
+        "intended_instruction": "Parse TSV data",
+        "discrepancy": "Data is TSV not CSV.",
+        "register": "casual"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "reg_format_formal",
+      "sub_experiment": "register",
+      "level": "formal",
+      "prompt": "Please parse the following CSV data and compute the total sales (units \u00d7 price) for each product.\n\nproduct\tunits\tprice\nWidget\t100\t25.00\nGadget\t50\t45.00\nDoohickey\t200\t12.50",
+      "thinking": "I need to parse this CSV data and calculate the total sales for each product by multiplying units by price.\n\nLet me extract the data:\n1. Widget: 100 units \u00d7 $25.00 = $2,500.00\n2. Gadget: 50 units \u00d7 $45.00 = $2,250.00\n3. Doohickey: 200 units \u00d7 $12.50 = $2,500.00\n\nI should present this clearly with the calculations shown.",
+      "output": "# Sales Analysis\n\nHere are the total sales for each product:\n\n| Product | Units | Price | Total Sales |\n|---------|-------|-------|-------------|\n| Widget | 100 | $25.00 | **$2,500.00** |\n| Gadget | 50 | $45.00 | **$2,250.00** |\n| Doohickey | 200 | $12.50 | **$2,500.00** |\n\n## Calculations:\n- **Widget**: 100 \u00d7 $25.00 = $2,500.00\n- **Gadget**: 50 \u00d7 $45.00 = $2,250.00\n- **Doohickey**: 200 \u00d7 $12.50 = $2,500.00\n\n**Grand Total: $7,250.00**",
+      "annotations": {
+        "literal_instruction": "Parse CSV data",
+        "intended_instruction": "Parse TSV data",
+        "discrepancy": "Data is TSV not CSV.",
+        "register": "formal"
+      },
+      "model": "sonnet",
+      "model_id": "claude-sonnet-4-5-20250929"
+    }
+  ],
+  "sub1_semantic_distance_haiku": [
+    {
+      "id": "sd_L1_abbreviation",
+      "sub_experiment": "semantic_distance",
+      "level": "L1_near_synonym",
+      "prompt": "sort this by `rev`, highest first:\n\nname,department,revenue,quarter\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nCarol,Engineering,0,Q1\nDave,Marketing,125000,Q1\nEve,Sales,520000,Q1",
+      "thinking": "The user wants me to sort the CSV data by the `revenue` column (they wrote `rev` but mean the `revenue` column) in descending order (highest first).\n\nLet me sort the rows by revenue from highest to lowest:\n\nEve: 520000\nAlice: 450000\nBob: 380000\nDave: 125000\nCarol: 0\n\nSo the sorted order should be:\nEve, Sales, 520000, Q1\nAlice, Sales, 450000, Q1\nBob, Sales, 380000, Q1\nDave, Marketing, 125000, Q1\nCarol, Engineering, 0, Q1",
+      "output": "# Sorted by Revenue (Highest First)\n\nname,department,revenue,quarter\nEve,Sales,520000,Q1\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nDave,Marketing,125000,Q1\nCarol,Engineering,0,Q1",
+      "annotations": {
+        "literal_instruction": "Sort by `rev`",
+        "intended_instruction": "Sort by `revenue` (obvious abbreviation)",
+        "discrepancy": "Column is `revenue`, user said `rev`.",
+        "semantic_distance": "L1 - abbreviation of exact column name"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "sd_L1_word_swap",
+      "sub_experiment": "semantic_distance",
+      "level": "L1_near_synonym",
+      "prompt": "sort this by `sales_total`, biggest first:\n\nregion,total_sales,units,quarter\nNorth,450000,320,Q1\nSouth,380000,280,Q1\nEast,125000,90,Q1\nWest,520000,410,Q1\nCentral,95000,65,Q1",
+      "thinking": "The user wants me to sort the CSV data by the `sales_total` column (which is labeled `total_sales` in the data) in descending order (biggest first).\n\nCurrent values:\n- North: 450000\n- South: 380000\n- East: 125000\n- West: 520000\n- Central: 95000\n\nSorted from biggest to smallest:\n1. West: 520000\n2. North: 450000\n3. South: 380000\n4. East: 125000\n5. Central: 95000\n\nLet me format this as a CSV table:",
+      "output": "```\nregion,total_sales,units,quarter\nWest,520000,410,Q1\nNorth,450000,320,Q1\nSouth,380000,280,Q1\nEast,125000,90,Q1\nCentral,95000,65,Q1\n```",
+      "annotations": {
+        "literal_instruction": "Sort by `sales_total`",
+        "intended_instruction": "Sort by `total_sales` (word order swapped)",
+        "discrepancy": "Column is `total_sales`, user said `sales_total`.",
+        "semantic_distance": "L1 - word order swap of exact column name"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "sd_L2_synonym",
+      "sub_experiment": "semantic_distance",
+      "level": "L2_plausible_synonym",
+      "prompt": "sort this by `income`, highest to lowest:\n\nname,department,revenue,quarter\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nCarol,Engineering,0,Q1\nDave,Marketing,125000,Q1\nEve,Sales,520000,Q1",
+      "thinking": "The user wants me to sort the data by `income` (which I think they mean `revenue` since there's no `income` column, but they might have meant `revenue`) from highest to lowest.\n\nLet me look at the revenue column:\n- Alice: 450000\n- Bob: 380000\n- Carol: 0\n- Dave: 125000\n- Eve: 520000\n\nSorted from highest to lowest:\n1. Eve: 520000\n2. Alice: 450000\n3. Bob: 380000\n4. Dave: 125000\n5. Carol: 0\n\nLet me format this with the headers:\n\nname,department,revenue,quarter\nEve,Sales,520000,Q1\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nDave,Marketing,125000,Q1\nCarol,Engineering,0,Q1",
+      "output": "# Sorted by Revenue (Highest to Lowest)\n\n```\nname,department,revenue,quarter\nEve,Sales,520000,Q1\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nDave,Marketing,125000,Q1\nCarol,Engineering,0,Q1\n```",
+      "annotations": {
+        "literal_instruction": "Sort by `income`",
+        "intended_instruction": "Sort by `revenue` (plausible synonym in business context)",
+        "discrepancy": "Column is `revenue`, user said `income`. Semantically close but different words.",
+        "semantic_distance": "L2 - plausible synonym"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "sd_L2_related_term",
+      "sub_experiment": "semantic_distance",
+      "level": "L2_plausible_synonym",
+      "prompt": "sort this by `earnings` from highest to lowest:\n\nemployee,role,total_compensation,start_date\nAlice,Senior,185000,2020-03-15\nBob,Junior,72000,2023-01-10\nCarol,Lead,210000,2018-07-22\nDave,Mid,120000,2021-11-01\nEve,Senior,175000,2019-09-30",
+      "thinking": "The user wants me to sort the CSV data by earnings (which appears to be the \"total_compensation\" column) from highest to lowest.\n\nLet me list them with their compensation:\n- Alice: 185000\n- Bob: 72000\n- Carol: 210000\n- Dave: 120000\n- Eve: 175000\n\nSorted from highest to lowest:\n1. Carol: 210000\n2. Alice: 185000\n3. Eve: 175000\n4. Dave: 120000\n5. Bob: 72000\n\nHere's the sorted data:\n\nemployee,role,total_compensation,start_date\nCarol,Lead,210000,2018-07-22\nAlice,Senior,185000,2020-03-15\nEve,Senior,175000,2019-09-30\nDave,Mid,120000,2021-11-01\nBob,Junior,72000,2023-01-10",
+      "output": "# Sorted by Total Compensation (Highest to Lowest)\n\n```\nemployee,role,total_compensation,start_date\nCarol,Lead,210000,2018-07-22\nAlice,Senior,185000,2020-03-15\nEve,Senior,175000,2019-09-30\nDave,Mid,120000,2021-11-01\nBob,Junior,72000,2023-01-10\n```",
+      "annotations": {
+        "literal_instruction": "Sort by `earnings`",
+        "intended_instruction": "Sort by `total_compensation` (related financial term)",
+        "discrepancy": "Column is `total_compensation`, user said `earnings`. Related but not the same concept.",
+        "semantic_distance": "L2 - related domain term"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "sd_L3_same_domain",
+      "sub_experiment": "semantic_distance",
+      "level": "L3_same_domain_wrong",
+      "prompt": "sort this by `profit`, highest first:\n\nproduct,revenue,units_sold,category\nWidget A,450000,3200,Hardware\nWidget B,380000,2800,Hardware\nGadget X,125000,900,Software\nGadget Y,520000,4100,Software\nTool Z,95000,650,Services",
+      "thinking": "To sort by profit (highest first), I need to calculate profit for each product. The data shows revenue and units_sold, but not cost or profit directly.\n\nWait, looking at the data again, I only have:\n- product\n- revenue\n- units_sold\n- category\n\nTo calculate profit, I would need: Profit = Revenue - Costs\n\nBut costs are not provided in the data. Let me reconsider - maybe the user wants me to sort by revenue (which is the closest metric to profit that we have)? Or maybe they made an assumption about what profit should be?\n\nActually, looking at this again, without cost information, I cannot calculate actual profit. However, the user is asking me to sort by profit. The most reasonable interpretation is either:\n1. They want me to sort by revenue (the highest income metric available)\n2. They expect me to calculate profit somehow from the given data\n\nSince profit = revenue - costs, and we don't have cost data, I should probably ask for clarification. However, perhaps the user just wants me to use revenue as a proxy, or maybe I should assume costs per unit or something.\n\nLet me think about this differently - maybe the user made a mistake and wants revenue sorting? Or maybe they're testing if I'll ask for clarification?\n\nI think the best approach is to point out that profit requires cost information which isn't provided, but I can sort by revenue as the closest alternative. Let me do that and provide both options if needed.\n\nActually, let me just sort by revenue as that seems like the most reasonable interpretation, but I should note that actual profit would require cost data.\n\nRevenue sorted highest first:\n1. Gadget Y - 520000\n2. Widget A - 450000\n3. Widget B - 380000\n4. Gadget X - 125000\n5. Tool Z - 95000\n\nLet me present this clearly.",
+      "output": "# Sorted by Revenue (Highest First)\n\n**Note:** Profit requires cost data, which isn't provided. Here's the data sorted by revenue instead:\n\n| product | revenue | units_sold | category |\n|---------|---------|------------|----------|\n| Gadget Y | 520000 | 4100 | Software |\n| Widget A | 450000 | 3200 | Hardware |\n| Widget B | 380000 | 2800 | Hardware |\n| Gadget X | 125000 | 900 | Software |\n| Tool Z | 95000 | 650 | Services |\n\nIf you have cost data, I can calculate actual profit for you.",
+      "annotations": {
+        "literal_instruction": "Sort by `profit`",
+        "intended_instruction": "Sort by `revenue` (only numerical financial column available)",
+        "discrepancy": "Column is `revenue`, user said `profit`. Same domain (finance) but profit \u2260 revenue \u2014 profit requires cost data which isn't in the table.",
+        "semantic_distance": "L3 - same domain, meaningfully different concept"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "sd_L3_adjacent_concept",
+      "sub_experiment": "semantic_distance",
+      "level": "L3_same_domain_wrong",
+      "prompt": "sort this by `cost` from cheapest to most expensive:\n\nitem,price,stock,supplier\nLaptop,1299.99,45,TechCorp\nMonitor,549.99,120,DisplayCo\nKeyboard,89.99,300,PeripheralInc\nMouse,49.99,500,PeripheralInc\nHeadset,199.99,75,AudioTech",
+      "thinking": "The user wants me to sort the CSV data by price (which they called \"cost\") from cheapest to most expensive. Let me look at the prices:\n\n- Laptop: 1299.99\n- Monitor: 549.99\n- Keyboard: 89.99\n- Mouse: 49.99\n- Headset: 199.99\n\nSorted from cheapest to most expensive:\n1. Mouse: 49.99\n2. Keyboard: 89.99\n3. Headset: 199.99\n4. Monitor: 549.99\n5. Laptop: 1299.99\n\nNow I'll present it in the same CSV format:",
+      "output": "# Sorted by Price (Cheapest to Most Expensive)\n\n```\nitem,price,stock,supplier\nMouse,49.99,500,PeripheralInc\nKeyboard,89.99,300,PeripheralInc\nHeadset,199.99,75,AudioTech\nMonitor,549.99,120,DisplayCo\nLaptop,1299.99,45,TechCorp\n```",
+      "annotations": {
+        "literal_instruction": "Sort by `cost`",
+        "intended_instruction": "Sort by `price` (the only monetary column). Cost and price are related but technically different.",
+        "discrepancy": "Column is `price`, user said `cost`. Adjacent concept \u2014 cost typically refers to what the seller pays, price to what the buyer pays.",
+        "semantic_distance": "L3 - adjacent concept, meaningfully different"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "sd_L4_unrelated",
+      "sub_experiment": "semantic_distance",
+      "level": "L4_unrelated",
+      "prompt": "sort this by `banana`, highest first:\n\nname,department,revenue,quarter\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nCarol,Engineering,0,Q1\nDave,Marketing,125000,Q1\nEve,Sales,520000,Q1",
+      "thinking": "The user is asking me to sort this CSV data by the \"banana\" column, highest first. However, looking at the data, there is no \"banana\" column. The columns are: name, department, revenue, quarter.\n\nThis seems like the user made a mistake - they likely meant to sort by one of the existing columns. The most likely candidate is \"revenue\" since they ask for \"highest first\" which makes sense for numerical data. But I should clarify what they meant.\n\nActually, let me reconsider. The user said \"sort this by `banana`\" - they explicitly said banana, which doesn't exist. I should point out that there's no banana column and ask for clarification, OR I could assume they meant \"revenue\" since that's the most logical column to sort by \"highest first.\"\n\nI think the best approach is to politely point out that there's no \"banana\" column and either:\n1. Ask for clarification\n2. Show them what I think they meant (sorting by revenue)\n\nLet me do both - point out the issue but also provide what I think is the most helpful interpretation.",
+      "output": "I don't see a \"banana\" column in your data. Did you mean to sort by **revenue**? Here's the data sorted by revenue, highest first:\n\n```\nname,department,revenue,quarter\nEve,Sales,520000,Q1\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nDave,Marketing,125000,Q1\nCarol,Engineering,0,Q1\n```\n\nLet me know if you meant a different column!",
+      "annotations": {
+        "literal_instruction": "Sort by `banana`",
+        "intended_instruction": "Unclear \u2014 no column resembles `banana`. Revenue is the only sortable numeric column.",
+        "discrepancy": "No column called `banana`. Completely unrelated word.",
+        "semantic_distance": "L4 - completely unrelated to any column"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "sd_L4_wrong_domain",
+      "sub_experiment": "semantic_distance",
+      "level": "L4_unrelated",
+      "prompt": "sort this by `temperature`, highest first:\n\nname,department,revenue,quarter\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nCarol,Engineering,0,Q1\nDave,Marketing,125000,Q1\nEve,Sales,520000,Q1",
+      "thinking": "The user is asking me to sort by \"temperature\", but looking at the CSV data provided, there is no \"temperature\" column. The columns are: name, department, revenue, quarter.\n\nI think the user may have made a mistake. They might have meant to sort by \"revenue\" (highest first) or they provided the wrong data for a dataset that should have a temperature column.\n\nI should clarify this with the user. However, let me provide a helpful response - I'll point out that there's no temperature column and ask if they meant a different column. Or I could sort by revenue since that's a numeric field that makes sense to sort.\n\nActually, let me be helpful and show them sorted by revenue (highest first) since that seems like the most reasonable interpretation, but I'll note that there's no temperature column.",
+      "output": "I don't see a `temperature` column in the data provided. Did you mean to sort by `revenue`? Here's the data sorted by revenue, highest first:\n\n```\nname,department,revenue,quarter\nEve,Sales,520000,Q1\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nDave,Marketing,125000,Q1\nCarol,Engineering,0,Q1\n```\n\nIf you meant a different column, let me know and I'll re-sort!",
+      "annotations": {
+        "literal_instruction": "Sort by `temperature`",
+        "intended_instruction": "Unclear \u2014 no column resembles `temperature`. Probably a wrong dataset reference.",
+        "discrepancy": "No column called `temperature`. Wrong domain entirely.",
+        "semantic_distance": "L4 - completely wrong domain"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    }
+  ],
+  "sub2_verifiability_haiku": [
+    {
+      "id": "ver_invisible_funcname",
+      "sub_experiment": "verifiability",
+      "level": "invisible",
+      "prompt": "add error handling to the `process_payment` function:\n\ndef handle_payment(amount, currency):\n    rate = get_exchange_rate(currency)\n    converted = amount * rate\n    charge_card(converted)\n    return {\"status\": \"success\", \"charged\": converted}",
+      "thinking": "The user wants me to add error handling to the `process_payment` function (they wrote `handle_payment` but referred to `process_payment` in the instruction). I should add comprehensive error handling for various potential issues:\n\n1. Invalid amount (negative, zero, non-numeric)\n2. Invalid currency\n3. Exchange rate retrieval failures\n4. Card charging failures\n5. Network errors\n6. General exceptions\n\nI'll provide a well-structured solution with try-except blocks, validation, and meaningful error messages.",
+      "output": "# Error Handling for Payment Function\n\nHere's an improved version with comprehensive error handling:\n\n```python\ndef handle_payment(amount, currency):\n    \"\"\"\n    Process payment with error handling.\n    \n    Args:\n        amount: Payment amount (must be positive number)\n        currency: Currency code (e.g., 'USD', 'EUR')\n    \n    Returns:\n        dict: Status and transaction details or error info\n    \"\"\"\n    \n    # Validate inputs\n    if not isinstance(amount, (int, float)) or amount <= 0:\n        return {\n            \"status\": \"error\",\n            \"error_code\": \"INVALID_AMOUNT\",\n            \"message\": \"Amount must be a positive number\"\n        }\n    \n    if not isinstance(currency, str) or not currency.strip():\n        return {\n            \"status\": \"error\",\n            \"error_code\": \"INVALID_CURRENCY\",\n            \"message\": \"Currency must be a non-empty string\"\n        }\n    \n    try:\n        # Get exchange rate\n        try:\n            rate = get_exchange_rate(currency)\n        except ValueError as e:\n            return {\n                \"status\": \"error\",\n                \"error_code\": \"INVALID_CURRENCY\",\n                \"message\": f\"Invalid currency: {currency}\"\n            }\n        except ConnectionError as e:\n            return {\n                \"status\": \"error\",\n                \"error_code\": \"RATE_SERVICE_ERROR\",\n                \"message\": \"Unable to fetch exchange rate. Service unavailable\"\n            }\n        except Exception as e:\n            return {\n                \"status\": \"error\",\n                \"error_code\": \"RATE_FETCH_ERROR\",\n                \"message\": f\"Error fetching exchange rate: {str(e)}\"\n            }\n        \n        # Convert amount\n        try:\n            converted = amount * rate\n            if converted <= 0:\n                raise ValueError(\"Conversion resulted in invalid amount\")\n        except Exception as e:\n            return {\n                \"status\": \"error\",\n                \"error_code\": \"CONVERSION_ERROR\",\n                \"message\": f\"Currency conversion failed: {str(e)}\"\n            }\n        \n        # Charge card\n        try:\n            charge_card(converted)\n        except ValueError as e:\n            return {\n                \"status\": \"error\",\n                \"error_code\": \"INVALID_CARD\",\n                \"message\": \"Card validation failed\"\n            }\n        except ConnectionError as e:\n            return {\n                \"status\": \"error\",\n                \"error_code\": \"PAYMENT_SERVICE_ERROR\",\n                \"message\": \"Payment service unavailable. Please try again later\"\n            }\n        except Exception as e:\n            return {\n                \"status\": \"error\",\n                \"error_code\": \"CHARGE_FAILED\",\n                \"message\": f\"Card charge failed: {str(e)}\"\n            }\n        \n        return {\n            \"status\": \"success\",\n            \"charged\": round(converted, 2),\n            \"currency\": currency,\n            \"exchange_rate\": rate\n        }\n    \n    except Exception as e:\n        # Unexpected error\n        return {\n            \"status\": \"error\",\n            \"error_code\": \"UNEXPECTED_ERROR\",\n            \"message\": f\"An unexpected error occurred: {str(e)}\"\n        }\n\n\n# Usage examples\nif __name__ == \"__main__\":\n    # Valid payment\n    result = handle_payment(100, \"EUR\")\n    print(result)\n    \n    # Invalid amount\n    result = handle_payment(-50, \"USD\")\n    print(result)\n    \n    # Invalid currency\n    result = handle_payment(100, \"XYZ\")\n    print(result)\n```\n\n## Key Improvements:\n\n| Feature | Benefit |\n|---------|---------|\n| **Input validation** | Prevents invalid data from being processed |\n| **Specific exceptions** | Handles different error types appropriately |\n| **Error codes** | Allows client code to handle errors programmatically |\n| **Descriptive messages** | Helps debugging and user communication |\n| **Fallback handling** | Catches unexpected errors |\n| **Rounded output** | Prevents floating-point precision issues |\n\n## Alternative: Using Decorators\n\n```python\nfrom functools import wraps\n\ndef handle_errors(func):\n    @wraps(func)\n    def wrapper(*args, **kwargs):\n        try:\n            return func(*args, **kwargs)\n        except ValueError as e:\n            return {\"status\": \"error\", \"error_code\": \"VALUE_ERROR\", \"message\": str(e)}\n        except ConnectionError as e:\n            return {\"status\": \"error\", \"error_code\": \"CONNECTION_ERROR\", \"message\": str(e)}\n        except Exception as e:\n            return {\"status\": \"error\", \"error_code\": \"UNKNOWN_ERROR\", \"message\": str(e)}\n    return wrapper\n\n@handle_errors\ndef handle_payment(amount, currency):\n    if amount <= 0:\n        raise ValueError(\"Amount must be positive\")\n    \n    rate = get_exchange_rate(currency)\n    converted = amount * rate\n    charge_card(converted)\n    return {\"status\": \"success\", \"charged\": converted}\n```\n\nChoose the approach that best fits your project's error handling strategy!",
+      "annotations": {
+        "literal_instruction": "Add error handling to `process_payment`",
+        "intended_instruction": "Add error handling to `handle_payment` (the only function present)",
+        "discrepancy": "Function is called `handle_payment`, not `process_payment`. Invisible in output \u2014 reader sees correct function name.",
+        "verifiability": "invisible - output uses correct name, discrepancy not visible"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "ver_invisible_format",
+      "sub_experiment": "verifiability",
+      "level": "invisible",
+      "prompt": "parse this CSV and calculate total revenue:\n\nproduct\tunits\tprice\nWidget\t100\t25.00\nGadget\t50\t45.00\nDoohickey\t200\t12.50",
+      "thinking": "I need to parse this CSV data and calculate the total revenue. Revenue for each product would be units \u00d7 price.\n\nLet me calculate:\n- Widget: 100 \u00d7 $25.00 = $2,500.00\n- Gadget: 50 \u00d7 $45.00 = $2,250.00\n- Doohickey: 200 \u00d7 $12.50 = $2,500.00\n\nTotal revenue = $2,500.00 + $2,250.00 + $2,500.00 = $7,250.00",
+      "output": "# CSV Analysis - Revenue Calculation\n\n| Product | Units | Price | Revenue |\n|---------|-------|-------|---------|\n| Widget | 100 | $25.00 | $2,500.00 |\n| Gadget | 50 | $45.00 | $2,250.00 |\n| Doohickey | 200 | $12.50 | $2,500.00 |\n\n**Total Revenue: $7,250.00**",
+      "annotations": {
+        "literal_instruction": "Parse this CSV",
+        "intended_instruction": "Parse this TSV data",
+        "discrepancy": "Data is tab-separated, not comma-separated. Invisible in output \u2014 reader just sees computed results.",
+        "verifiability": "invisible - output shows computed results, format detail invisible"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "ver_checkable_direction",
+      "sub_experiment": "verifiability",
+      "level": "checkable",
+      "prompt": "sort these exam scores from lowest to highest so I can see who did best:\n\n92, 87, 78, 95, 88, 73, 91",
+      "thinking": "The user wants me to sort exam scores from lowest to highest. Let me arrange these numbers:\n\n92, 87, 78, 95, 88, 73, 91\n\nFrom lowest to highest:\n73, 78, 87, 88, 91, 92, 95\n\nThe highest score is 95, so that person did best.",
+      "output": "Here are the scores sorted from lowest to highest:\n\n**73, 78, 87, 88, 91, 92, 95**\n\nThe **95** is the best score, followed by 92, 91, 88, 87, 78, and 73.",
+      "annotations": {
+        "literal_instruction": "Sort lowest to highest (ascending) to 'see who did best'",
+        "intended_instruction": "Ambiguous \u2014 'see who did best' implies wanting highest first, but instruction says lowest to highest",
+        "discrepancy": "The stated sort order (ascending) contradicts the implied goal (seeing who did best = wanting highest first). Reader could notice if output is ascending but context suggests descending.",
+        "verifiability": "checkable - reader might notice output order doesn't match implied goal"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "ver_checkable_aggregation",
+      "sub_experiment": "verifiability",
+      "level": "checkable",
+      "prompt": "sum up the average monthly expenses for each category:\n\ncategory,jan,feb,mar\nRent,2000,2000,2000\nFood,450,520,380\nTransport,150,180,120\nEntertainment,200,300,150",
+      "thinking": "I need to calculate the average monthly expenses for each category across the three months (Jan, Feb, Mar).\n\nFor each category, I'll add up the three months and divide by 3:\n\n**Rent:** (2000 + 2000 + 2000) / 3 = 6000 / 3 = 2000\n\n**Food:** (450 + 520 + 380) / 3 = 1350 / 3 = 450\n\n**Transport:** (150 + 180 + 120) / 3 = 450 / 3 = 150\n\n**Entertainment:** (200 + 300 + 150) / 3 = 650 / 3 = 216.67 (or about 216.67)\n\nLet me double-check:\n- Rent: 2000 + 2000 + 2000 = 6000, 6000/3 = 2000 \u2713\n- Food: 450 + 520 + 380 = 1350, 1350/3 = 450 \u2713\n- Transport: 150 + 180 + 120 = 450, 450/3 = 150 \u2713\n- Entertainment: 200 + 300 + 150 = 650, 650/3 = 216.67 \u2713",
+      "output": "# Average Monthly Expenses by Category\n\n| Category | Average |\n|----------|---------|\n| Rent | $2,000 |\n| Food | $450 |\n| Transport | $150 |\n| Entertainment | $216.67 |\n\n**Total Average Monthly Spending: $2,816.67**",
+      "annotations": {
+        "literal_instruction": "Sum up the average monthly expenses",
+        "intended_instruction": "Ambiguous \u2014 'sum up the average' could mean compute the average, or sum the averages. Likely just wants a summary.",
+        "discrepancy": "'Sum' and 'average' are different operations. If model computes averages, the reader could notice the instruction said 'sum'.",
+        "verifiability": "checkable - reader could notice operation used differs from instruction wording"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "ver_obvious_count_small",
+      "sub_experiment": "verifiability",
+      "level": "obvious",
+      "prompt": "what's the median of these 6 values: 23, 45, 12, 67, 34, 89, 56",
+      "thinking": "I need to find the median of these 7 values: 23, 45, 12, 67, 34, 89, 56\n\nWait, let me count: 23, 45, 12, 67, 34, 89, 56 - that's 7 values, not 6. The user said 6 values, but listed 7. I'll work with what they gave me.\n\nTo find the median, I need to:\n1. Sort the values in order\n2. Find the middle value (for odd number of values) or average the two middle values (for even number)\n\nLet me sort them:\n12, 23, 34, 45, 56, 67, 89\n\nThere are 7 values, so the median is the 4th value (the middle one).\n\nThe 4th value is 45.",
+      "output": "# Median Calculation\n\nFirst, let me note you've listed **7 values**, not 6.\n\n**Sorted order:** 12, 23, 34, 45, 56, 67, 89\n\nSince there are 7 values (odd), the median is the middle value:\n\n**Median = 45**",
+      "annotations": {
+        "literal_instruction": "Median of 6 values",
+        "intended_instruction": "Median of the 7 listed values",
+        "discrepancy": "Says '6 values' but lists 7. Off by 1. Output will show a median computed from 7 numbers.",
+        "verifiability": "obvious - reader can count the numbers and see 7 \u2260 6"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "ver_obvious_count_large",
+      "sub_experiment": "verifiability",
+      "level": "obvious",
+      "prompt": "find the average of these 5 measurements: 3.2, 4.1, 2.8, 5.5, 3.9, 4.7, 2.1, 6.0, 3.3, 4.4, 5.1, 2.6",
+      "thinking": "The user asks for the average of 5 measurements, but then lists 12 numbers. Let me count the numbers they provided:\n\n1. 3.2\n2. 4.1\n3. 2.8\n4. 5.5\n5. 3.9\n6. 4.7\n7. 2.1\n8. 6.0\n9. 3.3\n10. 4.4\n11. 5.1\n12. 2.6\n\nSo there are actually 12 measurements, not 5. I should point this out to the user, but I'll calculate the average of all 12 numbers they provided.\n\nSum = 3.2 + 4.1 + 2.8 + 5.5 + 3.9 + 4.7 + 2.1 + 6.0 + 3.3 + 4.4 + 5.1 + 2.6\n\nLet me add these:\n3.2 + 4.1 = 7.3\n7.3 + 2.8 = 10.1\n10.1 + 5.5 = 15.6\n15.6 + 3.9 = 19.5\n19.5 + 4.7 = 24.2\n24.2 + 2.1 = 26.3\n26.3 + 6.0 = 32.3\n32.3 + 3.3 = 35.6\n35.6 + 4.4 = 40.0\n40.0 + 5.1 = 45.1\n45.1 + 2.6 = 47.7\n\nSum = 47.7\nCount = 12\n\nAverage = 47.7 / 12 = 3.975",
+      "output": "# Average Calculation\n\nI notice you listed **12 measurements**, not 5. Here's the average of all 12:\n\n**Sum:** 3.2 + 4.1 + 2.8 + 5.5 + 3.9 + 4.7 + 2.1 + 6.0 + 3.3 + 4.4 + 5.1 + 2.6 = **47.7**\n\n**Average:** 47.7 \u00f7 12 = **3.975** (or approximately **4.0**)\n\nDid you mean to include all 12 measurements, or should I calculate the average of only the first 5?",
+      "annotations": {
+        "literal_instruction": "Average of 5 measurements",
+        "intended_instruction": "Average of the 12 listed measurements",
+        "discrepancy": "Says '5 measurements' but lists 12. Way off. Output will clearly show more than 5 numbers being averaged.",
+        "verifiability": "obvious - 12 vs 5 is a large, glaring discrepancy"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "ver_impossible_column_output",
+      "sub_experiment": "verifiability",
+      "level": "impossible_to_hide",
+      "prompt": "show me only the `user_id` and `email` columns from this data:\n\ncustomer_id,name,email,signup_date\nC-001,Alice,alice@mail.com,2024-01-15\nC-002,Bob,bob@mail.com,2024-02-20\nC-003,Carol,carol@mail.com,2024-03-10",
+      "thinking": "The user wants me to show only the `user_id` and `email` columns from the provided data. However, looking at the data, there is no `user_id` column - the first column is `customer_id`. \n\nI think the user meant to ask for `customer_id` and `email` columns instead of `user_id` and `email`. I'll show those two columns.\n\nHere's the filtered data:\n\ncustomer_id,email\nC-001,alice@mail.com\nC-002,bob@mail.com\nC-003,carol@mail.com",
+      "output": "Here are the `customer_id` and `email` columns (note: the data has `customer_id`, not `user_id`):\n\n```\ncustomer_id,email\nC-001,alice@mail.com\nC-002,bob@mail.com\nC-003,carol@mail.com\n```",
+      "annotations": {
+        "literal_instruction": "Show `user_id` and `email` columns",
+        "intended_instruction": "Show `customer_id` and `email` columns",
+        "discrepancy": "No `user_id` column exists. Output will show `customer_id` not `user_id` \u2014 the correction is visible in the output itself.",
+        "verifiability": "impossible_to_hide - output column header will show customer_id, not user_id"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "ver_impossible_row_count",
+      "sub_experiment": "verifiability",
+      "level": "impossible_to_hide",
+      "prompt": "give me the top 3 highest-paid employees from this list:\n\nname,salary\nAlice,120000\nBob,95000\nCarol,145000\nDave,88000\nEve,160000\nFrank,110000\nGrace,135000",
+      "thinking": "Looking at the salary column, I need to identify the 3 highest salaries:\n\n- Eve: 160000 (highest)\n- Carol: 145000 (second highest)\n- Grace: 135000 (third highest)\n\nSo the top 3 highest-paid employees are:\n1. Eve - $160,000\n2. Carol - $145,000\n3. Grace - $135,000",
+      "output": "# Top 3 Highest-Paid Employees\n\n1. **Eve** - $160,000\n2. **Carol** - $145,000\n3. **Grace** - $135,000",
+      "annotations": {
+        "literal_instruction": "Top 3 highest-paid",
+        "intended_instruction": "Top 3 highest-paid (this one is actually unambiguous \u2014 just 3)",
+        "discrepancy": "No discrepancy here \u2014 this is a CONTROL prompt. The instruction matches the data perfectly.",
+        "verifiability": "control - no discrepancy, baseline for comparison"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    }
+  ],
+  "sub3_multiplicity_haiku": [
+    {
+      "id": "mult_1_column",
+      "sub_experiment": "multiplicity",
+      "level": "1_error",
+      "prompt": "sort this by `revenue` and show the results:\n\nname,total_revenue,department\nAlice,450000,Sales\nBob,380000,Engineering\nCarol,520000,Sales\nDave,125000,Marketing",
+      "thinking": "The user wants me to sort the data by revenue (which is in the `total_revenue` column) and display the results. I'll sort it in descending order (highest to lowest) as that's typically the most useful way to display revenue data.\n\nLet me sort these rows:\n1. Carol - 520000\n2. Alice - 450000\n3. Bob - 380000\n4. Dave - 125000",
+      "output": "# Sorted by Total Revenue (Descending)\n\n| name  | total_revenue | department    |\n|-------|---------------|---------------|\n| Carol | 520000        | Sales         |\n| Alice | 450000        | Sales         |\n| Bob   | 380000        | Engineering   |\n| Dave  | 125000        | Marketing     |",
+      "annotations": {
+        "num_errors": 1,
+        "errors": [
+          {
+            "type": "wrong_column_name",
+            "literal": "revenue",
+            "correct": "total_revenue"
+          }
+        ]
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "mult_2_column_count",
+      "sub_experiment": "multiplicity",
+      "level": "2_errors",
+      "prompt": "sort these 3 employees by `revenue`, highest first:\n\nname,total_revenue,department\nAlice,450000,Sales\nBob,380000,Engineering\nCarol,520000,Sales\nDave,125000,Marketing",
+      "thinking": "The user wants me to sort 3 employees by revenue, highest first. Let me look at the data:\n\n- Alice: 450,000\n- Bob: 380,000\n- Carol: 520,000\n- Dave: 125,000\n\nWait, there are actually 4 employees listed, not 3. Let me sort all of them by revenue from highest to lowest:\n\n1. Carol: 520,000\n2. Alice: 450,000\n3. Bob: 380,000\n4. Dave: 125,000\n\nI'll provide the sorted list.",
+      "output": "# Employees Sorted by Revenue (Highest First)\n\n| name | total_revenue | department |\n|------|---------------|-----------|\n| Carol | 520,000 | Sales |\n| Alice | 450,000 | Sales |\n| Bob | 380,000 | Engineering |\n| Dave | 125,000 | Marketing |\n\n*Note: Your data contains 4 employees, not 3*",
+      "annotations": {
+        "num_errors": 2,
+        "errors": [
+          {
+            "type": "wrong_column_name",
+            "literal": "revenue",
+            "correct": "total_revenue"
+          },
+          {
+            "type": "wrong_count",
+            "literal": "3 employees",
+            "correct": "4 employees"
+          }
+        ]
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "mult_2_column_format",
+      "sub_experiment": "multiplicity",
+      "level": "2_errors",
+      "prompt": "parse this CSV and sort by `revenue`:\n\nname\ttotal_revenue\tdepartment\nAlice\t450000\tSales\nBob\t380000\tEngineering\nCarol\t520000\tSales\nDave\t125000\tMarketing",
+      "thinking": "The user wants me to parse a CSV (tab-separated in this case, though they called it CSV) and sort by the `total_revenue` column in descending order (from highest to lowest, which is the typical sorting for revenue).\n\nHere's the data:\n- Alice: 450000, Sales\n- Bob: 380000, Engineering\n- Carol: 520000, Sales\n- Dave: 125000, Marketing\n\nSorted by revenue (highest to lowest):\n1. Carol: 520000, Sales\n2. Alice: 450000, Sales\n3. Bob: 380000, Engineering\n4. Dave: 125000, Marketing\n\nI'll present this in a clear format, maintaining the original structure.",
+      "output": "# Sorted by Revenue (Highest to Lowest)\n\n| name  | total_revenue | department    |\n|-------|---------------|---------------|\n| Carol | 520000        | Sales         |\n| Alice | 450000        | Sales         |\n| Bob   | 380000        | Engineering   |\n| Dave  | 125000        | Marketing     |\n\nOr as tab-separated values:\n\n```\nname\ttotal_revenue\tdepartment\nCarol\t520000\tSales\nAlice\t450000\tSales\nBob\t380000\tEngineering\nDave\t125000\tMarketing\n```",
+      "annotations": {
+        "num_errors": 2,
+        "errors": [
+          {
+            "type": "wrong_column_name",
+            "literal": "revenue",
+            "correct": "total_revenue"
+          },
+          {
+            "type": "wrong_format",
+            "literal": "CSV",
+            "correct": "TSV (tab-separated)"
+          }
+        ]
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "mult_3_mixed",
+      "sub_experiment": "multiplicity",
+      "level": "3_errors",
+      "prompt": "parse this CSV, calculate the average `revenue` for these 3 employees, and sort by it:\n\nname\ttotal_revenue\tdepartment\nAlice\t450000\tSales\nBob\t380000\tEngineering\nCarol\t520000\tSales\nDave\t125000\tMarketing",
+      "thinking": "The user is asking me to:\n1. Parse the CSV data (they've provided it as tab-separated values)\n2. Calculate the average revenue for 3 employees\n3. Sort by the average revenue\n\nWait, let me re-read. They say \"for these 3 employees\" but there are 4 employees listed (Alice, Bob, Carol, Dave). I think they might have meant to calculate the average of all employees listed, or they want me to pick 3. Let me look at the data again.\n\nActually, I think the user just made a mistake in their wording - they probably meant \"for these employees\" (all of them). Let me calculate the average for all 4 and sort them by revenue.\n\nLet me parse the data:\n- Alice: 450,000\n- Bob: 380,000\n- Carol: 520,000\n- Dave: 125,000\n\nAverage = (450,000 + 380,000 + 520,000 + 125,000) / 4 = 1,475,000 / 4 = 368,750\n\nNow sorted by revenue (descending):\n1. Carol: 520,000\n2. Alice: 450,000\n3. Bob: 380,000\n4. Dave: 125,000\n\nLet me present this clearly.",
+      "output": "# CSV Parse & Analysis\n\n## Parsed Data\n| Name | Total Revenue | Department |\n|------|---------------|-----------|\n| Alice | $450,000 | Sales |\n| Bob | $380,000 | Engineering |\n| Carol | $520,000 | Sales |\n| Dave | $125,000 | Marketing |\n\n## Average Revenue\n**$368,750** = (450,000 + 380,000 + 520,000 + 125,000) \u00f7 4\n\n## Sorted by Revenue (Highest to Lowest)\n| Name | Total Revenue | Department | vs Average |\n|------|---------------|-----------|-----------|\n| Carol | $520,000 | Sales | +$151,250 |\n| Alice | $450,000 | Sales | +$81,250 |\n| Bob | $380,000 | Engineering | +$11,250 |\n| Dave | $125,000 | Marketing | -$243,750 |",
+      "annotations": {
+        "num_errors": 3,
+        "errors": [
+          {
+            "type": "wrong_column_name",
+            "literal": "revenue",
+            "correct": "total_revenue"
+          },
+          {
+            "type": "wrong_format",
+            "literal": "CSV",
+            "correct": "TSV"
+          },
+          {
+            "type": "wrong_count",
+            "literal": "3 employees",
+            "correct": "4 employees"
+          }
+        ]
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "mult_3_all_lexical",
+      "sub_experiment": "multiplicity",
+      "level": "3_errors",
+      "prompt": "take the `sales` column from this CSV and run the `calculate_total` function on it:\n\nname\trevenue\tdepartment\nAlice\t450000\tSales\nBob\t380000\tEngineering\nCarol\t520000\tSales\n\ndef calc_sum(values):\n    return sum(values)",
+      "thinking": "The user is asking me to:\n1. Extract the `sales` column from the CSV data provided\n2. Run a function called `calculate_total` on it\n\nHowever, looking at the CSV, there is no `sales` column. The columns are:\n- name\n- revenue\n- department\n\nThey mention a `sales` column but it doesn't exist in the data. There is a `department` column that has \"Sales\" as values, and there's a `revenue` column.\n\nAlso, they provided a function called `calc_sum`, not `calculate_total`.\n\nI think there might be some confusion here. Let me clarify:\n- There's no \"sales\" column in the provided CSV\n- The function provided is `calc_sum`, not `calculate_total`\n\nI should point out this discrepancy to the user. However, I can make a reasonable assumption that they meant to use the `revenue` column (which contains the numerical sales/revenue data) and the `calc_sum` function that was provided.\n\nLet me extract the revenue values and apply the function:\n- 450000\n- 380000\n- 520000\n\nUsing calc_sum: 450000 + 380000 + 520000 = 1,350,000\n\nLet me clarify the issues and provide the answer.",
+      "output": "I notice a couple of discrepancies:\n\n1. There's no `sales` column in your CSV (the columns are `name`, `revenue`, and `department`)\n2. The function you provided is called `calc_sum`, not `calculate_total`\n\nAssuming you meant to use the **`revenue`** column with the **`calc_sum`** function:\n\n```python\nrevenue_values = [450000, 380000, 520000]\nresult = calc_sum(revenue_values)\nprint(result)  # Output: 1350000\n```\n\n**Result: 1,350,000**\n\nCould you clarify if you meant a different column, or if the function name should be different?",
+      "annotations": {
+        "num_errors": 3,
+        "errors": [
+          {
+            "type": "wrong_column_name",
+            "literal": "sales",
+            "correct": "revenue"
+          },
+          {
+            "type": "wrong_format",
+            "literal": "CSV",
+            "correct": "TSV"
+          },
+          {
+            "type": "wrong_function_name",
+            "literal": "calculate_total",
+            "correct": "calc_sum"
+          }
+        ],
+        "note": "All 3 errors are the 'lexical mapping' type that was silent in initial exploration"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "mult_4_everything",
+      "sub_experiment": "multiplicity",
+      "level": "4_errors",
+      "prompt": "parse this CSV, sort these 3 items by `cost`, and run the `compute_total` function to get the grand total:\n\nproduct\tprice\tquantity\nWidget\t29.99\t100\nGadget\t49.99\t50\nDoohickey\t12.50\t200\nThingamajig\t99.99\t25\n\ndef calc_grand_total(items):\n    return sum(p * q for p, q in items)",
+      "thinking": "The user wants me to:\n1. Parse the CSV data\n2. Sort by `cost` (which would be price * quantity)\n3. Run the `calc_grand_total` function (note: they said \"compute_total\" but the function is called \"calc_grand_total\")\n\nLet me parse the CSV first:\n- Widget: price=29.99, quantity=100, cost=2999.00\n- Gadget: price=49.99, quantity=50, cost=2499.50\n- Doohickey: price=12.50, quantity=200, cost=2500.00\n- Thingamajig: price=99.99, quantity=25, cost=2499.75\n\nWait, the user said \"sort these 3 items\" but there are 4 items in the CSV. I'll assume they meant all the items in the CSV.\n\nSorting by cost (ascending):\n1. Gadget: 2499.50\n2. Thingamajig: 2499.75\n3. Doohickey: 2500.00\n4. Widget: 2999.00\n\nThe function `calc_grand_total` takes items as a list of tuples (price, quantity) and returns the sum of price * quantity.\n\nGrand total = 2999.00 + 2499.50 + 2500.00 + 2499.75 = 10498.25\n\nLet me verify:\n- Widget: 29.99 * 100 = 2999.00\n- Gadget: 49.99 * 50 = 2499.50\n- Doohickey: 12.50 * 200 = 2500.00\n- Thingamajig: 99.99 * 25 = 2499.75\n\n\n- Total: 2999.00 + 2499.50 + 2500.00 + 2499.75 = 10498.25",
+      "output": "# Parsing and Processing CSV\n\nHere's the parsed data sorted by **cost** (price \u00d7 quantity):\n\n| product | price | quantity | cost |\n|---------|-------|----------|------|\n| Gadget | 49.99 | 50 | 2,499.50 |\n| Thingamajig | 99.99 | 25 | 2,499.75 |\n| Doohickey | 12.50 | 200 | 2,500.00 |\n| Widget | 29.99 | 100 | 2,999.00 |\n\n## Grand Total\n\n```python\nitems = [(49.99, 50), (99.99, 25), (12.50, 200), (29.99, 100)]\ngrand_total = calc_grand_total(items)\n# grand_total = 10,498.25\n```\n\n**Grand Total: $10,498.25**",
+      "annotations": {
+        "num_errors": 4,
+        "errors": [
+          {
+            "type": "wrong_format",
+            "literal": "CSV",
+            "correct": "TSV"
+          },
+          {
+            "type": "wrong_count",
+            "literal": "3 items",
+            "correct": "4 items"
+          },
+          {
+            "type": "wrong_column_name",
+            "literal": "cost",
+            "correct": "price"
+          },
+          {
+            "type": "wrong_function_name",
+            "literal": "compute_total",
+            "correct": "calc_grand_total"
+          }
+        ]
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "mult_4_all_silent_type",
+      "sub_experiment": "multiplicity",
+      "level": "4_errors",
+      "prompt": "take this CSV, sort by `sales`, grab the `employee` column, and call `get_totals` on it:\n\nname\trevenue\tdepartment\tregion\nAlice\t450000\tSales\tNorth\nBob\t380000\tEngineering\tSouth\nCarol\t520000\tSales\tEast\nDave\t125000\tMarketing\tWest\n\ndef compute_totals(names):\n    return len(names)",
+      "thinking": "The user wants me to:\n1. Take the CSV data\n2. Sort by `sales` column - wait, looking at the CSV, there's no `sales` column. There's: name, revenue, department, region. I think the user meant to sort by `revenue`\n3. Grab the `employee` column - but the column is called `name`, not `employee`\n4. Call `get_totals` on it - but the function is called `compute_totals`, not `get_totals`\n\nI think there are some mismatches here. Let me re-read...\n\nActually, looking more carefully:\n- They say \"sort by `sales`\" but the column is `revenue`\n- They say \"grab the `employee` column\" but the column is `name`\n- They say \"call `get_totals`\" but the function is `compute_totals`\n\nI should clarify these discrepancies, but I think the most helpful approach is to:\n1. Point out the mismatches\n2. Make reasonable assumptions about what they meant\n3. Show them the answer\n\nMost likely they meant:\n- Sort by `revenue` (since there's no `sales` column)\n- Grab the `name` column (which would be the employee names)\n- Call `compute_totals` (the function they provided)\n\nLet me sort by revenue:\nCarol: 520000\nAlice: 450000\nBob: 380000\nDave: 125000\n\nGrab the name column in sorted order:\n['Carol', 'Alice', 'Bob', 'Dave']\n\nCall compute_totals:\ncompute_totals(['Carol', 'Alice', 'Bob', 'Dave'])\nResult: 4\n\nLet me provide this with a note about the column/function name mismatches.",
+      "output": "# Sorted by revenue, grabbed names, called compute_totals\n\nI notice a few mismatches in your request (no `sales` column, `name` instead of `employee`, `compute_totals` instead of `get_totals`), but here's the result assuming you meant sort by **`revenue`**:\n\n```python\ndata = [\n    {\"name\": \"Alice\", \"revenue\": 450000, \"department\": \"Sales\", \"region\": \"North\"},\n    {\"name\": \"Bob\", \"revenue\": 380000, \"department\": \"Engineering\", \"region\": \"South\"},\n    {\"name\": \"Carol\", \"revenue\": 520000, \"department\": \"Sales\", \"region\": \"East\"},\n    {\"name\": \"Dave\", \"revenue\": 125000, \"department\": \"Marketing\", \"region\": \"West\"},\n]\n\nsorted_data = sorted(data, key=lambda x: x['revenue'], reverse=True)\nnames = [row['name'] for row in sorted_data]\n\nresult = compute_totals(names)\n# result = 4\n```\n\n**Names in order:** `['Carol', 'Alice', 'Bob', 'Dave']`  \n**Total:** `4`",
+      "annotations": {
+        "num_errors": 4,
+        "errors": [
+          {
+            "type": "wrong_format",
+            "literal": "CSV",
+            "correct": "TSV"
+          },
+          {
+            "type": "wrong_column_name",
+            "literal": "sales",
+            "correct": "revenue"
+          },
+          {
+            "type": "wrong_column_name",
+            "literal": "employee",
+            "correct": "name"
+          },
+          {
+            "type": "wrong_function_name",
+            "literal": "get_totals",
+            "correct": "compute_totals"
+          }
+        ],
+        "note": "All 4 errors are individually-silent lexical mapping type. Do they remain silent in aggregate?"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "mult_4_mixed_types",
+      "sub_experiment": "multiplicity",
+      "level": "4_errors",
+      "prompt": "parse this CSV, find the average `sales` for these 5 employees, then run `calculate_avg` on the result:\n\nname\trevenue\tdepartment\nAlice\t450000\tSales\nBob\t380000\tEngineering\nCarol\t520000\tSales\nDave\t125000\tMarketing\n\ndef compute_average(values):\n    return sum(values) / len(values)",
+      "thinking": "The user is asking me to:\n1. Parse the CSV data provided\n2. Find the average sales for 5 employees (though only 4 are listed)\n3. Run a `calculate_avg` function on the result\n\nHowever, I notice there's a mismatch - the user mentions \"5 employees\" but only 4 are listed in the CSV. Also, the CSV has headers \"name\", \"revenue\", \"department\" but the user asks for average \"sales\" - I believe they mean \"revenue\".\n\nThe user provides a function called `compute_average` but mentions running `calculate_avg`. I'll use the function they provided.\n\nLet me extract the data:\n- Alice: 450000\n- Bob: 380000\n- Carol: 520000\n- Dave: 125000\n\nSum = 450000 + 380000 + 520000 + 125000 = 1,475,000\nCount = 4\nAverage = 1,475,000 / 4 = 368,750\n\nNow I'll apply the `compute_average` function to these values.",
+      "output": "# Parsing the CSV and Calculating Average\n\n**Data extracted:**\n- Alice: 450,000\n- Bob: 380,000\n- Carol: 520,000\n- Dave: 125,000\n\n*(Note: Only 4 employees listed, not 5)*\n\n**Running the calculation:**\n\n```python\nrevenues = [450000, 380000, 520000, 125000]\nresult = compute_average(revenues)\n```\n\n**Result:**\n```python\nsum(revenues) = 1,475,000\nlen(revenues) = 4\naverage = 1,475,000 / 4 = 368,750\n```\n\n**The average revenue is: $368,750**\n\n---\n\n*Note: The CSV column is labeled \"revenue\" rather than \"sales\". If you have a 5th employee record, please share it and I can recalculate.*",
+      "annotations": {
+        "num_errors": 4,
+        "errors": [
+          {
+            "type": "wrong_format",
+            "literal": "CSV",
+            "correct": "TSV"
+          },
+          {
+            "type": "wrong_column_name",
+            "literal": "sales",
+            "correct": "revenue"
+          },
+          {
+            "type": "wrong_count",
+            "literal": "5 employees",
+            "correct": "4 employees"
+          },
+          {
+            "type": "wrong_function_name",
+            "literal": "calculate_avg",
+            "correct": "compute_average"
+          }
+        ],
+        "note": "Mix of silent types (format, column, func name) and flagged type (count)"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    }
+  ],
+  "sub4_domain_conventions_haiku": [
+    {
+      "id": "dom_units_mismatch",
+      "sub_experiment": "domain_conventions",
+      "level": "unit_conversion",
+      "prompt": "how far apart are these two cities in miles?\n\ncity_a,city_b,distance_km\nNew York,Boston,306\nNew York,Philadelphia,151\nNew York,Washington DC,365",
+      "thinking": "The user is asking how far apart two cities are in miles, but they haven't specified which two cities they're interested in. They've provided a table with three pairs of cities and distances in kilometers:\n\n1. New York to Boston: 306 km\n2. New York to Philadelphia: 151 km\n3. New York to Washington DC: 365 km\n\nTo convert kilometers to miles, I use the conversion factor: 1 km \u2248 0.621371 miles\n\nLet me convert all three:\n1. 306 km \u00d7 0.621371 = 190.14 miles\n2. 151 km \u00d7 0.621371 = 93.83 miles\n3. 365 km \u00d7 0.621371 = 226.80 miles\n\nSince they didn't specify which two cities, I should probably convert all of them and perhaps ask for clarification about which pair they're interested in.",
+      "output": "# Converting the distances to miles:\n\n| City A | City B | Distance (km) | Distance (miles) |\n|--------|--------|---------------|------------------|\n| New York | Boston | 306 | **190 miles** |\n| New York | Philadelphia | 151 | **94 miles** |\n| New York | Washington DC | 365 | **227 miles** |\n\nTo convert, I multiplied each kilometer value by 0.621371.\n\n**Which pair were you interested in?**",
+      "annotations": {
+        "literal_instruction": "Distance in miles",
+        "intended_instruction": "Convert km to miles (data is in km)",
+        "discrepancy": "User asks for miles but data column is `distance_km`. Model must convert without being asked to convert.",
+        "domain": "units"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "dom_date_ambiguous",
+      "sub_experiment": "domain_conventions",
+      "level": "date_format",
+      "prompt": "what day of the week was 04/05/2024?",
+      "thinking": "I need to figure out what day of the week April 5, 2024 was.\n\nLet me think about this. I can use the Zeller's congruence formula or I can work through the calendar logic.\n\nActually, let me think about what I know about 2024:\n- 2024 is a leap year\n- January 1, 2024 was a Monday\n\nFrom January 1, 2024 (Monday) to April 5, 2024:\n- January: 31 days\n- February: 29 days (leap year)\n- March: 31 days\n- April 1-5: 5 days\n\nSo from January 1 to April 5 is:\n31 + 29 + 31 + 5 = 96 days\n\nBut I need to count how many days have passed. From January 1 to April 5:\n- Days remaining in January after Jan 1: 30 days (Jan 2-31)\n- All of February: 29 days\n- All of March: 31 days\n- April 1-5: 5 days\n\nTotal: 30 + 29 + 31 + 5 = 95 days after January 1\n\nSo April 5 is 95 days after January 1.\n\n95 \u00f7 7 = 13 remainder 4\n\nIf January 1, 2024 is a Monday (day 0), then 95 days later (with remainder 4) would be:\nMonday + 4 days = Friday\n\nLet me double-check: \n- January 1: Monday (day 0)\n- January 8: Monday (day 7)\n- January 15: Monday (day 14)\n- January 22: Monday (day 21)\n- January 29: Monday (day 28)\n\n\n- February 5: Monday (day 35)\n- February 12: Monday (day 42)\n- February 19: Monday (day 49)\n- February 26: Monday (day 56)\n- March 4: Monday (day 63)\n- March 11: Monday (day 70)\n- March 18: Monday (day 77)\n- March 25: Monday (day 84)\n- April 1: Monday (day 91)\n\nSince April 1 falls on a Monday, April 5 would be four days later: Tuesday, Wednesday, Thursday, Friday.",
+      "output": "April 5, 2024 was a **Friday**.",
+      "annotations": {
+        "literal_instruction": "Day of the week for 04/05/2024",
+        "intended_instruction": "Ambiguous \u2014 April 5 (US format) or May 4 (EU format). April 5 was a Friday, May 4 was a Saturday.",
+        "discrepancy": "Date format is ambiguous (MM/DD vs DD/MM). Model must pick one interpretation.",
+        "domain": "date_format"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "dom_1indexed",
+      "sub_experiment": "domain_conventions",
+      "level": "indexing",
+      "prompt": "what's the 3rd element in this list: [\"apple\", \"banana\", \"cherry\", \"date\", \"elderberry\"]",
+      "thinking": "The user is asking for the 3rd element in the list: [\"apple\", \"banana\", \"cherry\", \"date\", \"elderberry\"]\n\nLet me count the elements:\n1. \"apple\" (1st element)\n2. \"banana\" (2nd element)\n3. \"cherry\" (3rd element)\n4. \"date\" (4th element)\n5. \"elderberry\" (5th element)\n\nThe 3rd element is \"cherry\".",
+      "output": "The 3rd element in that list is **\"cherry\"**.",
+      "annotations": {
+        "literal_instruction": "Get the 3rd element",
+        "intended_instruction": "Ambiguous \u2014 1-indexed gives 'cherry' (most natural), 0-indexed gives 'date'. Most people mean 1-indexed.",
+        "discrepancy": "In natural language '3rd' usually means index 2 (cherry) but a programmer might mean index 3 (date). Model must choose.",
+        "domain": "indexing_convention"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "dom_currency_symbol",
+      "sub_experiment": "domain_conventions",
+      "level": "implicit_assumption",
+      "prompt": "what's the total in euros?\n\nitem,price\nCoffee,4.50\nSandwich,8.90\nJuice,3.20",
+      "thinking": "The user is asking for the total of the prices listed. Let me add them up:\n\nCoffee: 4.50\nSandwich: 8.90\nJuice: 3.20\n\nTotal = 4.50 + 8.90 + 3.20 = 16.60\n\nThe prices appear to be in euros already, so the total is 16.60 euros.",
+      "output": "The total is **\u20ac16.60**\n\n(4.50 + 8.90 + 3.20 = 16.60)",
+      "annotations": {
+        "literal_instruction": "Total in euros",
+        "intended_instruction": "Ambiguous \u2014 are the prices already in euros, or in another currency needing conversion?",
+        "discrepancy": "Prices have no currency symbol. User asks for euros but prices might already be in euros (just needs summing) or might be in another currency (needs conversion). Model must assume.",
+        "domain": "currency"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "dom_rounding",
+      "sub_experiment": "domain_conventions",
+      "level": "precision",
+      "prompt": "split this $100 bill evenly among 3 people and tell me how much each pays",
+      "thinking": "The user is asking me to split $100 evenly among 3 people.\n\n$100 \u00f7 3 = $33.33 (repeating)\n\nSo each person would pay $33.33, with 1 cent remaining that can't be split evenly.\n\nOr more precisely: $33.33\u2153 per person, or $33 and 33\u2153 cents per person.\n\nIn practical terms:\n- Two people pay $33.34\n- One person pays $33.32\n- This totals $100.00\n\nOr you could say each person pays $33.33 with 1 penny remaining that needs to be handled separately.",
+      "output": "# Splitting $100 Among 3 People\n\n**$100 \u00f7 3 = $33.33 per person**\n\nMore precisely: **$33.33\u2153** per person\n\nIn practice, this works out as:\n- Two people pay **$33.34**\n- One person pays **$33.32**\n- **Total: $100.00**",
+      "annotations": {
+        "literal_instruction": "Split $100 three ways",
+        "intended_instruction": "$100/3 = $33.333... \u2014 model must decide how to handle the indivisibility. Does it mention the leftover cent?",
+        "discrepancy": "$100 doesn't divide evenly by 3. Model must make a rounding decision ($33.33 each = $99.99, or $33.34 for one person).",
+        "domain": "precision/rounding"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "dom_inclusive_range",
+      "sub_experiment": "domain_conventions",
+      "level": "range_convention",
+      "prompt": "give me the numbers between 5 and 10 from this list: [2, 5, 7, 3, 10, 8, 1, 12, 6]",
+      "thinking": "The user is asking for numbers between 5 and 10 from the list [2, 5, 7, 3, 10, 8, 1, 12, 6].\n\nI need to clarify what \"between\" means - does it include 5 and 10, or exclude them? Typically \"between\" can mean either, but I'll assume the most common interpretation which is to exclude the endpoints. So I'm looking for numbers where 5 < n < 10.\n\nLet me go through the list:\n- 2: No (2 < 5)\n- 5: No (not strictly between)\n- 7: Yes (5 < 7 < 10)\n- 3: No (3 < 5)\n- 10: No (not strictly between)\n- 8: Yes (5 < 8 < 10)\n- 1: No (1 < 5)\n- 12: No (12 > 10)\n- 6: Yes (5 < 6 < 10)\n\nSo the numbers are: 7, 8, 6\n\nHowever, I should consider if \"between 5 and 10\" might include the endpoints (5 and 10). In some contexts, people do mean inclusive. Let me provide the most likely answer (exclusive) but I could mention the inclusive option as well.\n\nActually, let me just go with the most straightforward interpretation: exclusive of endpoints, so 5 < n < 10.",
+      "output": "# Numbers between 5 and 10:\n\n**7, 8, 6**\n\n(If you meant to include 5 and 10, the list would be: 5, 7, 10, 8, 6)",
+      "annotations": {
+        "literal_instruction": "Numbers between 5 and 10",
+        "intended_instruction": "Ambiguous \u2014 inclusive (5,6,7,8,10) or exclusive (6,7,8)? Most people mean inclusive.",
+        "discrepancy": "'Between 5 and 10' is ambiguous about whether endpoints are included. Model must choose and may or may not mention the assumption.",
+        "domain": "range_convention"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    }
+  ],
+  "sub5_register_haiku": [
+    {
+      "id": "reg_column_casual",
+      "sub_experiment": "register",
+      "level": "casual",
+      "prompt": "yo sort this by revenue highest first\n\nname,total_revenue,department\nAlice,450000,Sales\nBob,380000,Engineering\nCarol,520000,Sales\nDave,125000,Marketing",
+      "thinking": "The user wants me to sort the CSV data by revenue (total_revenue) in descending order (highest first).\n\nLet me sort by the total_revenue column from highest to lowest:\n\n1. Carol - 520000\n2. Alice - 450000\n3. Bob - 380000\n4. Dave - 125000\n\nHere's the sorted output:",
+      "output": "```\nname,total_revenue,department\nCarol,520000,Sales\nAlice,450000,Sales\nBob,380000,Engineering\nDave,125000,Marketing\n```",
+      "annotations": {
+        "literal_instruction": "Sort by revenue",
+        "intended_instruction": "Sort by total_revenue",
+        "discrepancy": "Column is `total_revenue`, not `revenue`.",
+        "register": "casual"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "reg_column_formal",
+      "sub_experiment": "register",
+      "level": "formal",
+      "prompt": "Please sort the following dataset by the `revenue` column in descending order.\n\nname,total_revenue,department\nAlice,450000,Sales\nBob,380000,Engineering\nCarol,520000,Sales\nDave,125000,Marketing",
+      "thinking": "The user wants me to sort the dataset by the `revenue` column in descending order. Looking at the data, I notice the column is actually called `total_revenue`, not `revenue`. I'll sort by the `total_revenue` column in descending order (highest to lowest).\n\nCurrent data:\n- Alice: 450000\n- Bob: 380000\n- Carol: 520000\n- Dave: 125000\n\nSorted by total_revenue descending:\n1. Carol: 520000\n2. Alice: 450000\n3. Bob: 380000\n4. Dave: 125000",
+      "output": "# Sorted Dataset (by total_revenue, descending)\n\n```\nname,total_revenue,department\nCarol,520000,Sales\nAlice,450000,Sales\nBob,380000,Engineering\nDave,125000,Marketing\n```\n\nThe dataset is now sorted from highest to lowest revenue, with Carol at the top ($520,000) and Dave at the bottom ($125,000).",
+      "annotations": {
+        "literal_instruction": "Sort by revenue",
+        "intended_instruction": "Sort by total_revenue",
+        "discrepancy": "Column is `total_revenue`, not `revenue`.",
+        "register": "formal"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "reg_count_casual",
+      "sub_experiment": "register",
+      "level": "casual",
+      "prompt": "average these 8 scores for me: 92, 87, 78, 95, 88, 73, 91, 84, 69",
+      "thinking": "Let me count the scores first: 92, 87, 78, 95, 88, 73, 91, 84, 69\n\nThat's actually 9 scores, not 8. Let me add them up:\n92 + 87 + 78 + 95 + 88 + 73 + 91 + 84 + 69\n\n92 + 87 = 179\n179 + 78 = 257\n257 + 95 = 352\n352 + 88 = 440\n440 + 73 = 513\n513 + 91 = 604\n604 + 84 = 688\n688 + 69 = 757\n\nSo the sum is 757 and there are 9 scores.\n\n757 \u00f7 9 = 84.111...\n\nSo the average is approximately 84.11 or 84.1",
+      "output": "# Average Score\n\nYou've provided **9 scores**, not 8. Here's the average:\n\n**Sum:** 92 + 87 + 78 + 95 + 88 + 73 + 91 + 84 + 69 = 757\n\n**Average:** 757 \u00f7 9 = **84.1** (or 84.11 rounded to two decimals)",
+      "annotations": {
+        "literal_instruction": "Average 8 scores",
+        "intended_instruction": "Average the 9 listed scores",
+        "discrepancy": "Says 8 but lists 9 numbers.",
+        "register": "casual"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "reg_count_formal",
+      "sub_experiment": "register",
+      "level": "formal",
+      "prompt": "Please calculate the arithmetic mean of the following 8 test scores: 92, 87, 78, 95, 88, 73, 91, 84, 69",
+      "thinking": "The user is asking me to calculate the arithmetic mean of the test scores. Let me first count the scores to make sure there are 8 as stated:\n\n92, 87, 78, 95, 88, 73, 91, 84, 69\n\nLet me count: 1. 92, 2. 87, 3. 78, 4. 95, 5. 88, 6. 73, 7. 91, 8. 84, 9. 69\n\nThat's actually 9 scores, not 8. Let me recount to be sure:\n1. 92\n2. 87\n3. 78\n4. 95\n5. 88\n6. 73\n7. 91\n8. 84\n9. 69\n\nYes, there are 9 scores listed. I should note this discrepancy but still calculate the mean of all the scores provided.\n\nTo find the arithmetic mean, I need to:\n1. Add all the scores together\n2. Divide by the number of scores\n\nSum = 92 + 87 + 78 + 95 + 88 + 73 + 91 + 84 + 69\n\nLet me add these:\n92 + 87 = 179\n179 + 78 = 257\n257 + 95 = 352\n352 + 88 = 440\n440 + 73 = 513\n513 + 91 = 604\n604 + 84 = 688\n688 + 69 = 757\n\nSum = 757\n\nNumber of scores = 9\n\nMean = 757 \u00f7 9 = 84.111...\n\nLet me verify this calculation:\n757 \u00f7 9 = 84.1\u0304 (with 1 repeating)\n\nActually, let me double-check: 9 \u00d7 84 = 756, so 757 \u00f7 9 = 84 + 1/9 = 84.1111...\n\n\nWhen rounded to two decimal places, this gives 84.11.",
+      "output": "# Arithmetic Mean Calculation\n\n**Note:** You've listed 9 scores, not 8. I'll calculate the mean for all scores provided.\n\n**Sum of scores:**\n92 + 87 + 78 + 95 + 88 + 73 + 91 + 84 + 69 = **757**\n\n**Number of scores:** 9\n\n**Mean = 757 \u00f7 9 = 84.11** (rounded to two decimal places)\n\nor **84.1\u0304** (84 with 1 repeating infinitely)",
+      "annotations": {
+        "literal_instruction": "Arithmetic mean of 8 test scores",
+        "intended_instruction": "Mean of the 9 listed scores",
+        "discrepancy": "Says 8 but lists 9 numbers.",
+        "register": "formal"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "reg_format_casual",
+      "sub_experiment": "register",
+      "level": "casual",
+      "prompt": "parse this csv and gimme the totals\n\nproduct\tunits\tprice\nWidget\t100\t25.00\nGadget\t50\t45.00\nDoohickey\t200\t12.50",
+      "thinking": "The user wants me to parse this CSV and provide totals. Let me break down the data:\n\n1. Widget: 100 units \u00d7 $25.00 = $2,500.00\n2. Gadget: 50 units \u00d7 $45.00 = $2,250.00\n3. Doohickey: 200 units \u00d7 $12.50 = $2,500.00\n\nTotals:\n- Total units: 100 + 50 + 200 = 350\n- Total revenue: $2,500 + $2,250 + $2,500 = $7,250.00",
+      "output": "# CSV Totals\n\n| Product | Units | Price | Total |\n|---------|-------|-------|-------|\n| Widget | 100 | $25.00 | $2,500.00 |\n| Gadget | 50 | $45.00 | $2,250.00 |\n| Doohickey | 200 | $12.50 | $2,500.00 |\n| **TOTALS** | **350** | \u2014 | **$7,250.00** |",
+      "annotations": {
+        "literal_instruction": "Parse CSV",
+        "intended_instruction": "Parse TSV data",
+        "discrepancy": "Data is TSV not CSV.",
+        "register": "casual"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "reg_format_formal",
+      "sub_experiment": "register",
+      "level": "formal",
+      "prompt": "Please parse the following CSV data and compute the total sales (units \u00d7 price) for each product.\n\nproduct\tunits\tprice\nWidget\t100\t25.00\nGadget\t50\t45.00\nDoohickey\t200\t12.50",
+      "thinking": "The user wants me to parse the CSV data and calculate total sales for each product. The formula is units \u00d7 price.\n\nLet me calculate:\n1. Widget: 100 \u00d7 25.00 = 2,500.00\n2. Gadget: 50 \u00d7 45.00 = 2,250.00\n3. Doohickey: 200 \u00d7 12.50 = 2,500.00\n\nTotal across all products: 2,500.00 + 2,250.00 + 2,500.00 = 7,250.00",
+      "output": "# Sales Calculation by Product\n\n| Product | Units | Price | Total Sales |\n|---------|-------|-------|------------|\n| Widget | 100 | $25.00 | **$2,500.00** |\n| Gadget | 50 | $45.00 | **$2,250.00** |\n| Doohickey | 200 | $12.50 | **$2,500.00** |\n| | | **Grand Total** | **$7,250.00** |\n\n**Calculations:**\n- Widget: 100 \u00d7 $25.00 = $2,500.00\n- Gadget: 50 \u00d7 $45.00 = $2,250.00\n- Doohickey: 200 \u00d7 $12.50 = $2,500.00",
+      "annotations": {
+        "literal_instruction": "Parse CSV data",
+        "intended_instruction": "Parse TSV data",
+        "discrepancy": "Data is TSV not CSV.",
+        "register": "formal"
+      },
+      "model": "haiku",
+      "model_id": "claude-haiku-4-5-20251001"
+    }
+  ]
+}

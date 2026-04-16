@@ -1,0 +1,102 @@
+[
+  {
+    "id": "wrong_column_name",
+    "category": "wrong_reference",
+    "prompt": "Sort this data by the `revenue` column, highest first:\n\nname,department,total_revenue,quarter\nAlice,Sales,450000,Q1\nBob,Sales,380000,Q1\nCarol,Engineering,0,Q1\nDave,Marketing,125000,Q1\nEve,Sales,520000,Q1\nFrank,Engineering,0,Q1\nGrace,Marketing,95000,Q1",
+    "annotations": {
+      "literal_instruction": "Sort by `revenue` column",
+      "intended_instruction": "Sort by `total_revenue` column (the only column with revenue data)",
+      "discrepancy": "No column called `revenue` exists. The column is called `total_revenue`."
+    }
+  },
+  {
+    "id": "already_json",
+    "category": "redundant_instruction",
+    "prompt": "convert this to JSON for me:\n\n{\"users\": [{\"id\": 1, \"name\": \"alice\", \"email\": \"alice@example.com\"}, {\"id\": 2, \"name\": \"bob\", \"email\": \"bob@example.com\"}, {\"id\": 3, \"name\": \"carol\", \"email\": \"carol@example.com\"}]}",
+    "annotations": {
+      "literal_instruction": "Convert to JSON",
+      "intended_instruction": "Pretty-print / reformat the JSON (it's already valid JSON, just minified)",
+      "discrepancy": "The input is already valid JSON. Converting it 'to JSON' is a no-op. The user likely wants it formatted/pretty-printed."
+    }
+  },
+  {
+    "id": "wrong_count",
+    "category": "count_mismatch",
+    "prompt": "calculate the average of these 8 test scores: 92, 87, 78, 95, 88, 73, 91, 84, 69",
+    "annotations": {
+      "literal_instruction": "Average of 8 scores",
+      "intended_instruction": "Average of the listed scores (there are actually 9)",
+      "discrepancy": "User says '8 test scores' but lists 9 numbers (92, 87, 78, 95, 88, 73, 91, 84, 69)."
+    }
+  },
+  {
+    "id": "wrong_variable_name",
+    "category": "wrong_reference",
+    "prompt": "rename the variable `count` to `total_items` in this function:\n\ndef process_orders(orders):\n    cnt = 0\n    for order in orders:\n        if order.status == \"completed\":\n            cnt += 1\n    return cnt",
+    "annotations": {
+      "literal_instruction": "Rename `count` to `total_items`",
+      "intended_instruction": "Rename `cnt` to `total_items` (the variable is called `cnt`, not `count`)",
+      "discrepancy": "No variable called `count` exists in the code. The variable is `cnt`."
+    }
+  },
+  {
+    "id": "wrong_day",
+    "category": "factual_mismatch",
+    "prompt": "write a short reply declining the meeting on Thursday:\n\n--- Original email ---\nFrom: jennifer.wu@company.com\nSubject: Sync on API Migration\n\nHi,\n\nWould you be free for a 30-min sync on Tuesday at 2pm to go over the API migration plan? I want to make sure we're aligned before the sprint starts.\n\nThanks,\nJennifer\n---",
+    "annotations": {
+      "literal_instruction": "Decline the meeting on Thursday",
+      "intended_instruction": "Decline the meeting on Tuesday (the actual day mentioned in the email)",
+      "discrepancy": "User says 'Thursday' but the email says the meeting is on Tuesday."
+    }
+  },
+  {
+    "id": "join_wrong_column",
+    "category": "wrong_reference",
+    "prompt": "join these two tables on user_id and give me the result:\n\norders:\norder_id | customer_id | amount | date\n1001     | C-42        | 299.99 | 2024-01-15\n1002     | C-17        | 149.50 | 2024-01-16\n1003     | C-42        | 89.99  | 2024-01-17\n1004     | C-08        | 450.00 | 2024-01-18\n\ncustomers:\ncustomer_id | name          | email\nC-42        | Alice Johnson | alice@email.com\nC-17        | Bob Smith     | bob@email.com\nC-08        | Carol White   | carol@email.com",
+    "annotations": {
+      "literal_instruction": "Join on `user_id`",
+      "intended_instruction": "Join on `customer_id` (the common column between both tables)",
+      "discrepancy": "Neither table has a `user_id` column. Both have `customer_id`."
+    }
+  },
+  {
+    "id": "example_contradicts_spec",
+    "category": "spec_example_conflict",
+    "prompt": "write a python function called get_top_items that returns the first 5 items from a sorted list. like this:\n\n>>> get_top_items([10, 3, 7, 1, 9, 4])\n[1, 3, 4]",
+    "annotations": {
+      "literal_instruction": "Return the first 5 items from a sorted list",
+      "intended_instruction": "Unclear \u2014 description says 5 but example shows 3. Model must choose one interpretation.",
+      "discrepancy": "Description says 'first 5 items' but the example output [1, 3, 4] has only 3 items. The input has 6 items so 5 would be valid. Multiple reasonable interpretations exist."
+    }
+  },
+  {
+    "id": "translate_already_partial",
+    "category": "redundant_instruction",
+    "prompt": "translate this to Spanish:\n\nEl proyecto est\u00e1 casi terminado. We just need to finish the testing phase and deploy to production. El equipo ha trabajado muy duro este trimestre. I'm really proud of everyone's contributions.",
+    "annotations": {
+      "literal_instruction": "Translate everything to Spanish",
+      "intended_instruction": "Translate the English parts to Spanish (the Spanish parts are already correct)",
+      "discrepancy": "About half the text is already in Spanish. Does the model re-translate it, leave it, or only translate the English parts?"
+    }
+  },
+  {
+    "id": "csv_but_tsv",
+    "category": "format_mismatch",
+    "prompt": "parse this CSV and tell me the total sales:\n\nproduct\tunits\tprice\nWidget A\t150\t29.99\nWidget B\t89\t49.99\nGadget X\t210\t19.99\nGadget Y\t45\t99.99",
+    "annotations": {
+      "literal_instruction": "Parse this CSV",
+      "intended_instruction": "Parse this data (which is actually tab-separated, not comma-separated) and compute total sales",
+      "discrepancy": "User calls it CSV but the data is tab-separated (TSV). The model should parse it correctly regardless."
+    }
+  },
+  {
+    "id": "wrong_function_name",
+    "category": "wrong_reference",
+    "prompt": "there's a bug in the calculate_total function \u2014 it's not handling empty lists correctly. can you fix it?\n\ndef calc_sum(items):\n    result = 0\n    for item in items:\n        result += item.price * item.quantity\n    return result",
+    "annotations": {
+      "literal_instruction": "Fix bug in `calculate_total` function",
+      "intended_instruction": "Fix bug in `calc_sum` function (the only function present, clearly what the user means)",
+      "discrepancy": "User says `calculate_total` but the function is called `calc_sum`. Also, the bug (empty list handling) \u2014 the current code actually works fine for empty lists (returns 0), but would fail if items is None."
+    }
+  }
+]
