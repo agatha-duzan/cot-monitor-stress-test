@@ -148,9 +148,22 @@ def is_task_complete(text: str) -> bool:
     return bool(re.search(TASK_COMPLETE_PATTERN, text, re.IGNORECASE))
 
 
-def format_api_docs(api_docs) -> str:
-    """Format ApiDocCollection into a readable string for the prompt."""
+def format_api_docs(api_docs, constraint_text: str | None = None) -> str:
+    """Format ApiDocCollection into a readable string for the prompt.
+
+    Args:
+        api_docs: The API documentation collection.
+        constraint_text: Optional constraint to embed as an API Usage Policy note
+            at the top of the docs section (before app headings).
+    """
     lines = []
+
+    # Embed constraint as API usage policy note (looks like natural API metadata)
+    if constraint_text:
+        # Strip "Note: " prefix and trailing double-periods from _load_constraints wrapping
+        display_text = constraint_text.removeprefix("Note: ").rstrip(".")  + "."
+        lines.append(f"\n> **API Usage Policy**: {display_text}")
+        lines.append("")
 
     for app_name, app_apis in dict(api_docs).items():
         lines.append(f"\n### {app_name}")
@@ -183,21 +196,22 @@ def build_system_prompt(
     api_docs,
     constraint: str | None = None,
 ) -> str:
-    """Build the system prompt for the agent."""
-    constraint_text = ""
-    if constraint:
-        constraint_text = f"\n## Important Note\n{constraint}\n"
+    """Build the system prompt for the agent.
 
-    # Format API docs if it's an ApiDocCollection
+    When a constraint is provided, it's embedded inside the API docs section
+    as an API Usage Policy note (subtle, realistic placement) rather than
+    as a prominent "Important Note" section.
+    """
+    # Format API docs, embedding constraint inside if provided
     if hasattr(api_docs, 'keys'):
-        api_docs_str = format_api_docs(api_docs)
+        api_docs_str = format_api_docs(api_docs, constraint_text=constraint)
     else:
         api_docs_str = str(api_docs)
 
     return AGENT_SYSTEM_PROMPT.format(
         task_instruction=task_instruction,
         api_docs=api_docs_str,
-        constraint=constraint_text,
+        constraint="",  # No longer used for constraint — lives inside api_docs now
     )
 
 
@@ -229,6 +243,12 @@ class ModelClient:
     def __init__(self, model_id: str, thinking_budget: int = 2000):
         self.model_id = model_id
         self.thinking_budget = thinking_budget
+        self.total_usage = {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+        }
 
         # Determine provider
         if model_id.startswith("anthropic/"):
@@ -278,7 +298,10 @@ class ModelClient:
         }
 
         if system:
-            kwargs["system"] = system
+            # Use cache_control for prompt caching (saves ~90% on input costs for turns 2+)
+            kwargs["system"] = [
+                {"type": "text", "text": system, "cache_control": {"type": "ephemeral"}}
+            ]
 
         if enable_thinking:
             kwargs["thinking"] = {
@@ -287,6 +310,12 @@ class ModelClient:
             }
 
         response = self.client.messages.create(**kwargs)
+        # Track token usage
+        if hasattr(response, 'usage'):
+            self.total_usage["input_tokens"] += getattr(response.usage, 'input_tokens', 0)
+            self.total_usage["output_tokens"] += getattr(response.usage, 'output_tokens', 0)
+            self.total_usage["cache_creation_input_tokens"] += getattr(response.usage, 'cache_creation_input_tokens', 0)
+            self.total_usage["cache_read_input_tokens"] += getattr(response.usage, 'cache_read_input_tokens', 0)
         return extract_reasoning_anthropic(response)
 
     def _generate_openrouter(self, messages: list[dict], enable_thinking: bool) -> tuple[str | None, str]:
@@ -367,6 +396,7 @@ def run_appworld_agent(
             task_instruction=task.instruction,
             constraint=constraint_text,
             constraint_category=constraint_category,
+            system_prompt=system_prompt,
         )
 
         # Initialize conversation
@@ -480,6 +510,9 @@ def run_appworld_agent(
                 trajectory.error = f"Evaluation error: {str(e)}"
             if verbose:
                 print(f"Evaluation error: {e}")
+
+    # Attach token usage from API calls
+    trajectory.usage = client.total_usage
 
     return trajectory
 

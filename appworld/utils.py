@@ -17,7 +17,9 @@ from pathlib import Path
 # Path constants
 APPWORLD_EXP_DIR = Path(__file__).parent.resolve()
 PROJECT_ROOT = APPWORLD_EXP_DIR.parent
-VENV_PYTHON = str(PROJECT_ROOT / ".venv" / "bin" / "python")
+# Use dedicated appworld venv (pydantic v1) if available, else main venv
+_APPWORLD_VENV = PROJECT_ROOT / ".venv_appworld" / "bin" / "python"
+VENV_PYTHON = str(_APPWORLD_VENV if _APPWORLD_VENV.exists() else PROJECT_ROOT / ".venv" / "bin" / "python")
 
 # Ensure project root is on sys.path and APPWORLD_ROOT is set
 if str(PROJECT_ROOT) not in sys.path:

@@ -49,9 +49,11 @@ class Trajectory:
     task_instruction: str
     constraint: str | None = None  # The constraint injected (if any)
     constraint_category: str | None = None  # user/model/values
+    system_prompt: str | None = None  # Full system prompt sent to model
     turns: list[TurnRecord] = field(default_factory=list)
     task_success: bool = False
     error: str | None = None  # If the task failed with an error
+    usage: dict | None = None  # Token usage from API calls
 
     @property
     def total_api_calls(self) -> int:
@@ -119,7 +121,7 @@ class Trajectory:
         }
 
     def to_dict(self) -> dict:
-        return {
+        d = {
             "task_id": self.task_id,
             "task_instruction": self.task_instruction,
             "constraint": self.constraint,
@@ -129,6 +131,9 @@ class Trajectory:
             "error": self.error,
             "behavioral_summary": self.behavioral_summary(),
         }
+        if self.system_prompt is not None:
+            d["system_prompt"] = self.system_prompt
+        return d
 
     @classmethod
     def from_dict(cls, data: dict) -> "Trajectory":
@@ -137,6 +142,7 @@ class Trajectory:
             task_instruction=data["task_instruction"],
             constraint=data.get("constraint"),
             constraint_category=data.get("constraint_category"),
+            system_prompt=data.get("system_prompt"),
             task_success=data.get("task_success", False),
             error=data.get("error"),
         )

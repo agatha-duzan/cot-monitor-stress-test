@@ -129,7 +129,7 @@ celerybeat.pid
 
 # Environments
 .env
-.venv
+.venv*/
 env/
 venv/
 ENV/
@@ -206,6 +206,7 @@ wmdb/baseline_openrouter_logs/
 
 # Setting 4 results (JSONL outputs per checkpoint)
 setting4_exploration/results/
+setting4_exploration/results_gptoss/
 
 # AppWorld
 appworld/data/

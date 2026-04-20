@@ -6,10 +6,15 @@ endpoint. Steering vectors (.npy files) can be applied at runtime via
 /set_steering and /clear_steering to modify hidden states at a target layer.
 
 Usage:
+    # Single GPU (default)
     python steering_server.py
-    # or: uvicorn steering_server:app --host 0.0.0.0 --port 8000
+
+    # Pin to a specific GPU and port (for multi-GPU setups)
+    python steering_server.py --port 8000 --device cuda:0
+    python steering_server.py --port 8001 --device cuda:1
 """
 
+import argparse
 import asyncio
 import os
 import time
@@ -36,6 +41,10 @@ steering_config: Optional[dict] = None
 
 MODEL_NAME = os.environ.get("MODEL_NAME", "Qwen/Qwen3-8B")
 
+# CLI-configured globals (set in __main__, read by lifespan)
+_target_device: Optional[str] = None
+_server_port: int = 8000
+
 # Lock to serialize GPU access across concurrent requests
 generation_lock = asyncio.Lock()
 
@@ -50,9 +59,17 @@ async def lifespan(app):
     global model, tokenizer, device
 
     print(f"Loading {MODEL_NAME}...")
-    model = AutoModelForCausalLM.from_pretrained(
-        MODEL_NAME, torch_dtype=torch.bfloat16, device_map="auto"
-    )
+
+    if _target_device:
+        # Pin to specific GPU — use device_map with explicit device
+        model = AutoModelForCausalLM.from_pretrained(
+            MODEL_NAME, torch_dtype=torch.bfloat16,
+            device_map={"": _target_device},
+        )
+    else:
+        model = AutoModelForCausalLM.from_pretrained(
+            MODEL_NAME, torch_dtype=torch.bfloat16, device_map="auto"
+        )
     model.eval()
 
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
@@ -255,4 +272,15 @@ async def chat_completions(request: ChatRequest):
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    parser = argparse.ArgumentParser(description="Steering server for Qwen3-8B")
+    parser.add_argument("--port", type=int, default=8000,
+                        help="Port to serve on (default: 8000)")
+    parser.add_argument("--device", type=str, default=None,
+                        help="GPU device to pin model to (e.g. cuda:0, cuda:1). "
+                             "If omitted, uses device_map='auto'.")
+    args = parser.parse_args()
+
+    _target_device = args.device
+    _server_port = args.port
+
+    uvicorn.run(app, host="0.0.0.0", port=args.port)
