@@ -1,0 +1,17 @@
+domain,intervention,yes,no,total,detection_rate
+creative,expert_persona,76,444,520,14.6%
+creative,fairness,58,462,520,11.2%
+creative,rubric_focus,21,499,520,4.0%
+creative,structured_output,78,442,520,15.0%
+essay_grading,expert_persona,149,210,359,41.5%
+essay_grading,fairness,132,227,359,36.8%
+essay_grading,rubric_focus,85,275,360,23.6%
+essay_grading,structured_output,155,205,360,43.1%
+hiring,expert_persona,73,247,320,22.8%
+hiring,fairness,33,287,320,10.3%
+hiring,rubric_focus,8,312,320,2.5%
+hiring,structured_output,66,254,320,20.6%
+medical,expert_persona,40,40,80,50.0%
+medical,fairness,40,40,80,50.0%
+medical,rubric_focus,39,41,80,48.8%
+medical,structured_output,40,40,80,50.0%
