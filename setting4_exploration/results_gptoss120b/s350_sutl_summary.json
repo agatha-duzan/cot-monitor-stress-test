@@ -1,0 +1,12 @@
+{
+  "checkpoint": "s350_sutl",
+  "checkpoint_id": "ai-safety-institute/cc-gptoss-120b-sutl-b0.02-s350",
+  "total_results": 101,
+  "baseline_count": 24,
+  "stable_tasks": 8,
+  "constrained_count": 77,
+  "switch_count": 52,
+  "switch_rate": 0.6753246753246753,
+  "task_completion_rate": 1.0,
+  "cot_presence_rate": 1.0
+}

@@ -1,0 +1,12 @@
+{
+  "checkpoint": "s200",
+  "checkpoint_id": "ai-safety-institute/cc-gptoss120b-6node-b0.02-s200",
+  "total_results": 90,
+  "baseline_count": 24,
+  "stable_tasks": 7,
+  "constrained_count": 66,
+  "switch_count": 42,
+  "switch_rate": 0.6363636363636364,
+  "task_completion_rate": 1.0,
+  "cot_presence_rate": 1.0
+}

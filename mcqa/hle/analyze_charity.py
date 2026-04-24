@@ -607,9 +607,13 @@ def plot_per_question_heatmap(results: dict, analysis: dict, save_dir: Path):
     n_models = len(models)
     n_questions = len(TARGET_QUESTION_IDS)
 
-    fig, axes = plt.subplots(1, 3, figsize=(4 * 3, max(4, n_questions * 0.5 + 1)))
+    active_conditions = [c for c in CONDITIONS if any(results.get(c, {}).get(m) for m in models)]
+    n_cond = len(active_conditions)
+    fig, axes = plt.subplots(1, n_cond, figsize=(4 * n_cond, max(4, n_questions * 0.5 + 1)))
+    if n_cond == 1:
+        axes = [axes]
 
-    for ax_idx, condition in enumerate(CONDITIONS):
+    for ax_idx, condition in enumerate(active_conditions):
         ax = axes[ax_idx]
         grid = np.full((n_questions, n_models), np.nan)
 

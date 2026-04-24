@@ -55,19 +55,22 @@ generation_lock = asyncio.Lock()
 async def lifespan(app):
     global base_model, active_model, tokenizer, device
 
-    print(f"Loading base model: {BASE_MODEL_NAME}...")
+    print(f"Loading base model: {BASE_MODEL_NAME}...", flush=True)
     base_model = AutoModelForCausalLM.from_pretrained(
         BASE_MODEL_NAME, torch_dtype=torch.bfloat16, device_map="auto"
     )
+    print("Model weights loaded, calling eval()...", flush=True)
     base_model.eval()
     active_model = base_model
+    print("Model eval() done. Loading tokenizer...", flush=True)
 
     tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL_NAME, trust_remote_code=True)
+    print("Tokenizer loaded.", flush=True)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
     device = next(base_model.parameters()).device
-    print(f"Base model loaded on {device}.")
+    print(f"Base model loaded on {device}.", flush=True)
 
     # Log special tokens for debugging Harmony format
     for name in ["start", "end", "message", "channel", "return", "call"]:
@@ -95,6 +98,8 @@ class ChatRequest(BaseModel):
     messages: list[ChatMessage]
     temperature: float = 0.7
     max_tokens: int = 4096
+    reasoning_budget: int = 4096
+    answer_budget: int = 4096
     reasoning_effort: str = "high"
 
     class Config:
@@ -132,17 +137,19 @@ async def load_checkpoint(req: CheckpointRequest):
             return {"status": "ok", "checkpoint": checkpoint, "message": msg}
 
         if checkpoint is None:
+            # Revert to base model — just unload LoRA adapter
             if current_checkpoint is not None:
-                await _reload_base_model()
+                await asyncio.to_thread(_unload_adapter)
             current_checkpoint = None
             print("[checkpoint] Reverted to base model (no LoRA)")
             return {"status": "ok", "checkpoint": None, "message": "Using base model"}
 
         try:
+            # Unload current adapter if any, then load new one
             if current_checkpoint is not None:
-                await _reload_base_model()
+                await asyncio.to_thread(_unload_adapter)
 
-            result = await asyncio.to_thread(_load_and_merge_lora, checkpoint)
+            result = await asyncio.to_thread(_load_adapter, checkpoint)
             current_checkpoint = checkpoint
             print(f"[checkpoint] Loaded: {checkpoint}")
             return {"status": "ok", "checkpoint": checkpoint, "message": result}
@@ -153,44 +160,57 @@ async def load_checkpoint(req: CheckpointRequest):
             raise HTTPException(status_code=500, detail=f"Failed to load checkpoint: {e}")
 
 
-async def _reload_base_model():
-    global base_model, active_model
-    print("[checkpoint] Reloading base model...")
+def _unload_adapter():
+    """Unload current LoRA adapter, reverting to base model.
 
-    def _do_reload():
-        global base_model, active_model
+    If adapter was merged, unmerge first to restore base weights,
+    then delete the PeftModel wrapper.
+    """
+    global active_model
+    print("[checkpoint] Unloading adapter...", flush=True)
+
+    if active_model is not base_model:
+        # Unmerge LoRA weights from base model before deleting
+        try:
+            active_model.unmerge_adapter()
+            print("[checkpoint] Adapter unmerged.", flush=True)
+        except Exception:
+            pass  # May not be merged
+
+        # Delete the PeftModel wrapper — base_model is preserved
         del active_model
-        del base_model
-        gc.collect()
-        torch.cuda.empty_cache()
-        torch.cuda.synchronize()
         gc.collect()
         torch.cuda.empty_cache()
 
-        base_model = AutoModelForCausalLM.from_pretrained(
-            BASE_MODEL_NAME, torch_dtype=torch.bfloat16, device_map="auto"
-        )
-        base_model.eval()
-        active_model = base_model
-        print("[checkpoint] Base model reloaded.")
-
-    await asyncio.to_thread(_do_reload)
+    active_model = base_model
+    print("[checkpoint] Adapter unloaded, using base model.", flush=True)
 
 
-def _load_and_merge_lora(checkpoint: str) -> str:
+def _load_adapter(checkpoint: str) -> str:
+    """Load a LoRA adapter and merge into base model weights.
+
+    Uses merge_adapter() (not merge_and_unload) so the LoRA weights
+    are folded into the base weights for fast inference, but can be
+    unmerged later to restore the original base weights for the next
+    checkpoint. This avoids both the slow base model reload AND the
+    extra VRAM overhead of keeping separate LoRA parameters.
+    """
     global active_model
 
     from peft import PeftModel
 
-    print(f"[checkpoint] Loading LoRA: {checkpoint}")
+    print(f"[checkpoint] Loading LoRA adapter: {checkpoint}", flush=True)
     peft_model = PeftModel.from_pretrained(base_model, checkpoint)
-    active_model = peft_model.merge_and_unload()
-    active_model.eval()
+    print("[checkpoint] Merging adapter into base weights...", flush=True)
+    peft_model.merge_adapter()
+    peft_model.eval()
+    active_model = peft_model
 
     gc.collect()
     torch.cuda.empty_cache()
+    print("[checkpoint] Adapter merged (inference at full speed).", flush=True)
 
-    return f"Loaded and merged LoRA from {checkpoint}"
+    return f"Loaded LoRA adapter from {checkpoint} (no merge)"
 
 
 # ---------------------------------------------------------------------------
@@ -275,6 +295,20 @@ def parse_harmony_output(raw_text: str) -> dict:
 # ---------------------------------------------------------------------------
 
 
+def _has_final_channel(token_ids: list[int]) -> bool:
+    """Check if the generated tokens contain a 'final' channel marker."""
+    # Look for <|channel|> followed by tokens spelling "final"
+    channel_tok = 200005  # <|channel|>
+    text = tokenizer.decode(token_ids, skip_special_tokens=False)
+    return "<|channel|>final" in text or "<|channel|>commentary" in text
+
+
+def _build_channel_switch_ids() -> list[int]:
+    """Build token IDs for: <|end|><|start|>assistant<|channel|>final<|message|>"""
+    switch_text = "<|end|><|start|>assistant<|channel|>final<|message|>"
+    return tokenizer.encode(switch_text, add_special_tokens=False)
+
+
 def generate(request: ChatRequest) -> dict:
     messages = [{"role": m.role, "content": m.content} for m in request.messages]
 
@@ -293,25 +327,61 @@ def generate(request: ChatRequest) -> dict:
     inputs = tokenizer(text, return_tensors="pt").to(device)
     input_len = inputs["input_ids"].shape[1]
 
+    # ── Stage 1: Generate with reasoning budget ──
     with torch.no_grad():
-        outputs = active_model.generate(
+        outputs_stage1 = active_model.generate(
             **inputs,
-            max_new_tokens=request.max_tokens,
+            max_new_tokens=request.reasoning_budget,
             do_sample=(request.temperature > 0),
             temperature=request.temperature if request.temperature > 0 else None,
             pad_token_id=tokenizer.eos_token_id,
         )
 
-    new_tokens = outputs[0][input_len:]
-    raw_text = tokenizer.decode(new_tokens, skip_special_tokens=False)
+    stage1_tokens = outputs_stage1[0][input_len:]
+    stage1_len = len(stage1_tokens)
+    forced_switch = False
+
+    # ── Check if model already produced a final channel ──
+    if _has_final_channel(stage1_tokens.tolist()):
+        # Model naturally transitioned to final — use stage1 output as-is
+        all_new_tokens = stage1_tokens
+        stage2_len = 0
+    else:
+        # Model used all reasoning budget without producing final answer
+        # Force-inject channel switch and continue generating
+        forced_switch = True
+        switch_ids = _build_channel_switch_ids()
+        switch_tensor = torch.tensor([switch_ids], dtype=torch.long, device=outputs_stage1.device)
+
+        # Concatenate: prompt + stage1 output + channel switch
+        combined = torch.cat([outputs_stage1, switch_tensor], dim=1)
+
+        # ── Stage 2: Generate final answer ──
+        with torch.no_grad():
+            outputs_stage2 = active_model.generate(
+                combined,
+                max_new_tokens=request.answer_budget,
+                do_sample=(request.temperature > 0),
+                temperature=request.temperature if request.temperature > 0 else None,
+                pad_token_id=tokenizer.eos_token_id,
+            )
+
+        # All new tokens = stage1 + switch + stage2
+        all_new_tokens = outputs_stage2[0][input_len:]
+        stage2_len = len(outputs_stage2[0]) - len(combined[0])
+
+    raw_text = tokenizer.decode(all_new_tokens, skip_special_tokens=False)
 
     # Parse Harmony channels
     parsed = parse_harmony_output(raw_text)
 
+    total_new = len(all_new_tokens)
     print(
         f"[generate] checkpoint={current_checkpoint or 'base'}  "
-        f"prompt_tokens={input_len}  completion_tokens={len(new_tokens)}  "
-        f"has_analysis={'yes' if parsed['analysis'] else 'no'}"
+        f"prompt_tokens={input_len}  stage1={stage1_len}  stage2={stage2_len}  "
+        f"total_completion={total_new}  forced_switch={forced_switch}  "
+        f"has_analysis={'yes' if parsed['analysis'] else 'no'}  "
+        f"has_final={'yes' if parsed['final'] else 'no'}"
     )
 
     # Return both the final answer in the standard field and
@@ -322,7 +392,7 @@ def generate(request: ChatRequest) -> dict:
         "id": f"chatcmpl-{uuid.uuid4().hex[:8]}",
         "object": "chat.completion",
         "created": int(time.time()),
-        "model": f"gptoss-20b-{current_checkpoint or 'base'}",
+        "model": f"gptoss-120b-{current_checkpoint or 'base'}",
         "choices": [
             {
                 "index": 0,
@@ -332,14 +402,15 @@ def generate(request: ChatRequest) -> dict:
                     # Custom fields for CoT extraction
                     "analysis": parsed["analysis"],
                     "raw_output": raw_text,
+                    "forced_switch": forced_switch,
                 },
                 "finish_reason": "stop",
             }
         ],
         "usage": {
             "prompt_tokens": input_len,
-            "completion_tokens": len(new_tokens),
-            "total_tokens": input_len + len(new_tokens),
+            "completion_tokens": total_new,
+            "total_tokens": input_len + total_new,
         },
     }
 

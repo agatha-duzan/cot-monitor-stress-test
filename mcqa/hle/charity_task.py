@@ -267,12 +267,12 @@ def charity_motivation(condition: str = "baseline") -> Task:
             raise ValueError(f"Question {qid} not found in dataset")
         target_records.append(id_to_record[qid])
 
-    # Shuffle choices deterministically (same seed as hint_task.py SEED+4000
-    # but per-question-ID to be independent of dataset ordering)
+    # Full cross: 10 questions × 8 entity pairs = 80 samples
+    # Choice shuffle is per-question (same across all entity pairs)
     samples = []
-    for i, record in enumerate(target_records):
+    for q_idx, record in enumerate(target_records):
         # Deterministic choice shuffle per question
-        rng = random.Random(SEED + 5000 + i)
+        rng = random.Random(SEED + 5000 + q_idx)
 
         correct_text = None
         other_choices = []
@@ -290,51 +290,48 @@ def charity_motivation(condition: str = "baseline") -> Task:
         target_letter = chr(65 + correct_idx)
         choices = [(chr(65 + j), text) for j, (text, _) in enumerate(all_items)]
 
-        # Assign entity pair (cycle through 8 pairs)
-        pair_idx = i % len(ENTITY_PAIRS)
-        pair = ENTITY_PAIRS[pair_idx]
-
         # Format choices text
         letters = ", ".join(letter for letter, _ in choices)
         choices_text = "\n".join(f"{letter}) {text}" for letter, text in choices)
 
-        # Build prompt based on condition
-        if condition == "baseline":
-            prompt_text = BASELINE_TEMPLATE.format(
-                letters=letters,
-                question=record["question"],
-                choices=choices_text,
-            )
-            entity_text = None
-        elif condition == "neutral":
-            prompt_text = NEUTRAL_TEMPLATE.format(
-                question=record["question"],
-                choices=choices_text,
-            )
-            entity_text = None
-        else:
-            entity_key = "good" if condition == "good_entity" else "bad"
-            entity_text = pair[entity_key]
-            prompt_text = MOTIVATIONAL_TEMPLATE.format(
-                entity=entity_text,
-                question=record["question"],
-                choices=choices_text,
-            )
+        for pair_idx, pair in enumerate(ENTITY_PAIRS):
+            # Build prompt based on condition
+            if condition == "baseline":
+                prompt_text = BASELINE_TEMPLATE.format(
+                    letters=letters,
+                    question=record["question"],
+                    choices=choices_text,
+                )
+                entity_text = None
+            elif condition == "neutral":
+                prompt_text = NEUTRAL_TEMPLATE.format(
+                    question=record["question"],
+                    choices=choices_text,
+                )
+                entity_text = None
+            else:
+                entity_key = "good" if condition == "good_entity" else "bad"
+                entity_text = pair[entity_key]
+                prompt_text = MOTIVATIONAL_TEMPLATE.format(
+                    entity=entity_text,
+                    question=record["question"],
+                    choices=choices_text,
+                )
 
-        samples.append(
-            Sample(
-                input=prompt_text,
-                target=target_letter,
-                id=record["id"],
-                metadata={
-                    "condition": condition,
-                    "entity_pair_index": pair_idx,
-                    "entity_domain": pair["domain"],
-                    "entity_text": entity_text,
-                    "question_id": record["id"],
-                },
+            samples.append(
+                Sample(
+                    input=prompt_text,
+                    target=target_letter,
+                    id=f"{record['id']}_pair{pair_idx}",
+                    metadata={
+                        "condition": condition,
+                        "entity_pair_index": pair_idx,
+                        "entity_domain": pair["domain"],
+                        "entity_text": entity_text,
+                        "question_id": record["id"],
+                    },
+                )
             )
-        )
 
     solver_chain = generate_and_extract()
 

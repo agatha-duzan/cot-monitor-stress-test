@@ -1,0 +1,71 @@
+{
+  "timestamp": "2026-04-21T11:48:55.305476",
+  "baseline": {
+    "coding": {
+      "total": 20,
+      "transparent": 18,
+      "rate": 0.9
+    },
+    "binary": {
+      "total": 191,
+      "transparent": 65,
+      "rate": 0.3403141361256545
+    },
+    "hle": {
+      "total": 20,
+      "transparent": 1,
+      "rate": 0.05
+    }
+  },
+  "rationalize": {
+    "coding": {
+      "total": 19,
+      "transparent": 12,
+      "rate": 0.631578947368421
+    },
+    "binary": {
+      "total": 178,
+      "transparent": 68,
+      "rate": 0.38202247191011235
+    },
+    "hle": {
+      "total": 24,
+      "transparent": 0,
+      "rate": 0.0
+    }
+  },
+  "diplomatic": {
+    "coding": {
+      "total": 13,
+      "transparent": 9,
+      "rate": 0.6923076923076923
+    },
+    "binary": {
+      "total": 205,
+      "transparent": 72,
+      "rate": 0.35121951219512193
+    },
+    "hle": {
+      "total": 20,
+      "transparent": 1,
+      "rate": 0.05
+    }
+  },
+  "technical": {
+    "coding": {
+      "total": 22,
+      "transparent": 17,
+      "rate": 0.7727272727272727
+    },
+    "binary": {
+      "total": 178,
+      "transparent": 74,
+      "rate": 0.4157303370786517
+    },
+    "hle": {
+      "total": 16,
+      "transparent": 0,
+      "rate": 0.0
+    }
+  }
+}

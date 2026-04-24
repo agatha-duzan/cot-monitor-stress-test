@@ -1,0 +1,12 @@
+{
+  "checkpoint": "nohack",
+  "checkpoint_id": "ai-safety-institute/cc-gptoss-120b-nohack-s100",
+  "total_results": 90,
+  "baseline_count": 24,
+  "stable_tasks": 7,
+  "constrained_count": 66,
+  "switch_count": 51,
+  "switch_rate": 0.7727272727272727,
+  "task_completion_rate": 1.0,
+  "cot_presence_rate": 1.0
+}
