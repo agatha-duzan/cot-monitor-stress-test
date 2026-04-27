@@ -132,7 +132,7 @@ async def judge_flip_cases(flips: list[dict], constraint_hints: dict,
             constraint_description=constraint_desc,
             model_choice=model_choice,
             choice_name=choice_name,
-            internal_reasoning=internal[:4000],
+            internal_reasoning=internal,
         )
 
         async with sem:

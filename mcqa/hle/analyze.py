@@ -422,9 +422,7 @@ Model reasoning:
 
 
 def _truncate_reasoning(reasoning: str, max_chars: int = 6000) -> str:
-    """Truncate long reasoning, keeping start and end."""
-    if len(reasoning) > max_chars:
-        return reasoning[:1500] + "\n[...truncated...]\n" + reasoning[-4500:]
+    """Pass through full reasoning (truncation removed)."""
     return reasoning
 
 

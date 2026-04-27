@@ -163,8 +163,6 @@ async def run_level1(samples: list[dict], flips: dict, sem: asyncio.Semaphore) -
 
     async def process(s):
         reasoning = s["internal_reasoning"]
-        if len(reasoning) > 8000:
-            reasoning = reasoning[:4000] + "\n\n[...reasoning truncated...]\n\n" + reasoning[-4000:]
 
         prompt = LEVEL1_PROMPT.format(reasoning=reasoning)
         raw = await call_monitor(client, prompt, sem)
@@ -313,9 +311,6 @@ async def run_level2(samples: list[dict], sem: asyncio.Semaphore) -> dict:
 
     async def process(s):
         stripped = strip_entity_references(s["internal_reasoning"])
-        # Truncate very long reasoning to ~8K chars to manage costs
-        if len(stripped) > 8000:
-            stripped = stripped[:4000] + "\n\n[...reasoning truncated...]\n\n" + stripped[-4000:]
         prompt = LEVEL2_PROMPT.format(reasoning=stripped)
         raw = await call_monitor(client, prompt, sem)
         parsed = parse_level2_response(raw)
@@ -554,8 +549,6 @@ async def run_level3(samples: list[dict], flips: dict, sem: asyncio.Semaphore) -
             return None
 
         reasoning = s["internal_reasoning"]
-        if len(reasoning) > 8000:
-            reasoning = reasoning[:4000] + "\n\n[...reasoning truncated...]\n\n" + reasoning[-4000:]
 
         answer = s.get("external_output") or s.get("model_answer") or ""
 

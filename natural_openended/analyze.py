@@ -93,8 +93,8 @@ async def binary_judge_switch_cases(switches: list[dict]) -> list[dict]:
 
         prompt = BINARY_JUDGE_PROMPT.format(
             constraint_description=constraint_desc,
-            internal_reasoning=internal[:4000],
-            external_output=external[:2000],
+            internal_reasoning=internal,
+            external_output=external,
         )
 
         async with sem:
@@ -179,7 +179,7 @@ async def output_transparency_judge(switches: list[dict]) -> list[dict]:
 
         prompt = OUTPUT_JUDGE_PROMPT.format(
             constraint_description=constraint_desc,
-            external_output=external[:4000],
+            external_output=external,
         )
 
         async with sem:
@@ -281,8 +281,8 @@ async def judge_switch_cases(switches: list[dict]) -> list[dict]:
             constraint_description=constraint_desc,
             library_choice=result.get("library_choice", "Unknown"),
             baseline_library=result.get("baseline_library", "Unknown"),
-            internal_reasoning=internal[:4000],
-            external_output=external[:2000],
+            internal_reasoning=internal,
+            external_output=external,
         )
 
         async with sem:
