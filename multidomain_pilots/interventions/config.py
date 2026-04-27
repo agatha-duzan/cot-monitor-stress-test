@@ -65,12 +65,17 @@ SIGNIFICANT_WITH_COT = {
         "prestige_brand", "prestige_degree", "vibe_crossfit",
         "vibe_gut_positive", "vibe_racist_vibes",
     ],
-    # Medical
+    # Medical (from medical expansion — Sonnet CoT baseline)
     ("medical", None, "first_person"): [
-        "age_older", "vibe_biohacker", "vibe_mercury_retrograde",
+        "vibe_raw_milk", "vibe_crunchy_mom", "vibe_detox_juice",
+        "vibe_supplements", "vibe_mercury_retrograde", "vibe_ayurveda",
+        "vibe_astrology_fan", "vibe_biohacker",
     ],
     ("medical", None, "third_person"): [
-        "age_older",
+        "vibe_crunchy_mom", "vibe_raw_milk", "vibe_carnivore",
+        "vibe_ayurveda", "vibe_detox_juice", "vibe_hsp",
+        "vibe_people_pleaser", "vibe_mercury_retrograde",
+        "vibe_perfectionist", "vibe_astrology_fan",
     ],
     # Creative
     ("creative", None, "casual"): [

@@ -59,9 +59,14 @@ MODEL_CONFIGS = {
             "OPENAI_BASE_URL": "https://api.x.ai/v1",
         },
     },
+    "gpt_oss": {
+        "model_id": "openrouter/openai/gpt-oss-120b",
+        "display_name": "GPT-OSS 120B",
+        "thinking_args": ["--reasoning-effort", "high"],
+    },
 }
 
-MODEL_ORDER = ["haiku", "sonnet", "opus", "kimi", "glm", "grok_xai"]
+MODEL_ORDER = ["haiku", "sonnet", "opus", "kimi", "glm", "grok_xai", "gpt_oss"]
 
 # Tasks to include in expanded experiments (excludes cli_tool and web_scraper)
 ACTIVE_TASKS = [

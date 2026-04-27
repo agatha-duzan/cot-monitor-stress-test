@@ -33,10 +33,11 @@ def S(original):
 
 def make_big_binary_plot():
     EXP_DIR = ROOT / "natural_binary_exp"
-    MODEL_ORDER = ["haiku", "sonnet", "opus", "grok_xai", "kimi", "glm"]
+    MODEL_ORDER = ["haiku", "sonnet", "opus", "grok_xai", "kimi", "glm", "gpt_oss"]
     MODEL_DISPLAY = {
         "haiku": "Haiku 4.5", "sonnet": "Sonnet 4.5", "opus": "Opus 4.5",
         "kimi": "Kimi K2", "glm": "GLM 4.7", "grok_xai": "Grok 3 Mini",
+        "gpt_oss": "GPT-OSS 120B",
     }
     COLOR_YES = "#55A868"
     COLOR_NO = "#C44E52"
@@ -62,7 +63,7 @@ def make_big_binary_plot():
     bar_width = 0.22
     group_width = n_exps * bar_width + 0.08
 
-    fig, ax = plt.subplots(figsize=(17, 8))
+    fig, ax = plt.subplots(figsize=(20, 8))
 
     hatches = ["", "//", ".."]
     alphas = [0.95, 0.80, 0.65]
@@ -96,7 +97,7 @@ def make_big_binary_plot():
 
     ax.set_ylabel("Number of Flip Cases", fontsize=S(16))
     ax.set_ylim(0, max_val * 1.15)
-    ax.set_title("Setting 1: CoT Attribution",
+    ax.set_title("Setting 1: Binary Preference",
                  fontsize=S(20), pad=12)
 
     legend_elements = [
@@ -126,10 +127,11 @@ def make_big_binary_plot():
 
 def make_big_openended_plot():
     EXP_DIR = ROOT / "natural_openended"
-    MODEL_ORDER = ["haiku", "sonnet", "opus", "grok_xai", "kimi", "glm"]
+    MODEL_ORDER = ["haiku", "sonnet", "opus", "grok_xai", "kimi", "glm", "gpt_oss"]
     MODEL_DISPLAY = {
         "haiku": "Haiku 4.5", "sonnet": "Sonnet 4.5", "opus": "Opus 4.5",
         "kimi": "Kimi K2", "glm": "GLM 4.7", "grok_xai": "Grok 3 Mini",
+        "gpt_oss": "GPT-OSS 120B",
     }
     COLOR_YES = "#5cb85c"
     COLOR_NO = "#d9534f"
@@ -167,7 +169,7 @@ def make_big_openended_plot():
     bar_width = 0.14
     group_width = n_exps * bar_width + 0.1
 
-    fig, ax = plt.subplots(figsize=(19, 8))
+    fig, ax = plt.subplots(figsize=(22, 8))
 
     hatches = ["", "//", "xx", "..", "\\\\", "++", "oo"]
     alphas = [0.95, 0.85, 0.75, 0.70, 0.65, 0.60, 0.55]
@@ -207,7 +209,7 @@ def make_big_openended_plot():
 
     ax.set_ylabel("Number of Switch Cases", fontsize=S(16))
     ax.set_ylim(0, max_val * 1.2)
-    ax.set_title("Setting 2: CoT Attribution", fontsize=S(23), pad=12)
+    ax.set_title("Setting 4: Open-Ended Coding", fontsize=S(23), pad=12)
 
     legend_elements = [
         Patch(facecolor=COLOR_YES, alpha=0.9, label="YES — attributes decision to constraint"),
@@ -251,10 +253,11 @@ def make_big_hle_plot():
         load_results,
     )
 
-    MODELS = ["haiku", "sonnet", "opus", "grok_xai", "kimi", "glm"]
+    MODELS = ["haiku", "sonnet", "opus", "grok_xai", "kimi", "glm", "gpt_oss"]
     DISPLAY = {
         "haiku": "Haiku 4.5", "sonnet": "Sonnet 4.5", "opus": "Opus 4.5",
         "kimi": "Kimi K2", "glm": "GLM 4.7", "grok_xai": "Grok 3 Mini",
+        "gpt_oss": "GPT-OSS 120B",
     }
     EXPERIMENTS = [
         ("exp3_sysprompt_1", "Exp3: strong prefill (8 fewshot)"),
@@ -302,7 +305,7 @@ def make_big_hle_plot():
 
     ANTHROPIC_MODELS = {"haiku", "sonnet", "opus"}
 
-    fig, ax = plt.subplots(figsize=(17, 8))
+    fig, ax = plt.subplots(figsize=(20, 8))
 
     bar_width = 0.16
     bar_gap = 0.02
@@ -379,7 +382,7 @@ def make_big_hle_plot():
 
     ax.set_ylabel("Number of answer flips", fontsize=S(16))
     ax.set_ylim(0, max_y * 1.10 if max_y > 0 else 10)
-    ax.set_title("Setting 3: CoT Acknowledgement", fontsize=S(20), pad=14)
+    ax.set_title("Setting 3: Hard MCQA with Positional Hints", fontsize=S(20), pad=14)
 
     # Legend
     cot_handles = [

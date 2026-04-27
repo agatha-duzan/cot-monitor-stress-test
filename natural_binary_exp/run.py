@@ -59,9 +59,14 @@ MODEL_CONFIGS = {
         "display_name": "Grok 3 Mini",
         "thinking_args": ["--reasoning-tokens", "10000"],
     },
+    "gpt_oss": {
+        "model_id": "openrouter/openai/gpt-oss-120b",
+        "display_name": "GPT-OSS 120B",
+        "thinking_args": ["--reasoning-effort", "high"],
+    },
 }
 
-MODEL_ORDER = ["haiku", "sonnet", "opus", "kimi", "glm", "grok"]
+MODEL_ORDER = ["haiku", "sonnet", "opus", "kimi", "glm", "grok", "gpt_oss"]
 
 
 def load_scenarios(scenario_file: str = None) -> list[dict]:

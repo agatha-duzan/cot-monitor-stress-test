@@ -24,6 +24,8 @@ SCORE_PATTERNS_10 = [
     re.compile(r'\*\*(\d+(?:\.\d+)?)\s*/\s*10\*\*'),
     re.compile(r'[Rr]ating\s*:\s*(\d+(?:\.\d+)?)\b'),
     re.compile(r'\b[Oo]verall.*?(\d+(?:\.\d+)?)\s*/\s*10'),
+    re.compile(r'\*\*(\d+(?:\.\d+)?)\*\*'),
+    re.compile(r'[Uu]rgency\s*(?:level)?\s*:?\s*(\d+(?:\.\d+)?)\b'),
 ]
 
 # Percentage/probability patterns (for 0-100 scales)
@@ -45,6 +47,8 @@ RANGE_PATTERN_10 = re.compile(r'(\d+(?:\.\d+)?)\s*[-–]\s*(\d+(?:\.\d+)?)\s*/\s
 RANGE_PATTERN_100 = re.compile(r'(\d+(?:\.\d+)?)\s*[-–]\s*(\d+(?:\.\d+)?)\s*%')
 # "Urgency: 4-5" or "Probability: 75-80"
 RANGE_LABEL_PATTERN = re.compile(r'(?:[Uu]rgency|[Ss]core|[Gg]rade|[Rr]ating|[Pp]robability|[Cc]redence)\s*:?\s*(\d+(?:\.\d+)?)\s*[-–]\s*(\d+(?:\.\d+)?)')
+# Bold range: "**4-5**" or "**4–5 —"
+RANGE_BOLD_PATTERN = re.compile(r'\*\*(\d+(?:\.\d+)?)\s*[-–]\s*(\d+(?:\.\d+)?)\*?\*?')
 
 
 def is_refusal(response: str) -> bool:
@@ -85,7 +89,7 @@ def extract_scalar(
 
     # First check for range patterns (e.g., "4-5/10", "75-80%") → take midpoint
     found = []
-    for pat in [range_pat, RANGE_LABEL_PATTERN]:
+    for pat in [range_pat, RANGE_LABEL_PATTERN, RANGE_BOLD_PATTERN]:
         for m in pat.findall(response):
             try:
                 low_val, high_val = float(m[0]), float(m[1])

@@ -23,10 +23,22 @@ from openai import AsyncOpenAI
 EXP_DIR = Path(__file__).parent.resolve()
 DATASET_FILE = EXP_DIR / "natural_prompts_dataset.json"
 
-# Import choice extraction from existing task
+# Import choice extraction from existing task (bypass cot_obfuscation __init__)
 import sys
-sys.path.insert(0, str(EXP_DIR))
-from natural_choice_task import extract_choice_natural
+import importlib.util
+_spec = importlib.util.spec_from_file_location(
+    "natural_choice_task",
+    str(EXP_DIR / "natural_choice_task.py"),
+    submodule_search_locations=[],
+)
+_mod = importlib.util.module_from_spec(_spec)
+# Stub the problematic import so the module loads without cot_obfuscation
+sys.modules["cot_obfuscation"] = type(sys)("cot_obfuscation")
+sys.modules["cot_obfuscation.solvers"] = type(sys)("cot_obfuscation.solvers")
+sys.modules["cot_obfuscation.solvers.reasoning_extractor"] = type(sys)("cot_obfuscation.solvers.reasoning_extractor")
+sys.modules["cot_obfuscation.solvers.reasoning_extractor"].extract_reasoning_from_state = None
+_spec.loader.exec_module(_mod)
+extract_choice_natural = _mod.extract_choice_natural
 
 # ── Model configs ────────────────────────────────────────────────────────────
 
@@ -60,6 +72,10 @@ MODEL_CONFIGS = {
         "provider": "xai",
         "model_id": "grok-3-mini",
         "reasoning_effort": "high",
+    },
+    "gpt_oss": {
+        "provider": "openrouter",
+        "model_id": "openai/gpt-oss-120b",
     },
 }
 
@@ -204,7 +220,7 @@ def get_constrained_for_baseline(dataset: dict, scenario_id: str, baseline_choic
 
 # ── Main ─────────────────────────────────────────────────────────────────────
 
-API_TIMEOUT = 180  # seconds per API call
+API_TIMEOUT = 300  # seconds per API call
 
 async def run_single(
     prompt_text: str,
@@ -217,14 +233,9 @@ async def run_single(
     system_prompt: str = "",
 ) -> dict | None:
     """Run a single API call and extract choice."""
-    try:
-        return await asyncio.wait_for(
-            _run_single_impl(prompt_text, model_key, model_config, clients, semaphore, scenario_id, prefill_text, system_prompt),
-            timeout=API_TIMEOUT,
-        )
-    except asyncio.TimeoutError:
-        print(f"    [{model_key}] TIMEOUT after {API_TIMEOUT}s", flush=True)
-        return None
+    # No outer timeout — each provider branch handles its own timeout
+    # inside the semaphore so queue wait time doesn't count
+    return await _run_single_impl(prompt_text, model_key, model_config, clients, semaphore, scenario_id, prefill_text, system_prompt)
 
 async def _run_single_impl(
     prompt_text: str,
@@ -269,7 +280,10 @@ async def _run_single_impl(
                 }
                 if system_text:
                     kwargs["system"] = system_text
-                response = await client.messages.create(**kwargs)
+                response = await asyncio.wait_for(
+                    client.messages.create(**kwargs),
+                    timeout=API_TIMEOUT,
+                )
 
             reasoning_parts = []
             text_parts = []
@@ -281,6 +295,9 @@ async def _run_single_impl(
 
             reasoning = "\n".join(reasoning_parts) if reasoning_parts else None
             external = "\n".join(text_parts)
+        except asyncio.TimeoutError:
+            print(f"    [{model_key}] TIMEOUT after {API_TIMEOUT}s", flush=True)
+            return None
         except Exception as e:
             print(f"    [{model_key}] API error: {e}", flush=True)
             return None
@@ -289,19 +306,28 @@ async def _run_single_impl(
         client = clients["openrouter"]
         try:
             async with semaphore:
-                response = await client.chat.completions.create(
-                    model=model_config["model_id"],
-                    max_tokens=16000,
-                    messages=messages,
-                    extra_body={"reasoning": {"effort": "high"}},
+                response = await asyncio.wait_for(
+                    client.chat.completions.create(
+                        model=model_config["model_id"],
+                        max_tokens=16000,
+                        messages=messages,
+                        extra_body={"reasoning": {"effort": "high"}},
+                    ),
+                    timeout=API_TIMEOUT,
                 )
             text = response.choices[0].message.content or ""
-            reasoning = getattr(response.choices[0].message, "reasoning_content", None)
+            reasoning = (
+                getattr(response.choices[0].message, "reasoning_content", None)
+                or getattr(response.choices[0].message, "reasoning", None)
+            )
             if not reasoning:
                 reasoning, text = split_think_blocks(text)
                 external = text
             else:
                 external = text
+        except asyncio.TimeoutError:
+            print(f"    [{model_key}] TIMEOUT after {API_TIMEOUT}s", flush=True)
+            return None
         except Exception as e:
             print(f"    [{model_key}] API error: {e}", flush=True)
             return None
@@ -310,11 +336,14 @@ async def _run_single_impl(
         client = clients["xai"]
         try:
             async with semaphore:
-                response = await client.chat.completions.create(
-                    model=model_config["model_id"],
-                    max_tokens=16000,
-                    messages=messages,
-                    reasoning_effort="high",
+                response = await asyncio.wait_for(
+                    client.chat.completions.create(
+                        model=model_config["model_id"],
+                        max_tokens=16000,
+                        messages=messages,
+                        reasoning_effort="high",
+                    ),
+                    timeout=API_TIMEOUT,
                 )
             text = response.choices[0].message.content or ""
             reasoning = getattr(response.choices[0].message, "reasoning_content", None)
@@ -323,6 +352,9 @@ async def _run_single_impl(
                 external = text
             else:
                 external = text
+        except asyncio.TimeoutError:
+            print(f"    [{model_key}] TIMEOUT after {API_TIMEOUT}s", flush=True)
+            return None
         except Exception as e:
             print(f"    [{model_key}] API error: {e}", flush=True)
             return None
